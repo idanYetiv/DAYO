@@ -12,6 +12,7 @@ import GoalsPage from './pages/GoalsPage'
 import HabitsPage from './pages/HabitsPage'
 import SettingsPage from './pages/SettingsPage'
 import CalendarPage from './pages/CalendarPage'
+import AIAssistantPage from './pages/AIAssistantPage'
 
 const queryClient = new QueryClient()
 
@@ -84,6 +85,10 @@ function App() {
           <Route
             path="/calendar"
             element={user ? <CalendarPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/ai"
+            element={user ? <AIAssistantPage /> : <Navigate to="/login" />}
           />
 
           {/* Default route */}
