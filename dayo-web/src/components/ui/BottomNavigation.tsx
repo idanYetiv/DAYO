@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Calendar, CalendarDays, Flame, Target, BookOpen, Settings } from 'lucide-react'
+import { Calendar, CalendarDays, Bot, Target, BookOpen, Settings } from 'lucide-react'
 
 const navItems = [
   { id: 'today', label: 'Today', icon: Calendar, path: '/today' },
   { id: 'calendar', label: 'Calendar', icon: CalendarDays, path: '/calendar' },
-  { id: 'habits', label: 'Habits', icon: Flame, path: '/habits' },
+  { id: 'ai', label: 'AI', icon: Bot, path: '/ai' },
   { id: 'goals', label: 'Goals', icon: Target, path: '/goals' },
   { id: 'diary', label: 'Diary', icon: BookOpen, path: '/diary' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
