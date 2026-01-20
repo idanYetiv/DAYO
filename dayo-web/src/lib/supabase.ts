@@ -97,6 +97,172 @@ export type Database = {
           updated_at?: string
         }
       }
+      goals: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          description: string | null
+          category: 'yearly' | 'monthly' | 'weekly'
+          color: string
+          icon: string
+          due_date: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          description?: string | null
+          category: 'yearly' | 'monthly' | 'weekly'
+          color?: string
+          icon?: string
+          due_date?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          category?: 'yearly' | 'monthly' | 'weekly'
+          color?: string
+          icon?: string
+          due_date?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      milestones: {
+        Row: {
+          id: string
+          goal_id: string
+          user_id: string
+          title: string
+          completed: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          goal_id: string
+          user_id: string
+          title: string
+          completed?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          goal_id?: string
+          user_id?: string
+          title?: string
+          completed?: boolean
+          created_at?: string
+        }
+      }
+      habits: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          icon: string
+          color: string
+          frequency: 'daily' | 'weekly'
+          target_per_week: number
+          time_of_day: 'morning' | 'afternoon' | 'evening' | 'anytime'
+          archived: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          icon?: string
+          color?: string
+          frequency: 'daily' | 'weekly'
+          target_per_week?: number
+          time_of_day?: 'morning' | 'afternoon' | 'evening' | 'anytime'
+          archived?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          icon?: string
+          color?: string
+          frequency?: 'daily' | 'weekly'
+          target_per_week?: number
+          time_of_day?: 'morning' | 'afternoon' | 'evening' | 'anytime'
+          archived?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      habit_completions: {
+        Row: {
+          id: string
+          habit_id: string
+          user_id: string
+          date: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          habit_id: string
+          user_id: string
+          date: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          habit_id?: string
+          user_id?: string
+          date?: string
+          created_at?: string
+        }
+      }
+      user_profiles: {
+        Row: {
+          user_id: string
+          display_name: string | null
+          avatar_url: string | null
+          dark_mode: boolean
+          notifications_enabled: boolean
+          daily_reminder_enabled: boolean
+          daily_reminder_time: string
+          theme_color: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          user_id: string
+          display_name?: string | null
+          avatar_url?: string | null
+          dark_mode?: boolean
+          notifications_enabled?: boolean
+          daily_reminder_enabled?: boolean
+          daily_reminder_time?: string
+          theme_color?: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          user_id?: string
+          display_name?: string | null
+          avatar_url?: string | null
+          dark_mode?: boolean
+          notifications_enabled?: boolean
+          daily_reminder_enabled?: boolean
+          daily_reminder_time?: string
+          theme_color?: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }
