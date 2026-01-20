@@ -24,7 +24,7 @@ describe('BottomNavigation Component', () => {
 
     expect(screen.getByText('Today')).toBeInTheDocument()
     expect(screen.getByText('Calendar')).toBeInTheDocument()
-    expect(screen.getByText('Habits')).toBeInTheDocument()
+    expect(screen.getByText('AI')).toBeInTheDocument()
     expect(screen.getByText('Goals')).toBeInTheDocument()
     expect(screen.getByText('Diary')).toBeInTheDocument()
     expect(screen.getByText('Settings')).toBeInTheDocument()
@@ -50,8 +50,8 @@ describe('BottomNavigation Component', () => {
     fireEvent.click(screen.getByText('Calendar'))
     expect(screen.getByTestId('location')).toHaveTextContent('/calendar')
 
-    fireEvent.click(screen.getByText('Habits'))
-    expect(screen.getByTestId('location')).toHaveTextContent('/habits')
+    fireEvent.click(screen.getByText('AI'))
+    expect(screen.getByTestId('location')).toHaveTextContent('/ai')
 
     fireEvent.click(screen.getByText('Goals'))
     expect(screen.getByTestId('location')).toHaveTextContent('/goals')

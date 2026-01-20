@@ -1,10 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef, useCallback } from 'react'
-import { supabase } from '../lib/supabase'
+import { supabase, type DiaryHighlight } from '../lib/supabase'
 import type { Database } from '../lib/supabase'
 
 type DayEntry = Database['public']['Tables']['days']['Row']
 type DayEntryUpdate = Database['public']['Tables']['days']['Update']
+
+export type { DiaryHighlight }
 
 /**
  * Fetch day entry for a specific date
@@ -216,6 +218,130 @@ export function useUpdateMood() {
     onSuccess: (data) => {
       // Update cache with server response
       queryClient.setQueryData(['dayEntry', data.date], data)
+    },
+  })
+}
+
+/**
+ * Update gratitude items for a specific date
+ * Supports up to 3 gratitude items
+ */
+export function useUpdateGratitude() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({
+      date,
+      gratitude
+    }: {
+      date: string
+      gratitude: string[]
+    }) => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
+      // Limit to 3 items
+      const limitedGratitude = gratitude.slice(0, 3).filter(g => g.trim())
+
+      // Check if entry exists
+      const { data: existing } = await supabase
+        .from('days')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('date', date)
+        .maybeSingle()
+
+      if (existing) {
+        const { data, error } = await supabase
+          .from('days')
+          .update({ gratitude: limitedGratitude })
+          .eq('id', existing.id)
+          .select()
+          .single()
+
+        if (error) throw error
+        return data as DayEntry
+      } else {
+        const { data, error } = await supabase
+          .from('days')
+          .insert({
+            user_id: user.id,
+            date,
+            gratitude: limitedGratitude,
+          })
+          .select()
+          .single()
+
+        if (error) throw error
+        return data as DayEntry
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['dayEntry', data.date], data)
+      queryClient.invalidateQueries({ queryKey: ['dayEntry', data.date] })
+    },
+  })
+}
+
+/**
+ * Update highlights for a specific date
+ * Supports up to 5 highlights with emoji and text
+ */
+export function useUpdateHighlights() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({
+      date,
+      highlights
+    }: {
+      date: string
+      highlights: DiaryHighlight[]
+    }) => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
+      // Limit to 5 items and filter empty ones
+      const limitedHighlights = highlights
+        .slice(0, 5)
+        .filter(h => h.text.trim())
+
+      // Check if entry exists
+      const { data: existing } = await supabase
+        .from('days')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('date', date)
+        .maybeSingle()
+
+      if (existing) {
+        const { data, error } = await supabase
+          .from('days')
+          .update({ highlights: limitedHighlights })
+          .eq('id', existing.id)
+          .select()
+          .single()
+
+        if (error) throw error
+        return data as DayEntry
+      } else {
+        const { data, error } = await supabase
+          .from('days')
+          .insert({
+            user_id: user.id,
+            date,
+            highlights: limitedHighlights,
+          })
+          .select()
+          .single()
+
+        if (error) throw error
+        return data as DayEntry
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['dayEntry', data.date], data)
+      queryClient.invalidateQueries({ queryKey: ['dayEntry', data.date] })
     },
   })
 }

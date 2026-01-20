@@ -9,6 +9,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+// Custom types for diary features
+export interface DiaryHighlight {
+  emoji: string
+  text: string
+}
+
 // Database Types (will be auto-generated later)
 export type Database = {
   public: {
@@ -20,6 +26,9 @@ export type Database = {
           date: string
           mood: string | null
           diary_text: string | null
+          photos: string[]
+          gratitude: string[]
+          highlights: DiaryHighlight[]
           created_at: string
           updated_at: string
         }
@@ -29,6 +38,9 @@ export type Database = {
           date: string
           mood?: string | null
           diary_text?: string | null
+          photos?: string[]
+          gratitude?: string[]
+          highlights?: DiaryHighlight[]
           created_at?: string
           updated_at?: string
         }
@@ -38,6 +50,9 @@ export type Database = {
           date?: string
           mood?: string | null
           diary_text?: string | null
+          photos?: string[]
+          gratitude?: string[]
+          highlights?: DiaryHighlight[]
           created_at?: string
           updated_at?: string
         }
