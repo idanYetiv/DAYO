@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, Moon, Sun, Flame, Share2 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks'
-import { useDayEntry, useUpsertDayEntry } from '../hooks/useDiary'
+import { useDayEntry, useUpsertDayEntry, useUpdateGratitude, useUpdateHighlights, type DiaryHighlight } from '../hooks/useDiary'
 import { useUserStats, useUpdateStreak } from '../hooks/useUserStats'
 import { taskToast, diaryToast } from '../lib/toast'
 import QuoteCard from '../components/ui/QuoteCard'
@@ -47,6 +47,8 @@ export default function TodayPage() {
   const updateTask = useUpdateTask()
   const deleteTask = useDeleteTask()
   const upsertDayEntry = useUpsertDayEntry()
+  const updateGratitude = useUpdateGratitude()
+  const updateHighlights = useUpdateHighlights()
   const updateStreak = useUpdateStreak()
 
   // Initialize diary and mood from database
@@ -108,10 +110,11 @@ export default function TodayPage() {
     })
   }
 
-  const handleSaveDiary = (data: { mood: string; text: string }) => {
+  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[] }) => {
     setSelectedMood(data.mood)
     setDiaryText(data.text)
     if (user) {
+      // Save diary text and mood
       upsertDayEntry.mutate(
         {
           date: today,
@@ -127,6 +130,16 @@ export default function TodayPage() {
           onError: () => diaryToast.error(),
         }
       )
+
+      // Save gratitude if any
+      if (data.gratitude.length > 0) {
+        updateGratitude.mutate({ date: today, gratitude: data.gratitude })
+      }
+
+      // Save highlights if any
+      if (data.highlights.length > 0) {
+        updateHighlights.mutate({ date: today, highlights: data.highlights })
+      }
     }
     setShowDiaryModal(false)
   }
@@ -242,6 +255,9 @@ export default function TodayPage() {
         date={selectedDate}
         initialMood={selectedMood}
         initialText={diaryText}
+        initialPhotos={dayEntry?.photos || []}
+        initialGratitude={dayEntry?.gratitude || []}
+        initialHighlights={dayEntry?.highlights || []}
         onSave={handleSaveDiary}
         isSaving={upsertDayEntry.isPending}
       />

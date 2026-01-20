@@ -19,6 +19,9 @@ const mockDayEntry = {
   date: '2026-01-17',
   mood: 'happy',
   diary_text: 'Great day!',
+  photos: [],
+  gratitude: [],
+  highlights: [],
 }
 
 const mockUserStats = {
@@ -50,6 +53,14 @@ vi.mock('../../../hooks/useDiary', () => ({
     isLoading: false,
   }),
   useUpsertDayEntry: () => ({
+    mutate: vi.fn(),
+    isPending: false,
+  }),
+  useUpdateGratitude: () => ({
+    mutate: vi.fn(),
+    isPending: false,
+  }),
+  useUpdateHighlights: () => ({
     mutate: vi.fn(),
     isPending: false,
   }),

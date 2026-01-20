@@ -16,9 +16,26 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
+    // Setup project - runs authentication before all tests
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+    // Main test project - uses authenticated state
     {
       name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        // Use saved authentication state
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    // Unauthenticated tests - for login/signup flows
+    {
+      name: 'chromium-unauthenticated',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: /.*\.(unauthenticated|login)\.spec\.ts/,
     },
   ],
   webServer: {
