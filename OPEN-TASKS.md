@@ -1,7 +1,7 @@
 # DAYO Open Tasks
 
-**Last Updated:** January 18, 2026
-**Status:** Core functionality complete, adding growth features
+**Last Updated:** January 19, 2026
+**Status:** Core functionality complete, AI features added
 
 ---
 
@@ -21,6 +21,8 @@
 | Task 11 | Streak calculation system | Jan 17 |
 | Task 12 | Toast notifications | Jan 17 |
 | Task 19 | Instagram Export (3 templates, 3 styles, 2 formats) | Jan 18 |
+| Task 9 | OpenAI Integration (with mock mode) | Jan 19 |
+| Task 10 | AI Chat UI (ChatWindow, ChatMessage, ChatInput) | Jan 19 |
 
 ---
 
@@ -36,8 +38,8 @@
 
 | # | Task | Description | Depends On |
 |---|------|-------------|------------|
-| 9 | OpenAI Integration | Set up client, create API functions | - |
-| 10 | AI Chat UI | Chat interface, message bubbles, quick actions | Task 9 |
+| ~~9~~ | ~~OpenAI Integration~~ | ~~Set up client, create API functions~~ | ✅ Done |
+| ~~10~~ | ~~AI Chat UI~~ | ~~Chat interface, message bubbles, quick actions~~ | ✅ Done |
 | 14 | Image Upload | Photos in diary entries, Supabase storage | - |
 | 17 | Demo Data Seeder | Script to populate test data | - |
 | 20 | Direct Instagram API | Post directly to Instagram (Business accounts) | Task 19 |
@@ -368,7 +370,7 @@ npm run build
 3. ~~**Task 12** - Toast notifications (user feedback)~~ ✅
 4. ~~**Task 7 + 8** - Calendar (navigate history)~~ ✅
 5. ~~**Task 19** - Instagram Export (viral growth feature)~~ ✅
-6. **Task 9 + 10** - AI features (differentiator)
+6. ~~**Task 9 + 10** - AI features (differentiator)~~ ✅
 7. **Task 14** - Image upload (rich content)
 8. **Tasks 13, 15, 16** - Polish
 9. **Task 17** - Seeder for testing
@@ -377,4 +379,4 @@ npm run build
 
 ---
 
-*7 tasks remaining to MVP (+ 1 Phase 2 task)*
+*5 tasks remaining to MVP (+ 1 Phase 2 task)*

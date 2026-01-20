@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd dayo-web && npm install && npm run build",
+  "outputDirectory": "dayo-web/dist",
+  "installCommand": "cd dayo-web && npm install",
+  "framework": "vite"
+}
