@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { Plus, Flame, Check, MoreHorizontal, TrendingUp, Award, Loader2, X, Trash2 } from 'lucide-react'
+import { Plus, Flame, Check, MoreHorizontal, TrendingUp, Award, Loader2, X } from 'lucide-react'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import {
   useHabits,
@@ -39,9 +39,6 @@ export default function HabitsPage() {
   const weekCompletionRate = habits ? getWeekCompletionRate(habits, weekDates) : 0
 
   const handleToggleHabit = (habitId: string, date: string) => {
-    const habit = habits?.find(h => h.id === habitId)
-    const wasCompleted = habit ? isHabitCompletedForDate(habit, date) : false
-
     toggleCompletion.mutate(
       { habitId, date },
       {

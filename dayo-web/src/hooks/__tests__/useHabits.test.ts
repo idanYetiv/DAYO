@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { format, subDays } from 'date-fns'
+import { format } from 'date-fns'
 import {
   isHabitCompletedForDate,
   getWeekDates,

@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import {
-  User,
   Bell,
   Palette,
-  Shield,
   Download,
   HelpCircle,
   LogOut,
   ChevronRight,
   Moon,
   Sun,
-  Smartphone,
   Mail,
   Lock,
   Trash2,
