@@ -5,6 +5,8 @@ import { useAuthStore } from '../store/authStore'
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks'
 import { useDayEntry, useUpsertDayEntry, useUpdateGratitude, useUpdateHighlights, type DiaryHighlight } from '../hooks/useDiary'
 import { useUserStats, useUpdateStreak } from '../hooks/useUserStats'
+import { useProfileMode } from '../hooks/useProfileMode'
+import { useContentForMode, useGreeting } from '../hooks/useContentForMode'
 import { taskToast, diaryToast } from '../lib/toast'
 import QuoteCard from '../components/ui/QuoteCard'
 import StatsRow from '../components/ui/StatsRow'
@@ -14,15 +16,7 @@ import QuickAccessCards from '../components/ui/QuickAccessCards'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import DiaryEntryModal from '../components/diary/DiaryEntryModal'
 import ExportModal from '../components/export/ExportModal'
-
-// Mood ID to emoji mapping
-const moodEmojis: Record<string, string> = {
-  amazing: '✨',
-  happy: '🥰',
-  okay: '😐',
-  sad: '😢',
-  stressed: '😫',
-}
+import StreakDisplay from '../components/kids/StreakDisplay'
 
 export default function TodayPage() {
   const { user } = useAuthStore()
@@ -31,6 +25,10 @@ export default function TodayPage() {
   const [showDiaryModal, setShowDiaryModal] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
   const [diaryText, setDiaryText] = useState('')
+
+  const { isKidsMode } = useProfileMode()
+  const { moodEmojis } = useContentForMode()
+  const greetingText = useGreeting()
 
   const today = format(selectedDate, 'yyyy-MM-dd')
 
@@ -62,16 +60,14 @@ export default function TodayPage() {
     }
   }, [dayEntry])
 
-  // Get greeting based on time of day
-  const getGreeting = () => {
+  // Get greeting icon based on time of day
+  const getGreetingIcon = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return { text: 'Good morning', icon: Sun }
-    if (hour < 18) return { text: 'Good afternoon', icon: Sun }
-    return { text: 'Good evening', icon: Moon }
+    if (hour < 18) return Sun
+    return Moon
   }
 
-  const greeting = getGreeting()
-  const GreetingIcon = greeting.icon
+  const GreetingIcon = getGreetingIcon()
 
   const handleAddTask = (title: string) => {
     createTask.mutate(
@@ -160,28 +156,36 @@ export default function TodayPage() {
   const moodEmoji = selectedMood ? (moodEmojis[selectedMood] || selectedMood) : null
 
   return (
-    <div className="min-h-screen bg-dayo-gray-50 pb-24">
+    <div className={`min-h-screen pb-24 ${isKidsMode ? 'bg-dayo-kids-yellow/10' : 'bg-dayo-gray-50'}`}>
       {/* Header */}
-      <header className="bg-white px-4 py-4">
+      <header className={`px-4 py-4 ${isKidsMode ? 'bg-kids-gradient' : 'bg-white'}`}>
         <div className="max-w-lg mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <GreetingIcon className="w-5 h-5 text-dayo-orange" />
-            <h1 className="text-xl font-bold text-dayo-gray-900">
-              {greeting.text}
+            <GreetingIcon className={`w-5 h-5 ${isKidsMode ? 'text-white' : 'text-dayo-orange'}`} />
+            <h1 className={`text-xl font-bold ${isKidsMode ? 'text-white' : 'text-dayo-gray-900'}`}>
+              {greetingText}
             </h1>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowExportModal(true)}
-              className="p-2 text-dayo-gray-400 hover:text-dayo-purple transition-colors rounded-full hover:bg-dayo-gray-100"
+              className={`p-2 transition-colors rounded-full ${
+                isKidsMode
+                  ? 'text-white/80 hover:text-white hover:bg-white/20'
+                  : 'text-dayo-gray-400 hover:text-dayo-purple hover:bg-dayo-gray-100'
+              }`}
               title="Share your day"
             >
               <Share2 className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2 bg-dayo-orange text-white px-3 py-1.5 rounded-full text-sm font-medium">
-              <Flame className="w-4 h-4" />
-              {currentStreak} day streak
-            </div>
+            {isKidsMode ? (
+              <StreakDisplay streak={currentStreak} />
+            ) : (
+              <div className="flex items-center gap-2 bg-dayo-orange text-white px-3 py-1.5 rounded-full text-sm font-medium">
+                <Flame className="w-4 h-4" />
+                {currentStreak} day streak
+              </div>
+            )}
           </div>
         </div>
       </header>

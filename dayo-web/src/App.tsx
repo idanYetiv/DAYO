@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { useAuthStore } from './store/authStore'
+import { ProfileModeProvider } from './contexts/ProfileModeContext'
+import { useProfileMode } from './hooks/useProfileMode'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
@@ -13,8 +15,93 @@ import HabitsPage from './pages/HabitsPage'
 import SettingsPage from './pages/SettingsPage'
 import CalendarPage from './pages/CalendarPage'
 import AIAssistantPage from './pages/AIAssistantPage'
+import OnboardingPage from './pages/OnboardingPage'
+import LandingPage from './pages/LandingPage'
 
 const queryClient = new QueryClient()
+
+// Component to apply kids-mode class to document
+function KidsModeClassApplier({ children }: { children: React.ReactNode }) {
+  const { isKidsMode } = useProfileMode()
+
+  useEffect(() => {
+    if (isKidsMode) {
+      document.documentElement.classList.add('kids-mode')
+    } else {
+      document.documentElement.classList.remove('kids-mode')
+    }
+    return () => {
+      document.documentElement.classList.remove('kids-mode')
+    }
+  }, [isKidsMode])
+
+  return <>{children}</>
+}
+
+// Component to check onboarding status and redirect if needed
+function OnboardingGuard({ children }: { children: React.ReactNode }) {
+  const { onboardingCompleted, isLoading } = useProfileMode()
+  const location = useLocation()
+
+  // If still loading, don't redirect yet
+  if (isLoading) {
+    return <>{children}</>
+  }
+
+  // If on onboarding page, always allow
+  if (location.pathname === '/onboarding') {
+    return <>{children}</>
+  }
+
+  // If onboarding not completed, redirect to onboarding
+  if (!onboardingCompleted) {
+    return <Navigate to="/onboarding" replace />
+  }
+
+  return <>{children}</>
+}
+
+function AuthenticatedRoutes() {
+  return (
+    <ProfileModeProvider>
+      <KidsModeClassApplier>
+        <OnboardingGuard>
+          <Routes>
+            {/* Onboarding */}
+            <Route path="/onboarding" element={<OnboardingPage />} />
+
+            {/* Protected routes */}
+            <Route path="/today" element={<TodayPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/diary" element={<DiaryPage />} />
+            <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/habits" element={<HabitsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/ai" element={<AIAssistantPage />} />
+
+            {/* Redirect authenticated users from public routes */}
+            <Route path="/" element={<Navigate to="/today" />} />
+            <Route path="/login" element={<Navigate to="/today" />} />
+            <Route path="/signup" element={<Navigate to="/today" />} />
+          </Routes>
+        </OnboardingGuard>
+      </KidsModeClassApplier>
+    </ProfileModeProvider>
+  )
+}
+
+function PublicRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      {/* Redirect to login for any protected route */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
+  )
+}
 
 function App() {
   const { user, loading, initialize } = useAuthStore()
@@ -46,57 +133,7 @@ function App() {
         }}
       />
       <BrowserRouter>
-        <Routes>
-          {/* Public routes */}
-          <Route
-            path="/login"
-            element={user ? <Navigate to="/today" /> : <LoginPage />}
-          />
-          <Route
-            path="/signup"
-            element={user ? <Navigate to="/today" /> : <SignupPage />}
-          />
-
-          {/* Protected routes */}
-          <Route
-            path="/today"
-            element={user ? <TodayPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/dashboard"
-            element={user ? <DashboardPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/diary"
-            element={user ? <DiaryPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/goals"
-            element={user ? <GoalsPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/habits"
-            element={user ? <HabitsPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/settings"
-            element={user ? <SettingsPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/calendar"
-            element={user ? <CalendarPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/ai"
-            element={user ? <AIAssistantPage /> : <Navigate to="/login" />}
-          />
-
-          {/* Default route */}
-          <Route
-            path="/"
-            element={<Navigate to={user ? "/today" : "/login"} />}
-          />
-        </Routes>
+        {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
       </BrowserRouter>
     </QueryClientProvider>
   )

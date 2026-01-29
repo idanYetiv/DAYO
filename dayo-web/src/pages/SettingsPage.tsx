@@ -15,8 +15,10 @@ import {
   Loader2,
   X,
   Check,
+  Users,
 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
+import { useProfileMode, type ProfileType } from '../hooks/useProfileMode'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import {
   useUserProfile,
@@ -42,11 +44,13 @@ export default function SettingsPage() {
   const exportData = useExportUserData()
   const deleteAccount = useDeleteAccount()
   const changePassword = useChangePassword()
+  const { profileType, setProfileType, isKidsMode } = useProfileMode()
 
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showThemeModal, setShowThemeModal] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showProfileModeModal, setShowProfileModeModal] = useState(false)
 
   const handleToggle = (field: 'dark_mode' | 'notifications_enabled' | 'daily_reminder_enabled') => {
     if (!profile) return
@@ -176,6 +180,21 @@ export default function SettingsPage() {
                   value={profile.daily_reminder_enabled}
                   onToggle={() => handleToggle('daily_reminder_enabled')}
                   hasBorder
+                />
+              </div>
+            </div>
+
+            {/* Profile Mode */}
+            <div>
+              <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
+                Profile Mode
+              </h3>
+              <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
+                <SettingLink
+                  icon={Users}
+                  label="Profile Type"
+                  description={isKidsMode ? 'Kids Mode' : 'Adults Mode'}
+                  onClick={() => setShowProfileModeModal(true)}
                 />
               </div>
             </div>
@@ -322,6 +341,18 @@ export default function SettingsPage() {
             })
           }}
           isLoading={updateProfile.isPending}
+        />
+      )}
+
+      {showProfileModeModal && (
+        <ProfileModeModal
+          currentMode={profileType}
+          onClose={() => setShowProfileModeModal(false)}
+          onSelect={(mode) => {
+            setProfileType(mode)
+            toast.success(`Switched to ${mode === 'kid' ? 'Kids' : 'Adults'} mode`)
+            setShowProfileModeModal(false)
+          }}
         />
       )}
 
@@ -640,6 +671,66 @@ function EditProfileModal({ displayName, onClose, onSubmit, isLoading }: EditPro
             Save Changes
           </button>
         </form>
+      </div>
+    </div>
+  )
+}
+
+// Profile Mode Modal
+interface ProfileModeModalProps {
+  currentMode: ProfileType
+  onClose: () => void
+  onSelect: (mode: ProfileType) => void
+}
+
+const profileModes: { id: ProfileType; label: string; description: string; emoji: string }[] = [
+  {
+    id: 'adult',
+    label: 'Adults Mode',
+    description: 'Calm, reflective journaling experience',
+    emoji: '✨',
+  },
+  {
+    id: 'kid',
+    label: 'Kids Mode',
+    description: 'Fun, colorful adventure journal',
+    emoji: '🦁',
+  },
+]
+
+function ProfileModeModal({ currentMode, onClose, onSelect }: ProfileModeModalProps) {
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
+          <h2 className="text-lg font-semibold text-dayo-gray-900">Profile Mode</h2>
+          <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 space-y-3">
+          {profileModes.map((mode) => (
+            <button
+              key={mode.id}
+              onClick={() => onSelect(mode.id)}
+              className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                currentMode === mode.id
+                  ? 'border-dayo-purple bg-dayo-purple/5'
+                  : 'border-dayo-gray-100 hover:border-dayo-gray-200'
+              }`}
+            >
+              <span className="text-3xl">{mode.emoji}</span>
+              <div className="flex-1 text-left">
+                <p className="font-semibold text-dayo-gray-900">{mode.label}</p>
+                <p className="text-sm text-dayo-gray-500">{mode.description}</p>
+              </div>
+              {currentMode === mode.id && (
+                <Check className="w-5 h-5 text-dayo-purple" />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

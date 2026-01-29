@@ -1,6 +1,6 @@
 # DAYO - Product Summary
 
-**Last Updated:** January 20, 2026
+**Last Updated:** January 29, 2026
 
 ---
 
@@ -26,6 +26,10 @@
 | **AI Assistant** | Chat interface (mock mode ready for OpenAI) | ✅ |
 | **Instagram Export** | 3 templates, 3 styles, Story/Post formats | ✅ |
 | **Settings** | Profile, preferences, theme, password, export, delete | ✅ |
+| **Kids/Adults Mode** | Two distinct experiences with different themes | ✅ |
+| **Onboarding** | Profile type selection for new users | ✅ |
+| **Landing Page** | Public marketing page with mode preview | ✅ |
+| **iOS App** | Capacitor-based native iOS app | ✅ |
 
 ---
 
@@ -80,38 +84,47 @@
 
 ---
 
-## What's Ready (MVP)
+## What's Ready (MVP+)
 
 - ✅ Full authentication flow
 - ✅ All core features with real database
 - ✅ Mobile-responsive design
 - ✅ Data export/privacy compliance (GDPR-ready)
-- ✅ 79 automated tests
+- ✅ 79 automated tests (existing features)
 - ✅ Production deployment on Vercel
+- ✅ Kids/Adults mode with theme switching
+- ✅ Onboarding flow for new users
+- ✅ Public landing page
+- ✅ iOS app via Capacitor
 
 ---
 
 ## Roadmap to Launch
 
-| Priority | Item | Effort |
+| Priority | Item | Status |
 |----------|------|--------|
-| HIGH | Test user onboarding flow | 1 day |
-| HIGH | Add loading skeletons (polish) | 1 day |
-| HIGH | Enable real OpenAI | 1 hour |
-| MEDIUM | Push notifications | 2-3 days |
-| MEDIUM | Landing page / marketing site | 2-3 days |
-| LOW | App Store (React Native) | 2-4 weeks |
+| HIGH | Kids/Adults mode implementation | ✅ Done |
+| HIGH | Landing page / marketing site | ✅ Done |
+| HIGH | iOS app setup | ✅ Done |
+| **HIGH** | **Test coverage for new features** | **In Progress** |
+| MEDIUM | Enable real OpenAI | Ready (needs key) |
+| MEDIUM | Push notifications | Pending |
+| LOW | Add loading skeletons (polish) | Pending |
 
 ---
 
 ## Launch Checklist
 
-- [ ] Landing page with waitlist
+- [x] Landing page with CTAs
+- [x] Kids/Adults mode selector
+- [x] Onboarding flow
+- [ ] Test coverage for new features
 - [ ] OpenAI API key configured
 - [ ] Stripe integration for payments
 - [ ] Privacy policy & terms of service
 - [ ] Product Hunt submission
 - [ ] Social media accounts
+- [ ] App Store submission (iOS)
 
 ---
 

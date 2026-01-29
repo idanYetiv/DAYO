@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, X, Trash2, Loader2 } from 'lucide-react'
 import { usePhotoUpload } from '../../hooks/usePhotoUpload'
+import { useContentForMode } from '../../hooks/useContentForMode'
+import { useProfileMode } from '../../hooks/useProfileMode'
 import type { DiaryHighlight } from '../../hooks/useDiary'
 
 interface DiaryEntryModalProps {
@@ -22,15 +24,6 @@ interface DiaryEntryModalProps {
   isSaving?: boolean
 }
 
-const moods = [
-  { id: 'amazing', emoji: '✨', label: 'Amazing' },
-  { id: 'happy', emoji: '🥰', label: 'Happy' },
-  { id: 'okay', emoji: '😐', label: 'Okay' },
-  { id: 'sad', emoji: '😢', label: 'Sad' },
-  { id: 'stressed', emoji: '😫', label: 'Stressed' },
-]
-
-const highlightEmojis = ['🎯', '💪', '🎉', '📚', '🏃', '🍽️', '💼', '❤️', '🌟', '✅']
 
 export default function DiaryEntryModal({
   isOpen,
@@ -55,6 +48,8 @@ export default function DiaryEntryModal({
 
   const dateStr = format(date, 'yyyy-MM-dd')
   const { uploadPhoto, deletePhoto, uploadProgress, maxPhotos } = usePhotoUpload(dateStr)
+  const { moods, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
+  const { isKidsMode } = useProfileMode()
 
   // Initialize state only when modal opens
   useEffect(() => {
@@ -181,8 +176,8 @@ export default function DiaryEntryModal({
       </header>
 
       {/* Mood Selector */}
-      <div className="flex-shrink-0 bg-white px-4 py-4 border-b border-dayo-gray-100">
-        <div className="max-w-lg mx-auto flex justify-center gap-2">
+      <div className={`flex-shrink-0 px-4 py-4 border-b ${isKidsMode ? 'bg-dayo-kids-yellow/10 border-dayo-kids-yellow/30' : 'bg-white border-dayo-gray-100'}`}>
+        <div className="max-w-lg mx-auto flex justify-center gap-2 flex-wrap">
           {moods.map((mood) => {
             const isSelected = selectedMood === mood.id
             return (
@@ -190,14 +185,20 @@ export default function DiaryEntryModal({
                 key={mood.id}
                 onClick={() => setSelectedMood(mood.id)}
                 type="button"
-                className={`flex flex-col items-center px-4 py-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
+                  isKidsMode ? 'min-w-[70px]' : ''
+                } ${
                   isSelected
-                    ? 'bg-emerald-500 text-white shadow-md'
-                    : 'text-dayo-gray-600 hover:bg-dayo-gray-100'
+                    ? isKidsMode
+                      ? 'bg-kids-gradient text-white shadow-kids scale-105'
+                      : 'bg-emerald-500 text-white shadow-md'
+                    : isKidsMode
+                      ? 'text-dayo-gray-600 hover:bg-dayo-kids-yellow/30 hover:scale-105'
+                      : 'text-dayo-gray-600 hover:bg-dayo-gray-100'
                 }`}
               >
-                <span className="text-2xl mb-1">{mood.emoji}</span>
-                <span className={`text-xs font-medium ${isSelected ? 'text-white' : 'text-dayo-gray-500'}`}>
+                <span className={`mb-1 ${isKidsMode ? 'text-3xl' : 'text-2xl'}`}>{mood.emoji}</span>
+                <span className={`font-medium ${isKidsMode ? 'text-[10px]' : 'text-xs'} ${isSelected ? 'text-white' : 'text-dayo-gray-500'}`}>
                   {mood.label}
                 </span>
               </button>
@@ -251,28 +252,32 @@ export default function DiaryEntryModal({
               ref={textareaRef}
               value={diaryText}
               onChange={(e) => setDiaryText(e.target.value)}
-              placeholder="Dear diary, today..."
+              placeholder={diaryPrompts.placeholder}
               className="flex-1 w-full resize-none outline-none text-dayo-gray-700 placeholder-dayo-gray-300 text-base leading-relaxed min-h-[150px]"
             />
           </div>
 
           {/* Gratitude Section */}
           {activeSection === 'gratitude' && (
-            <div className="bg-orange-50 rounded-2xl border border-orange-200 p-4">
-              <div className="flex items-center gap-2 text-orange-600 mb-4">
+            <div className={`rounded-2xl border p-4 ${isKidsMode ? 'bg-dayo-kids-yellow/20 border-dayo-kids-yellow' : 'bg-orange-50 border-orange-200'}`}>
+              <div className={`flex items-center gap-2 mb-4 ${isKidsMode ? 'text-dayo-kids-orange-dark' : 'text-orange-600'}`}>
                 <Heart className="w-4 h-4" />
-                <span className="text-sm font-medium">Today I'm grateful for...</span>
+                <span className="text-sm font-medium">{gratitudePrompts[0]}</span>
               </div>
               <div className="space-y-3">
                 {gratitude.map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <span className="text-orange-400">{index + 1}.</span>
+                    <span className={isKidsMode ? 'text-dayo-kids-orange' : 'text-orange-400'}>{index + 1}.</span>
                     <input
                       type="text"
                       value={item}
                       onChange={(e) => handleGratitudeChange(index, e.target.value)}
-                      placeholder="I'm grateful for..."
-                      className="flex-1 bg-white border border-orange-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-orange-400 transition-colors"
+                      placeholder={gratitudePrompts[index] || gratitudePrompts[0]}
+                      className={`flex-1 bg-white border rounded-xl px-3 py-2 text-sm outline-none transition-colors ${
+                        isKidsMode
+                          ? 'border-dayo-kids-yellow focus:border-dayo-kids-orange'
+                          : 'border-orange-200 focus:border-orange-400'
+                      }`}
                     />
                   </div>
                 ))}
