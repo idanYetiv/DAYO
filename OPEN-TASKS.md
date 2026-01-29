@@ -1,7 +1,16 @@
 # DAYO Open Tasks
 
-**Last Updated:** January 19, 2026
-**Status:** Core functionality complete, AI features added
+**Last Updated:** January 29, 2026
+**Status:** Core functionality complete, iOS ready, Kids/Adults mode IMPLEMENTED (needs tests)
+
+---
+
+## Active Feature
+
+**Kids vs Adults Mode + Landing Page** - IMPLEMENTED
+- See detailed plan: `PLAN-KIDS-ADULTS-MODE.md`
+- Phases 1-7 complete, Phase 8 (Polish/Tests) in progress
+- **PENDING:** Test coverage for new features
 
 ---
 
@@ -23,26 +32,49 @@
 | Task 19 | Instagram Export (3 templates, 3 styles, 2 formats) | Jan 18 |
 | Task 9 | OpenAI Integration (with mock mode) | Jan 19 |
 | Task 10 | AI Chat UI (ChatWindow, ChatMessage, ChatInput) | Jan 19 |
+| **iOS** | **Capacitor setup for App Store distribution** | **Jan 29** |
+| **Kids Mode P1-7** | **Profile type, context, theme, content, components, onboarding, landing** | **Jan 29** |
 
 ---
 
 ## Open Tasks by Priority
 
-### HIGH Priority - Growth Features
+### HIGH Priority - Kids vs Adults Mode Tests (Active)
 
-| # | Task | Description | Depends On |
-|---|------|-------------|------------|
-| ~~19~~ | ~~Instagram Export~~ | ~~Share day summary as Story/Post image~~ | ✅ Done |
+**Full plan:** `PLAN-KIDS-ADULTS-MODE.md`
+
+| Phase | Task | Description | Status |
+|-------|------|-------------|--------|
+| 1 | Database Foundation | Add profile_type column | ✅ Complete |
+| 2 | Profile Mode Context | React context for mode switching | ✅ Complete |
+| 3 | Theme System | Kids colors, rounded UI | ✅ Complete |
+| 4 | Mode-Aware Content | Age-appropriate prompts/moods | ✅ Complete |
+| 5 | Kids UI Components | AnimalMoodPicker, celebrations | ✅ Complete |
+| 6 | Onboarding Flow | Profile type selection | ✅ Complete |
+| 7 | Landing Page | Public marketing page | ✅ Complete |
+| 8 | Polish | **Tests, docs, parental controls** | **In Progress** |
+
+### HIGH Priority - Test Coverage for Kids/Adults Mode
+
+| Test Type | Scope | Status |
+|-----------|-------|--------|
+| Unit | Data files (moods.ts, prompts.ts, encouragements.ts) | Pending |
+| Unit | Hooks (useProfileMode, useContentForMode) | Pending |
+| Component | Kids components (AnimalMoodPicker, StreakDisplay, TaskItem) | Pending |
+| Component | Landing components (FeatureCard, ModePreview) | Pending |
+| Component | Onboarding (ProfileTypeSelector) | Pending |
+| Integration | OnboardingPage | Pending |
+| Integration | LandingPage | Pending |
+| E2E | Full onboarding flow | Pending |
+| E2E | Mode switching in settings | Pending |
 
 ### MEDIUM Priority - Enhanced Features
 
 | # | Task | Description | Depends On |
 |---|------|-------------|------------|
-| ~~9~~ | ~~OpenAI Integration~~ | ~~Set up client, create API functions~~ | ✅ Done |
-| ~~10~~ | ~~AI Chat UI~~ | ~~Chat interface, message bubbles, quick actions~~ | ✅ Done |
 | 14 | Image Upload | Photos in diary entries, Supabase storage | - |
 | 17 | Demo Data Seeder | Script to populate test data | - |
-| 20 | Direct Instagram API | Post directly to Instagram (Business accounts) | Task 19 |
+| 20 | Direct Instagram API | Post directly to Instagram (Business accounts) | - |
 
 ### LOW Priority - Polish
 
@@ -365,18 +397,26 @@ npm run build
 
 ## Recommended Order
 
-1. ~~**Task 6** - Wire Dashboard (quick win)~~ ✅
-2. ~~**Task 11** - Streak system (makes app feel real)~~ ✅
-3. ~~**Task 12** - Toast notifications (user feedback)~~ ✅
-4. ~~**Task 7 + 8** - Calendar (navigate history)~~ ✅
-5. ~~**Task 19** - Instagram Export (viral growth feature)~~ ✅
-6. ~~**Task 9 + 10** - AI features (differentiator)~~ ✅
-7. **Task 14** - Image upload (rich content)
-8. **Tasks 13, 15, 16** - Polish
-9. **Task 17** - Seeder for testing
-10. **Task 18** - Final README
-11. **Task 20** - Direct Instagram API (Phase 2)
+### Completed
+1. ~~Task 6 - Wire Dashboard~~ ✅
+2. ~~Task 11 - Streak system~~ ✅
+3. ~~Task 12 - Toast notifications~~ ✅
+4. ~~Task 7 + 8 - Calendar~~ ✅
+5. ~~Task 19 - Instagram Export~~ ✅
+6. ~~Task 9 + 10 - AI features~~ ✅
+7. ~~iOS Setup - Capacitor~~ ✅
+8. ~~Kids vs Adults Mode (Phases 1-7)~~ ✅
+
+### Current Focus
+9. **Kids vs Adults Mode Tests** - Unit, component, integration, E2E
+
+### After Tests
+10. Task 14 - Image upload
+11. Tasks 13, 15, 16 - Polish
+12. Task 17 - Seeder for testing
+13. Task 18 - Final README
+14. Task 20 - Direct Instagram API (Phase 2)
 
 ---
 
-*5 tasks remaining to MVP (+ 1 Phase 2 task)*
+*Active: Kids/Adults Mode Tests | Backlog: 5 tasks*

@@ -1,0 +1,146 @@
+/* Kids Mode Theme - Playful and colorful */
+
+.kids-mode {
+  /* Primary colors - Bright and fun */
+  --kids-yellow: #FCD34D;
+  --kids-blue: #60A5FA;
+  --kids-green: #34D399;
+  --kids-pink: #F472B6;
+  --kids-orange: #FB923C;
+  --kids-purple: #A78BFA;
+
+  /* Background - Warmer and more inviting */
+  --background: 48 100% 98%;
+  --foreground: 222.2 84% 4.9%;
+
+  /* Card styling */
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  /* Primary - Bright yellow/orange */
+  --primary: 38 92% 50%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Override radius for rounder elements */
+  --radius: 1rem;
+}
+
+/* Kids mode specific animations */
+.kids-mode .animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.kids-mode .animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.kids-mode .animate-pop {
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Larger touch targets for kids */
+.kids-mode button,
+.kids-mode .touchable {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* Rounder corners in kids mode */
+.kids-mode .rounded-xl {
+  border-radius: 1.25rem;
+}
+
+.kids-mode .rounded-2xl {
+  border-radius: 1.5rem;
+}
+
+.kids-mode .rounded-3xl {
+  border-radius: 2rem;
+}
+
+/* Fun shadows for kids mode */
+.kids-mode .shadow-fun {
+  box-shadow:
+    0 4px 0 var(--kids-orange),
+    0 8px 20px -4px rgba(251, 146, 60, 0.3);
+}
+
+/* Playful gradient backgrounds */
+.kids-mode .bg-kids-gradient {
+  background: linear-gradient(135deg, #FCD34D 0%, #FB923C 50%, #F472B6 100%);
+}
+
+.kids-mode .bg-kids-rainbow {
+  background: linear-gradient(
+    90deg,
+    #FCD34D 0%,
+    #34D399 25%,
+    #60A5FA 50%,
+    #A78BFA 75%,
+    #F472B6 100%
+  );
+}
+
+/* Confetti animation for celebrations */
+.kids-mode .confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Star burst effect */
+.kids-mode .starburst {
+  position: relative;
+}
+
+.kids-mode .starburst::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(252, 211, 77, 0.3) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+}

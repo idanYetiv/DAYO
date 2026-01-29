@@ -250,6 +250,9 @@ export type Database = {
           daily_reminder_enabled: boolean
           daily_reminder_time: string
           theme_color: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          profile_type: 'adult' | 'kid'
+          onboarding_completed: boolean
+          background_image: string | null
           created_at: string
           updated_at: string
         }
@@ -262,6 +265,9 @@ export type Database = {
           daily_reminder_enabled?: boolean
           daily_reminder_time?: string
           theme_color?: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          profile_type?: 'adult' | 'kid'
+          onboarding_completed?: boolean
+          background_image?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -274,6 +280,9 @@ export type Database = {
           daily_reminder_enabled?: boolean
           daily_reminder_time?: string
           theme_color?: 'purple' | 'blue' | 'green' | 'orange' | 'pink'
+          profile_type?: 'adult' | 'kid'
+          onboarding_completed?: boolean
+          background_image?: string | null
           created_at?: string
           updated_at?: string
         }

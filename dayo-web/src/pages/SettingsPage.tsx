@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   Bell,
   Palette,
@@ -15,8 +15,12 @@ import {
   Loader2,
   X,
   Check,
+  Users,
+  Image,
+  Upload,
 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
+import { useProfileMode, type ProfileType } from '../hooks/useProfileMode'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import {
   useUserProfile,
@@ -42,11 +46,14 @@ export default function SettingsPage() {
   const exportData = useExportUserData()
   const deleteAccount = useDeleteAccount()
   const changePassword = useChangePassword()
+  const { profileType, setProfileType, isKidsMode } = useProfileMode()
 
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showThemeModal, setShowThemeModal] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showProfileModeModal, setShowProfileModeModal] = useState(false)
+  const [showBackgroundModal, setShowBackgroundModal] = useState(false)
 
   const handleToggle = (field: 'dark_mode' | 'notifications_enabled' | 'daily_reminder_enabled') => {
     if (!profile) return
@@ -180,6 +187,21 @@ export default function SettingsPage() {
               </div>
             </div>
 
+            {/* Profile Mode */}
+            <div>
+              <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
+                Profile Mode
+              </h3>
+              <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
+                <SettingLink
+                  icon={Users}
+                  label="Profile Type"
+                  description={isKidsMode ? 'Kids Mode' : 'Adults Mode'}
+                  onClick={() => setShowProfileModeModal(true)}
+                />
+              </div>
+            </div>
+
             {/* Appearance */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
@@ -191,6 +213,13 @@ export default function SettingsPage() {
                   label="Theme Color"
                   description={themeColors.find(c => c.id === profile.theme_color)?.label || 'Purple'}
                   onClick={() => setShowThemeModal(true)}
+                />
+                <SettingLink
+                  icon={Image}
+                  label="Background"
+                  description={profile.background_image ? 'Custom' : 'Default'}
+                  onClick={() => setShowBackgroundModal(true)}
+                  hasBorder
                 />
               </div>
             </div>
@@ -322,6 +351,34 @@ export default function SettingsPage() {
             })
           }}
           isLoading={updateProfile.isPending}
+        />
+      )}
+
+      {showProfileModeModal && (
+        <ProfileModeModal
+          currentMode={profileType}
+          onClose={() => setShowProfileModeModal(false)}
+          onSelect={(mode) => {
+            setProfileType(mode)
+            toast.success(`Switched to ${mode === 'kid' ? 'Kids' : 'Adults'} mode`)
+            setShowProfileModeModal(false)
+          }}
+        />
+      )}
+
+      {showBackgroundModal && (
+        <BackgroundModal
+          currentBackground={profile?.background_image || null}
+          isKidsMode={isKidsMode}
+          onClose={() => setShowBackgroundModal(false)}
+          onSelect={(bg) => {
+            updateProfile.mutate({ background_image: bg }, {
+              onSuccess: () => {
+                toast.success('Background updated')
+                setShowBackgroundModal(false)
+              }
+            })
+          }}
         />
       )}
 
@@ -640,6 +697,177 @@ function EditProfileModal({ displayName, onClose, onSubmit, isLoading }: EditPro
             Save Changes
           </button>
         </form>
+      </div>
+    </div>
+  )
+}
+
+// Profile Mode Modal
+interface ProfileModeModalProps {
+  currentMode: ProfileType
+  onClose: () => void
+  onSelect: (mode: ProfileType) => void
+}
+
+const profileModes: { id: ProfileType; label: string; description: string; emoji: string }[] = [
+  {
+    id: 'adult',
+    label: 'Adults Mode',
+    description: 'Calm, reflective journaling experience',
+    emoji: '✨',
+  },
+  {
+    id: 'kid',
+    label: 'Kids Mode',
+    description: 'Fun, colorful adventure journal',
+    emoji: '🦁',
+  },
+]
+
+function ProfileModeModal({ currentMode, onClose, onSelect }: ProfileModeModalProps) {
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
+          <h2 className="text-lg font-semibold text-dayo-gray-900">Profile Mode</h2>
+          <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 space-y-3">
+          {profileModes.map((mode) => (
+            <button
+              key={mode.id}
+              onClick={() => onSelect(mode.id)}
+              className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                currentMode === mode.id
+                  ? 'border-dayo-purple bg-dayo-purple/5'
+                  : 'border-dayo-gray-100 hover:border-dayo-gray-200'
+              }`}
+            >
+              <span className="text-3xl">{mode.emoji}</span>
+              <div className="flex-1 text-left">
+                <p className="font-semibold text-dayo-gray-900">{mode.label}</p>
+                <p className="text-sm text-dayo-gray-500">{mode.description}</p>
+              </div>
+              {currentMode === mode.id && (
+                <Check className="w-5 h-5 text-dayo-purple" />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Background Modal
+interface BackgroundModalProps {
+  currentBackground: string | null
+  isKidsMode: boolean
+  onClose: () => void
+  onSelect: (background: string | null) => void
+}
+
+// Preset backgrounds - gradients and patterns
+const adultBackgrounds = [
+  { id: 'none', label: 'Default', value: null, preview: 'bg-dayo-gray-50' },
+  { id: 'gradient-purple', label: 'Purple Mist', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', preview: 'bg-gradient-to-br from-indigo-500 to-purple-600' },
+  { id: 'gradient-ocean', label: 'Ocean Blue', value: 'linear-gradient(135deg, #667eea 0%, #17a2b8 100%)', preview: 'bg-gradient-to-br from-blue-500 to-cyan-500' },
+  { id: 'gradient-sunset', label: 'Sunset', value: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', preview: 'bg-gradient-to-br from-pink-400 to-rose-500' },
+  { id: 'gradient-forest', label: 'Forest', value: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', preview: 'bg-gradient-to-br from-teal-500 to-green-400' },
+  { id: 'gradient-night', label: 'Night Sky', value: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)', preview: 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800' },
+]
+
+const kidsBackgrounds = [
+  { id: 'none', label: 'Default', value: null, preview: 'bg-dayo-kids-yellow/10' },
+  { id: 'rainbow', label: 'Rainbow', value: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 20%, #48dbfb 40%, #ff9ff3 60%, #54a0ff 80%, #5f27cd 100%)', preview: 'bg-gradient-to-r from-red-400 via-yellow-400 via-blue-400 to-purple-500' },
+  { id: 'candy', label: 'Candy Land', value: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%)', preview: 'bg-gradient-to-br from-pink-300 to-pink-200' },
+  { id: 'space', label: 'Space Adventure', value: 'linear-gradient(135deg, #0c0c2d 0%, #1a1a4e 50%, #2d2d6b 100%)', preview: 'bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-800' },
+  { id: 'jungle', label: 'Jungle', value: 'linear-gradient(135deg, #134e5e 0%, #71b280 100%)', preview: 'bg-gradient-to-br from-emerald-800 to-green-500' },
+  { id: 'ocean', label: 'Under the Sea', value: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #00d4ff 100%)', preview: 'bg-gradient-to-br from-blue-800 via-blue-600 to-cyan-400' },
+  { id: 'sunshine', label: 'Sunshine', value: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)', preview: 'bg-gradient-to-br from-yellow-400 to-orange-400' },
+]
+
+function BackgroundModal({ currentBackground, isKidsMode, onClose, onSelect }: BackgroundModalProps) {
+  const backgrounds = isKidsMode ? kidsBackgrounds : adultBackgrounds
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string
+        onSelect(dataUrl)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
+          <h2 className="text-lg font-semibold text-dayo-gray-900">Background</h2>
+          <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 overflow-y-auto flex-1">
+          {/* Preset backgrounds */}
+          <p className="text-sm font-medium text-dayo-gray-700 mb-3">Presets</p>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            {backgrounds.map((bg) => (
+              <button
+                key={bg.id}
+                onClick={() => onSelect(bg.value)}
+                className={`aspect-square rounded-xl overflow-hidden relative ${bg.preview} ${
+                  currentBackground === bg.value ? 'ring-2 ring-dayo-purple ring-offset-2' : 'hover:opacity-80'
+                }`}
+              >
+                {currentBackground === bg.value && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <Check className="w-6 h-6 text-white" />
+                  </div>
+                )}
+                <span className="absolute bottom-1 left-1 right-1 text-[10px] font-medium text-white text-center bg-black/30 rounded px-1">
+                  {bg.label}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Custom photo upload */}
+          <p className="text-sm font-medium text-dayo-gray-700 mb-3">Custom Photo</p>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full p-4 border-2 border-dashed border-dayo-gray-200 rounded-xl hover:border-dayo-purple transition-colors flex flex-col items-center gap-2"
+          >
+            <Upload className="w-8 h-8 text-dayo-gray-400" />
+            <span className="text-sm text-dayo-gray-500">Upload your own photo</span>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+
+          {/* Show current custom background if set */}
+          {currentBackground && !backgrounds.some(b => b.value === currentBackground) && (
+            <div className="mt-4">
+              <p className="text-sm font-medium text-dayo-gray-700 mb-2">Current Custom</p>
+              <div
+                className="aspect-video rounded-xl bg-cover bg-center ring-2 ring-dayo-purple"
+                style={{ backgroundImage: currentBackground.startsWith('data:') ? `url(${currentBackground})` : currentBackground }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

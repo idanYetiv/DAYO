@@ -89,6 +89,50 @@ vi.mock('../../../lib/toast', () => ({
   },
 }))
 
+vi.mock('../../../hooks/useProfileMode', () => ({
+  useProfileMode: () => ({
+    profileType: 'adult',
+    setProfileType: vi.fn(),
+    isKidsMode: false,
+    isLoading: false,
+    onboardingCompleted: true,
+  }),
+}))
+
+vi.mock('../../../hooks/useContentForMode', () => ({
+  useContentForMode: () => ({
+    moods: [
+      { id: 'amazing', emoji: '✨', label: 'Amazing' },
+      { id: 'happy', emoji: '🥰', label: 'Happy' },
+      { id: 'okay', emoji: '😐', label: 'Okay' },
+      { id: 'sad', emoji: '😢', label: 'Sad' },
+      { id: 'stressed', emoji: '😫', label: 'Stressed' },
+    ],
+    moodEmojis: {
+      amazing: '✨',
+      happy: '🥰',
+      okay: '😐',
+      sad: '😢',
+      stressed: '😫',
+    },
+    diaryPrompts: { placeholder: 'Dear diary, today...', suggestions: [] },
+    gratitudePrompts: ["I'm grateful for..."],
+    highlightEmojis: ['🎯', '💪', '🎉'],
+    encouragements: {
+      morningGreeting: 'Good morning',
+      afternoonGreeting: 'Good afternoon',
+      eveningGreeting: 'Good evening',
+    },
+    streakCelebrations: {},
+  }),
+  useGreeting: () => {
+    const hour = new Date().getHours()
+    if (hour < 12) return 'Good morning'
+    if (hour < 18) return 'Good afternoon'
+    return 'Good evening'
+  },
+}))
+
 describe('TodayPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks()
