@@ -68,3 +68,82 @@
     padding-bottom: var(--safe-area-bottom);
   }
 }
+
+/* Dark mode overrides for DAYO colors */
+.dark {
+  /* Background colors */
+  --tw-bg-opacity: 1;
+}
+
+.dark .bg-dayo-gray-50 {
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .bg-dayo-gray-100 {
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .bg-white {
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+/* Text colors */
+.dark .text-dayo-gray-900 {
+  color: rgb(243 244 246) !important;
+}
+
+.dark .text-dayo-gray-800 {
+  color: rgb(229 231 235) !important;
+}
+
+.dark .text-dayo-gray-700 {
+  color: rgb(209 213 219) !important;
+}
+
+.dark .text-dayo-gray-600 {
+  color: rgb(156 163 175) !important;
+}
+
+.dark .text-dayo-gray-500 {
+  color: rgb(156 163 175) !important;
+}
+
+.dark .text-dayo-gray-400 {
+  color: rgb(107 114 128) !important;
+}
+
+/* Border colors */
+.dark .border-dayo-gray-100 {
+  border-color: rgb(55 65 81) !important;
+}
+
+.dark .border-dayo-gray-200 {
+  border-color: rgb(75 85 99) !important;
+}
+
+/* Input and card backgrounds */
+.dark input,
+.dark textarea {
+  background-color: rgb(55 65 81) !important;
+  color: rgb(243 244 246) !important;
+  border-color: rgb(75 85 99) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgb(156 163 175) !important;
+}
+
+/* Modals */
+.dark .bg-black\/50 {
+  background-color: rgb(0 0 0 / 0.7) !important;
+}
+
+/* Hover states */
+.dark .hover\:bg-dayo-gray-50:hover {
+  background-color: rgb(55 65 81) !important;
+}
+
+.dark .hover\:bg-dayo-gray-100:hover {
+  background-color: rgb(75 85 99) !important;
+}

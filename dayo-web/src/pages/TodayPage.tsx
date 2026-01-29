@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, Moon, Sun, Flame, Share2 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
@@ -19,6 +20,7 @@ import ExportModal from '../components/export/ExportModal'
 import StreakDisplay from '../components/kids/StreakDisplay'
 
 export default function TodayPage() {
+  const navigate = useNavigate()
   const { user } = useAuthStore()
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedMood, setSelectedMood] = useState<string>('')
@@ -243,7 +245,7 @@ export default function TodayPage() {
         />
 
         {/* Habits Section */}
-        <HabitsSection onViewAll={() => {}} />
+        <HabitsSection onViewAll={() => navigate('/habits')} />
 
         {/* Quick Access Cards */}
         <QuickAccessCards />

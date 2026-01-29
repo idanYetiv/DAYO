@@ -5,6 +5,7 @@ import { Toaster } from 'sonner'
 import { useAuthStore } from './store/authStore'
 import { ProfileModeProvider } from './contexts/ProfileModeContext'
 import { useProfileMode } from './hooks/useProfileMode'
+import { useUserProfile } from './hooks/useUserProfile'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
@@ -38,6 +39,58 @@ function KidsModeClassApplier({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+// Component to apply dark mode class to document
+function DarkModeApplier({ children }: { children: React.ReactNode }) {
+  const { data: profile } = useUserProfile()
+
+  useEffect(() => {
+    if (profile?.dark_mode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    return () => {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [profile?.dark_mode])
+
+  return <>{children}</>
+}
+
+// Component to apply custom background
+function BackgroundApplier({ children }: { children: React.ReactNode }) {
+  const { data: profile } = useUserProfile()
+
+  useEffect(() => {
+    if (profile?.background_image) {
+      const bg = profile.background_image
+      if (bg.startsWith('data:') || bg.startsWith('http')) {
+        document.body.style.backgroundImage = `url(${bg})`
+        document.body.style.backgroundSize = 'cover'
+        document.body.style.backgroundPosition = 'center'
+        document.body.style.backgroundAttachment = 'fixed'
+      } else if (bg.startsWith('linear-gradient')) {
+        document.body.style.backgroundImage = bg
+        document.body.style.backgroundSize = 'cover'
+        document.body.style.backgroundAttachment = 'fixed'
+      }
+    } else {
+      document.body.style.backgroundImage = ''
+      document.body.style.backgroundSize = ''
+      document.body.style.backgroundPosition = ''
+      document.body.style.backgroundAttachment = ''
+    }
+    return () => {
+      document.body.style.backgroundImage = ''
+      document.body.style.backgroundSize = ''
+      document.body.style.backgroundPosition = ''
+      document.body.style.backgroundAttachment = ''
+    }
+  }, [profile?.background_image])
+
+  return <>{children}</>
+}
+
 // Component to check onboarding status and redirect if needed
 function OnboardingGuard({ children }: { children: React.ReactNode }) {
   const { onboardingCompleted, isLoading } = useProfileMode()
@@ -64,8 +117,10 @@ function OnboardingGuard({ children }: { children: React.ReactNode }) {
 function AuthenticatedRoutes() {
   return (
     <ProfileModeProvider>
-      <KidsModeClassApplier>
-        <OnboardingGuard>
+      <DarkModeApplier>
+        <BackgroundApplier>
+          <KidsModeClassApplier>
+            <OnboardingGuard>
           <Routes>
             {/* Onboarding */}
             <Route path="/onboarding" element={<OnboardingPage />} />
@@ -85,8 +140,10 @@ function AuthenticatedRoutes() {
             <Route path="/login" element={<Navigate to="/today" />} />
             <Route path="/signup" element={<Navigate to="/today" />} />
           </Routes>
-        </OnboardingGuard>
-      </KidsModeClassApplier>
+            </OnboardingGuard>
+          </KidsModeClassApplier>
+        </BackgroundApplier>
+      </DarkModeApplier>
     </ProfileModeProvider>
   )
 }
