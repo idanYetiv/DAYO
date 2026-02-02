@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, MemoryRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { isNativePlatform } from './lib/platform'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { useAuthStore } from './store/authStore'
@@ -189,9 +190,15 @@ function App() {
           duration: 3000,
         }}
       />
-      <BrowserRouter>
-        {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
-      </BrowserRouter>
+      {isNativePlatform() ? (
+        <MemoryRouter initialEntries={[user ? '/today' : '/login']}>
+          {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
+        </MemoryRouter>
+      ) : (
+        <BrowserRouter>
+          {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
+        </BrowserRouter>
+      )}
     </QueryClientProvider>
   )
 }

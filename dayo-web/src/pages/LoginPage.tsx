@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { getRedirectOrigin } from '../lib/platform'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -34,7 +35,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/today`,
+          redirectTo: `${getRedirectOrigin()}/today`,
         },
       })
       if (error) throw error
