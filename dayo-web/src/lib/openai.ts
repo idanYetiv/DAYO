@@ -214,6 +214,49 @@ export async function suggestGoalSteps(goal: string, context: AIContext = {}): P
 }
 
 /**
+ * Get a writing companion prompt
+ * Uses real API or falls back to local prompt bank
+ */
+export async function getWritingCompanionPrompt(
+  context: import('./writingCompanion').WritingCompanionContext
+): Promise<string> {
+  const { getLocalWritingPrompt, buildCompanionSystemPrompt } = await import('./writingCompanion')
+
+  if (USE_MOCK) {
+    await delay(300 + Math.random() * 200)
+    return getLocalWritingPrompt(context)
+  }
+
+  // Real API call
+  const systemPrompt = buildCompanionSystemPrompt(context)
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: 'Generate a writing prompt.' },
+      ],
+      max_tokens: 100,
+      temperature: 0.9,
+    }),
+  })
+
+  if (!response.ok) {
+    // Fallback to local on API error
+    return getLocalWritingPrompt(context)
+  }
+
+  const data: OpenAIResponse = await response.json()
+  return data.choices[0]?.message?.content?.trim() || getLocalWritingPrompt(context)
+}
+
+/**
  * Check if we're in mock mode
  */
 export function isMockMode(): boolean {

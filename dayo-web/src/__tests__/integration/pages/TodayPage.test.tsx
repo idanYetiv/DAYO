@@ -56,6 +56,12 @@ vi.mock('../../../hooks/useDiary', () => ({
     mutate: vi.fn(),
     isPending: false,
   }),
+  useDebouncedUpsertDayEntry: () => ({
+    debouncedUpsert: vi.fn(),
+    cleanup: vi.fn(),
+    isLoading: false,
+    error: null,
+  }),
   useUpdateGratitude: () => ({
     mutate: vi.fn(),
     isPending: false,
@@ -96,6 +102,24 @@ vi.mock('../../../hooks/useProfileMode', () => ({
     isKidsMode: false,
     isLoading: false,
     onboardingCompleted: true,
+  }),
+}))
+
+vi.mock('../../../hooks/useFocusMode', () => ({
+  useFocusMode: () => ({
+    isFocusMode: false,
+    toggleFocusMode: vi.fn(),
+    exitFocusMode: vi.fn(),
+  }),
+}))
+
+vi.mock('../../../hooks/useWritingCompanion', () => ({
+  useWritingCompanion: () => ({
+    prompt: '',
+    isVisible: false,
+    onTextChange: vi.fn(),
+    dismiss: vi.fn(),
+    requestNewPrompt: vi.fn(),
   }),
 }))
 
