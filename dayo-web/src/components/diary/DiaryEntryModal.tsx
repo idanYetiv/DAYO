@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { format } from 'date-fns'
 import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, Tag, X, Trash2, Loader2, Maximize2, Minimize2 } from 'lucide-react'
 import { usePhotoUpload } from '../../hooks/usePhotoUpload'
+import { useNativeCamera } from '../../hooks/useNativeCamera'
 import { useContentForMode } from '../../hooks/useContentForMode'
 import { useProfileMode } from '../../hooks/useProfileMode'
 import { getTemplateById, isFrewriteTemplate, type DiaryTemplate } from '../../data/templates'
@@ -11,6 +12,7 @@ import TagSelector from './TagSelector'
 import WritingAtmosphere from './WritingAtmosphere'
 import SaveIndicator from './SaveIndicator'
 import WritingCompanion from './WritingCompanion'
+import PhotoSourceSheet from './PhotoSourceSheet'
 import { useFocusMode } from '../../hooks/useFocusMode'
 import { useWritingCompanion } from '../../hooks/useWritingCompanion'
 import type { DiaryHighlight } from '../../hooks/useDiary'
@@ -62,6 +64,7 @@ export default function DiaryEntryModal({
   const [highlights, setHighlights] = useState<DiaryHighlight[]>(initialHighlights)
   const [tags, setTags] = useState<string[]>(initialTags)
   const [activeSection, setActiveSection] = useState<'none' | 'gratitude' | 'highlights' | 'tags'>('none')
+  const [showPhotoSheet, setShowPhotoSheet] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const hasInitialized = useRef(false)
 
@@ -72,6 +75,7 @@ export default function DiaryEntryModal({
   const { uploadPhoto, deletePhoto, uploadProgress, maxPhotos } = usePhotoUpload(dateStr)
   const { moods, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
   const { isKidsMode } = useProfileMode()
+  const { pickPhoto, isNative } = useNativeCamera()
 
   // Focus mode
   const { isFocusMode, toggleFocusMode, exitFocusMode } = useFocusMode()
@@ -175,7 +179,21 @@ export default function DiaryEntryModal({
   }
 
   const handlePhotoSelect = () => {
-    fileInputRef.current?.click()
+    if (isNative) {
+      setShowPhotoSheet(true)
+    } else {
+      fileInputRef.current?.click()
+    }
+  }
+
+  const handleNativePhoto = async (source: 'camera' | 'library') => {
+    setShowPhotoSheet(false)
+    try {
+      const file = await pickPhoto(source)
+      uploadPhoto.mutate(file)
+    } catch {
+      // User cancelled or camera error — no action needed
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -603,6 +621,14 @@ export default function DiaryEntryModal({
           </button>
         </div>
       </div>
+
+      {/* Native Photo Source Sheet */}
+      {showPhotoSheet && (
+        <PhotoSourceSheet
+          onSelect={handleNativePhoto}
+          onClose={() => setShowPhotoSheet(false)}
+        />
+      )}
     </div>
   )
 }

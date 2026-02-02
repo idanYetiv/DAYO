@@ -47,5 +47,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>DAYO needs camera access to add photos to your diary entries</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>DAYO needs photo library access to add photos to your diary entries</string>
+	<key>NSPhotoLibraryAddOnlyUsageDescription</key>
+	<string>DAYO can save photos to your library</string>
 </dict>
 </plist>

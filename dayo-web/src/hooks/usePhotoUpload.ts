@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 
 const MAX_PHOTOS = 5
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic']
+const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic']
 
 interface UploadProgress {
   fileName: string
