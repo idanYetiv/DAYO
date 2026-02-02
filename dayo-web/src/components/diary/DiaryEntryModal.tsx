@@ -1,10 +1,21 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { format } from 'date-fns'
-import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, X, Trash2, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, Tag, X, Trash2, Loader2, Maximize2, Minimize2 } from 'lucide-react'
 import { usePhotoUpload } from '../../hooks/usePhotoUpload'
 import { useContentForMode } from '../../hooks/useContentForMode'
 import { useProfileMode } from '../../hooks/useProfileMode'
+import { getTemplateById, isFrewriteTemplate, type DiaryTemplate } from '../../data/templates'
+import { useDebouncedUpsertDayEntry } from '../../hooks/useDiary'
+import TemplatedTextarea from './TemplatedTextarea'
+import TagSelector from './TagSelector'
+import WritingAtmosphere from './WritingAtmosphere'
+import SaveIndicator from './SaveIndicator'
+import WritingCompanion from './WritingCompanion'
+import { useFocusMode } from '../../hooks/useFocusMode'
+import { useWritingCompanion } from '../../hooks/useWritingCompanion'
 import type { DiaryHighlight } from '../../hooks/useDiary'
+
+const DiaryEditor = lazy(() => import('./DiaryEditor'))
 
 interface DiaryEntryModalProps {
   isOpen: boolean
@@ -15,12 +26,17 @@ interface DiaryEntryModalProps {
   initialPhotos?: string[]
   initialGratitude?: string[]
   initialHighlights?: DiaryHighlight[]
+  initialTags?: string[]
+  templateId?: string | null
   onSave: (data: {
     mood: string
     text: string
     gratitude: string[]
     highlights: DiaryHighlight[]
+    tags: string[]
+    templateId?: string | null
   }) => void
+  onChangeTemplate?: () => void
   isSaving?: boolean
 }
 
@@ -34,22 +50,49 @@ export default function DiaryEntryModal({
   initialPhotos = [],
   initialGratitude = [],
   initialHighlights = [],
+  initialTags = [],
+  templateId,
   onSave,
+  onChangeTemplate,
   isSaving = false,
 }: DiaryEntryModalProps) {
   const [selectedMood, setSelectedMood] = useState(initialMood)
   const [diaryText, setDiaryText] = useState(initialText)
   const [gratitude, setGratitude] = useState<string[]>(initialGratitude)
   const [highlights, setHighlights] = useState<DiaryHighlight[]>(initialHighlights)
-  const [activeSection, setActiveSection] = useState<'none' | 'gratitude' | 'highlights'>('none')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [tags, setTags] = useState<string[]>(initialTags)
+  const [activeSection, setActiveSection] = useState<'none' | 'gratitude' | 'highlights' | 'tags'>('none')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const hasInitialized = useRef(false)
+
+  const activeTemplate: DiaryTemplate | undefined = templateId ? getTemplateById(templateId) : undefined
+  const showTemplatedView = activeTemplate && !isFrewriteTemplate(activeTemplate.id)
 
   const dateStr = format(date, 'yyyy-MM-dd')
   const { uploadPhoto, deletePhoto, uploadProgress, maxPhotos } = usePhotoUpload(dateStr)
   const { moods, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
   const { isKidsMode } = useProfileMode()
+
+  // Focus mode
+  const { isFocusMode, toggleFocusMode, exitFocusMode } = useFocusMode()
+
+  // Auto-save
+  const { debouncedUpsert, isLoading: isAutoSaving, error: autoSaveError, cleanup: cleanupAutoSave } = useDebouncedUpsertDayEntry(1500)
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Writing companion
+  const {
+    prompt: companionPrompt,
+    isVisible: companionVisible,
+    onTextChange: companionOnTextChange,
+    dismiss: dismissCompanion,
+    requestNewPrompt,
+  } = useWritingCompanion({
+    mood: selectedMood,
+    isKidsMode,
+    activeSection,
+  })
 
   // Initialize state only when modal opens
   useEffect(() => {
@@ -58,13 +101,14 @@ export default function DiaryEntryModal({
       setDiaryText(initialText)
       setGratitude(initialGratitude.length > 0 ? initialGratitude : ['', '', ''])
       setHighlights(initialHighlights)
+      setTags(initialTags)
       setActiveSection('none')
       hasInitialized.current = true
     }
     if (!isOpen) {
       hasInitialized.current = false
     }
-  }, [isOpen, initialMood, initialText, initialGratitude, initialHighlights])
+  }, [isOpen, initialMood, initialText, initialGratitude, initialHighlights, initialTags])
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -78,9 +122,39 @@ export default function DiaryEntryModal({
     }
   }, [isOpen])
 
+  // Auto-save diary_text on changes
+  useEffect(() => {
+    if (!isOpen || !hasInitialized.current) return
+    if (!diaryText && !initialText) return // skip empty initial state
+
+    setSaveState('saving')
+    debouncedUpsert({ date: dateStr, diaryText, mood: selectedMood || undefined })
+
+    return () => { cleanupAutoSave() }
+  }, [diaryText]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Track auto-save state
+  useEffect(() => {
+    if (isAutoSaving) {
+      setSaveState('saving')
+    } else if (autoSaveError) {
+      setSaveState('error')
+    } else if (saveState === 'saving' && !isAutoSaving) {
+      setSaveState('saved')
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current)
+      saveTimeoutRef.current = setTimeout(() => setSaveState('idle'), 2000)
+    }
+  }, [isAutoSaving, autoSaveError]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Notify writing companion of text changes
+  useEffect(() => {
+    companionOnTextChange(diaryText)
+  }, [diaryText]) // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!isOpen) return null
 
   const handleSave = () => {
+    cleanupAutoSave() // flush any pending auto-save
     const filteredGratitude = gratitude.filter(g => g.trim())
     const filteredHighlights = highlights.filter(h => h.text.trim())
     onSave({
@@ -88,10 +162,15 @@ export default function DiaryEntryModal({
       text: diaryText,
       gratitude: filteredGratitude,
       highlights: filteredHighlights,
+      tags,
+      templateId: templateId || null,
     })
+    exitFocusMode()
   }
 
   const handleClose = () => {
+    cleanupAutoSave()
+    exitFocusMode()
     onClose()
   }
 
@@ -136,8 +215,88 @@ export default function DiaryEntryModal({
     setHighlights(highlights.filter((_, i) => i !== index))
   }
 
-  const toggleSection = (section: 'gratitude' | 'highlights') => {
+  const toggleSection = (section: 'gratitude' | 'highlights' | 'tags') => {
     setActiveSection(activeSection === section ? 'none' : section)
+  }
+
+  // Shared editor card for freewrite mode
+  const editorCard = (
+    <WritingAtmosphere mood={selectedMood}>
+      <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 min-h-[200px] flex flex-col relative z-10">
+        <div className="flex items-center gap-2 text-dayo-gray-400 mb-4 flex-shrink-0">
+          <Calendar className="w-4 h-4" />
+          <span className="text-sm">{format(date, 'EEEE, MMMM d, yyyy')}</span>
+        </div>
+        <Suspense fallback={
+          <div className="flex-1 flex items-center justify-center min-h-[150px]">
+            <Loader2 className="w-5 h-5 animate-spin text-dayo-gray-400" />
+          </div>
+        }>
+          <DiaryEditor
+            initialContent={diaryText}
+            onChange={setDiaryText}
+            placeholder={diaryPrompts.placeholder}
+          />
+        </Suspense>
+      </div>
+    </WritingAtmosphere>
+  )
+
+  // Focus mode view
+  if (isFocusMode) {
+    return (
+      <div className="focus-mode-container" style={{ background: `var(--mood-bg, #F8FAFC)` }}>
+        <WritingAtmosphere mood={selectedMood} fullscreen>
+          <div className="focus-header safe-area-top">
+            <button
+              onClick={exitFocusMode}
+              type="button"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-dayo-gray-600 hover:bg-white/50 transition-colors"
+            >
+              <Minimize2 className="w-4 h-4" />
+              Exit Focus
+            </button>
+            <SaveIndicator state={saveState} />
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              type="button"
+              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors disabled:opacity-50"
+            >
+              <Save className="w-4 h-4" />
+              Save & Close
+            </button>
+          </div>
+          <div className="focus-editor">
+            <div className="focus-editor-inner">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 min-h-[400px] flex flex-col">
+                <Suspense fallback={
+                  <div className="flex-1 flex items-center justify-center min-h-[150px]">
+                    <Loader2 className="w-5 h-5 animate-spin text-dayo-gray-400" />
+                  </div>
+                }>
+                  <DiaryEditor
+                    initialContent={diaryText}
+                    onChange={setDiaryText}
+                    placeholder={diaryPrompts.placeholder}
+                  />
+                </Suspense>
+              </div>
+              {/* Writing Companion in focus mode */}
+              {companionVisible && activeSection === 'none' && (
+                <WritingCompanion
+                  prompt={companionPrompt}
+                  mood={selectedMood}
+                  isKidsMode={isKidsMode}
+                  onDismiss={dismissCompanion}
+                  onNewPrompt={requestNewPrompt}
+                />
+              )}
+            </div>
+          </div>
+        </WritingAtmosphere>
+      </div>
+    )
   }
 
   return (
@@ -160,19 +319,33 @@ export default function DiaryEntryModal({
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="text-center">
-          <p className="font-semibold text-dayo-gray-900">{format(date, 'EEEE')}</p>
-          <p className="text-xs text-dayo-gray-500">{format(date, 'MMMM d, yyyy')}</p>
+        <div className="flex items-center gap-3">
+          <div className="text-center">
+            <p className="font-semibold text-dayo-gray-900">{format(date, 'EEEE')}</p>
+            <p className="text-xs text-dayo-gray-500">{format(date, 'MMMM d, yyyy')}</p>
+          </div>
+          <SaveIndicator state={saveState} />
         </div>
-        <button
-          onClick={handleSave}
-          disabled={isSaving}
-          type="button"
-          className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors disabled:opacity-50"
-        >
-          <Save className="w-4 h-4" />
-          {isSaving ? 'Saving...' : 'Save'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleFocusMode}
+            type="button"
+            className="p-2 text-dayo-gray-500 hover:text-dayo-gray-700 transition-colors"
+            aria-label="Toggle focus mode"
+            title="Focus mode (Ctrl+Shift+F)"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            type="button"
+            className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors disabled:opacity-50"
+          >
+            <Save className="w-4 h-4" />
+            {isSaving ? 'Saving...' : 'Save & Close'}
+          </button>
+        </div>
       </header>
 
       {/* Mood Selector */}
@@ -242,20 +415,28 @@ export default function DiaryEntryModal({
             </div>
           )}
 
-          {/* Diary Text Area */}
-          <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 min-h-[200px] flex flex-col">
-            <div className="flex items-center gap-2 text-dayo-gray-400 mb-4 flex-shrink-0">
-              <Calendar className="w-4 h-4" />
-              <span className="text-sm">{format(date, 'EEEE, MMMM d, yyyy')}</span>
-            </div>
-            <textarea
-              ref={textareaRef}
-              value={diaryText}
-              onChange={(e) => setDiaryText(e.target.value)}
-              placeholder={diaryPrompts.placeholder}
-              className="flex-1 w-full resize-none outline-none text-dayo-gray-700 placeholder-dayo-gray-300 text-base leading-relaxed min-h-[150px]"
+          {/* Diary Text Area / Templated View */}
+          {showTemplatedView ? (
+            <TemplatedTextarea
+              template={activeTemplate}
+              initialText={initialText}
+              onChange={setDiaryText}
+              onChangeTemplate={onChangeTemplate || (() => {})}
             />
-          </div>
+          ) : (
+            editorCard
+          )}
+
+          {/* Writing Companion */}
+          {companionVisible && activeSection === 'none' && (
+            <WritingCompanion
+              prompt={companionPrompt}
+              mood={selectedMood}
+              isKidsMode={isKidsMode}
+              onDismiss={dismissCompanion}
+              onNewPrompt={requestNewPrompt}
+            />
+          )}
 
           {/* Gratitude Section */}
           {activeSection === 'gratitude' && (
@@ -340,6 +521,14 @@ export default function DiaryEntryModal({
               )}
             </div>
           )}
+
+          {/* Tags Section */}
+          {activeSection === 'tags' && (
+            <TagSelector
+              selectedTags={tags}
+              onChange={setTags}
+            />
+          )}
         </div>
       </main>
 
@@ -392,6 +581,23 @@ export default function DiaryEntryModal({
             {highlights.length > 0 && activeSection !== 'highlights' && (
               <span className="bg-purple-500 text-white text-xs px-1.5 rounded-full">
                 {highlights.length}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleSection('tags')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-colors whitespace-nowrap ${
+              activeSection === 'tags'
+                ? 'bg-blue-500 text-white border-blue-500'
+                : 'bg-blue-50 text-blue-500 border-blue-200 hover:bg-blue-100'
+            }`}
+          >
+            <Tag className="w-4 h-4" />
+            <span className="text-sm font-medium">Tags</span>
+            {tags.length > 0 && activeSection !== 'tags' && (
+              <span className="bg-blue-500 text-white text-xs px-1.5 rounded-full">
+                {tags.length}
               </span>
             )}
           </button>
