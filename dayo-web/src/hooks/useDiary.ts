@@ -44,11 +44,13 @@ export function useUpsertDayEntry() {
     mutationFn: async ({
       date,
       diaryText,
-      mood
+      mood,
+      templateId,
     }: {
       date: string
       diaryText?: string | null
       mood?: string | null
+      templateId?: string | null
     }) => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
@@ -66,6 +68,7 @@ export function useUpsertDayEntry() {
         const updates: DayEntryUpdate = {}
         if (diaryText !== undefined) updates.diary_text = diaryText
         if (mood !== undefined) updates.mood = mood
+        if (templateId !== undefined) updates.template_id = templateId
 
         const { data, error } = await supabase
           .from('days')
@@ -85,6 +88,7 @@ export function useUpsertDayEntry() {
             date,
             diary_text: diaryText,
             mood,
+            template_id: templateId,
           })
           .select()
           .single()

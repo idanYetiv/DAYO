@@ -15,7 +15,6 @@ describe('LandingPage', () => {
   describe('navigation', () => {
     it('should render DAYO logo', () => {
       renderPage()
-      // DAYO appears in both nav and footer
       const dayoTexts = screen.getAllByText('DAYO')
       expect(dayoTexts.length).toBeGreaterThanOrEqual(1)
     })
@@ -44,9 +43,9 @@ describe('LandingPage', () => {
       expect(screen.getByText(/Your Day. Your Story./)).toBeInTheDocument()
     })
 
-    it('should render description', () => {
+    it('should render updated description', () => {
       renderPage()
-      expect(screen.getByText(/A beautiful daily journal for reflection and growth/)).toBeInTheDocument()
+      expect(screen.getByText(/The diary that makes you want to write/)).toBeInTheDocument()
     })
 
     it('should render Start Your Journey CTA', () => {
@@ -61,6 +60,86 @@ describe('LandingPage', () => {
     })
   })
 
+  describe('interactive demo', () => {
+    it('should render the demo section', () => {
+      renderPage()
+      expect(screen.getByText('Try it yourself')).toBeInTheDocument()
+    })
+
+    it('should have mode toggle in demo', () => {
+      renderPage()
+      // Demo has its own Adults/Kids toggle
+      const adultButtons = screen.getAllByText('Adults')
+      expect(adultButtons.length).toBeGreaterThanOrEqual(1)
+    })
+
+    it('should render mood options in demo', () => {
+      renderPage()
+      expect(screen.getByText('How are you feeling?')).toBeInTheDocument()
+    })
+
+    it('should render template options in demo', () => {
+      renderPage()
+      expect(screen.getByText('Choose a template')).toBeInTheDocument()
+      const morningIntentionTexts = screen.getAllByText('Morning Intention')
+      expect(morningIntentionTexts.length).toBeGreaterThanOrEqual(1)
+    })
+  })
+
+  describe('diary features showcase', () => {
+    it('should render features heading', () => {
+      renderPage()
+      expect(screen.getByText('A diary experience like no other')).toBeInTheDocument()
+    })
+
+    it('should render Smart Templates feature', () => {
+      renderPage()
+      expect(screen.getByText('Smart Templates')).toBeInTheDocument()
+    })
+
+    it('should render Mood Insights feature', () => {
+      renderPage()
+      expect(screen.getByText('Mood Insights')).toBeInTheDocument()
+    })
+
+    it('should render Search & Tags feature', () => {
+      renderPage()
+      expect(screen.getByText('Search & Tags')).toBeInTheDocument()
+    })
+
+    it('should render Photo Diary feature', () => {
+      renderPage()
+      expect(screen.getByText('Photo Diary')).toBeInTheDocument()
+    })
+
+    it('should render Writing Streaks feature', () => {
+      renderPage()
+      expect(screen.getByText('Writing Streaks')).toBeInTheDocument()
+    })
+
+    it('should render Bookmark Favorites feature', () => {
+      renderPage()
+      expect(screen.getByText('Bookmark Favorites')).toBeInTheDocument()
+    })
+  })
+
+  describe('before/after comparison', () => {
+    it('should render comparison heading', () => {
+      renderPage()
+      expect(screen.getByText('Not just another notes app')).toBeInTheDocument()
+    })
+
+    it('should render before section', () => {
+      renderPage()
+      expect(screen.getByText('BEFORE')).toBeInTheDocument()
+    })
+
+    it('should render after section', () => {
+      renderPage()
+      expect(screen.getByText('WITH DAYO')).toBeInTheDocument()
+    })
+  })
+
   describe('mode preview section', () => {
     it('should render For Adults & Kids heading', () => {
       renderPage()
@@ -69,86 +148,43 @@ describe('LandingPage', () => {
 
     it('should render mode toggle', () => {
       renderPage()
-      // ModePreview component should render
-      expect(screen.getByRole('button', { name: 'Adults' })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Kids' })).toBeInTheDocument()
+      // Both the demo and ModePreview have Adults/Kids buttons
+      const adultButtons = screen.getAllByRole('button', { name: 'Adults' })
+      const kidsButtons = screen.getAllByRole('button', { name: 'Kids' })
+      expect(adultButtons.length).toBeGreaterThanOrEqual(1)
+      expect(kidsButtons.length).toBeGreaterThanOrEqual(1)
     })
 
     it('should toggle between adult and kids preview', () => {
       renderPage()
-
-      // Default is adult mode
       expect(screen.getByText(/thoughtful reflection/)).toBeInTheDocument()
-
-      // Click Kids button
-      fireEvent.click(screen.getByRole('button', { name: 'Kids' }))
-
-      // Should show kids mode description
+      // Click the ModePreview Kids button (last one, since demo comes first)
+      const kidsButtons = screen.getAllByRole('button', { name: 'Kids' })
+      fireEvent.click(kidsButtons[kidsButtons.length - 1])
       expect(screen.getByText(/animal mood friends/)).toBeInTheDocument()
-    })
-  })
-
-  describe('features section', () => {
-    it('should render features heading', () => {
-      renderPage()
-      expect(screen.getByText('Everything you need to grow')).toBeInTheDocument()
-    })
-
-    it('should render 2 Minutes a Day feature', () => {
-      renderPage()
-      expect(screen.getByText('2 Minutes a Day')).toBeInTheDocument()
-    })
-
-    it('should render Private & Secure feature', () => {
-      renderPage()
-      expect(screen.getByText('Private & Secure')).toBeInTheDocument()
-    })
-
-    it('should render Smart Prompts feature', () => {
-      renderPage()
-      expect(screen.getByText('Smart Prompts')).toBeInTheDocument()
-    })
-
-    it('should render Track Your Growth feature', () => {
-      renderPage()
-      expect(screen.getByText('Track Your Growth')).toBeInTheDocument()
-    })
-
-    it('should render all 4 feature cards', () => {
-      renderPage()
-      // Each feature has a description
-      expect(screen.getByText(/Quick daily check-ins/)).toBeInTheDocument()
-      expect(screen.getByText(/Your thoughts are yours alone/)).toBeInTheDocument()
-      expect(screen.getByText(/Thoughtful questions/)).toBeInTheDocument()
-      expect(screen.getByText(/Build streaks/)).toBeInTheDocument()
     })
   })
 
   describe('testimonials section', () => {
     it('should render testimonials heading', () => {
       renderPage()
-      expect(screen.getByText('Loved by thousands')).toBeInTheDocument()
+      expect(screen.getByText('Loved by journalers everywhere')).toBeInTheDocument()
     })
 
-    it('should render 3 testimonials', () => {
+    it('should render 4 testimonials', () => {
       renderPage()
       expect(screen.getByText('Sarah K.')).toBeInTheDocument()
       expect(screen.getByText('Michael T.')).toBeInTheDocument()
       expect(screen.getByText('Emma R.')).toBeInTheDocument()
-    })
-
-    it('should render testimonial roles', () => {
-      renderPage()
-      expect(screen.getByText('Designer')).toBeInTheDocument()
-      expect(screen.getByText('Parent')).toBeInTheDocument()
-      expect(screen.getByText('Teacher')).toBeInTheDocument()
+      expect(screen.getByText('James L.')).toBeInTheDocument()
     })
 
     it('should render testimonial quotes', () => {
       renderPage()
-      expect(screen.getByText(/DAYO has become my morning ritual/)).toBeInTheDocument()
-      expect(screen.getByText(/My daughter loves the animal moods/)).toBeInTheDocument()
-      expect(screen.getByText(/a journal app that doesn't feel like homework/)).toBeInTheDocument()
+      expect(screen.getByText(/templates changed everything/)).toBeInTheDocument()
+      expect(screen.getByText(/mood insights were eye-opening/)).toBeInTheDocument()
+      expect(screen.getByText(/kids fight over who gets to pick/)).toBeInTheDocument()
+      expect(screen.getByText(/bookmark feature is my personal highlight reel/)).toBeInTheDocument()
     })
   })
 
@@ -168,9 +204,8 @@ describe('LandingPage', () => {
   describe('footer', () => {
     it('should render footer DAYO logo', () => {
       renderPage()
-      // Footer has DAYO text
       const footerDayo = screen.getAllByText('DAYO')
-      expect(footerDayo.length).toBeGreaterThanOrEqual(2) // Nav + footer
+      expect(footerDayo.length).toBeGreaterThanOrEqual(2)
     })
 
     it('should render footer links', () => {
@@ -184,7 +219,7 @@ describe('LandingPage', () => {
     it('should render copyright', () => {
       renderPage()
       const currentYear = new Date().getFullYear()
-      expect(screen.getByText(`© ${currentYear} DAYO. All rights reserved.`)).toBeInTheDocument()
+      expect(screen.getByText(`\u00A9 ${currentYear} DAYO. All rights reserved.`)).toBeInTheDocument()
     })
   })
 })

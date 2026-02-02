@@ -1,51 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Clock, Lock, Sparkles, Heart, Star, ArrowRight } from 'lucide-react'
-import FeatureCard from '../components/landing/FeatureCard'
+import { Star, ArrowRight } from 'lucide-react'
 import ModePreview from '../components/landing/ModePreview'
-
-const features = [
-  {
-    icon: Clock,
-    title: '2 Minutes a Day',
-    description: 'Quick daily check-ins that fit your busy schedule. Capture moods, moments, and gratitude in seconds.',
-  },
-  {
-    icon: Lock,
-    title: 'Private & Secure',
-    description: 'Your thoughts are yours alone. End-to-end privacy with secure cloud backup.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Smart Prompts',
-    description: 'Thoughtful questions that help you reflect deeper and discover patterns in your life.',
-  },
-  {
-    icon: Heart,
-    title: 'Track Your Growth',
-    description: 'Build streaks, see your mood trends, and celebrate your journey of self-discovery.',
-  },
-]
-
-const testimonials = [
-  {
-    quote: "DAYO has become my morning ritual. The prompts help me start each day with intention.",
-    author: "Sarah K.",
-    role: "Designer",
-    avatar: "S",
-  },
-  {
-    quote: "My daughter loves the animal moods! It's a fun way for her to express how she's feeling.",
-    author: "Michael T.",
-    role: "Parent",
-    avatar: "M",
-  },
-  {
-    quote: "Finally, a journal app that doesn't feel like homework. Simple, beautiful, and effective.",
-    author: "Emma R.",
-    role: "Teacher",
-    avatar: "E",
-  },
-]
+import InteractiveDiaryDemo from '../components/landing/InteractiveDiaryDemo'
+import DiaryFeaturesShowcase from '../components/landing/DiaryFeaturesShowcase'
+import BeforeAfterComparison from '../components/landing/BeforeAfterComparison'
+import DiaryTestimonials from '../components/landing/DiaryTestimonials'
 
 export default function LandingPage() {
   return (
@@ -76,38 +35,53 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section — Two Columns */}
       <section className="pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-dayo-purple/10 text-dayo-purple px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Star className="w-4 h-4" />
-            Your personal growth companion
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-dayo-gray-900 mb-6 leading-tight">
-            Your Day. Your Story.{' '}
-            <span className="text-transparent bg-clip-text bg-dayo-gradient">
-              Your Growth.
-            </span>
-          </h1>
-          <p className="text-xl text-dayo-gray-500 mb-8 max-w-2xl mx-auto">
-            A beautiful daily journal for reflection and growth. Track moods, capture moments,
-            and build habits — in just 2 minutes a day.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              to="/signup"
-              className="inline-flex items-center gap-2 bg-dayo-gradient text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-dayo-lg transition-all hover:scale-105"
-            >
-              Start Your Journey
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <p className="text-sm text-dayo-gray-400">Free forever. No credit card required.</p>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            {/* Left: Copy */}
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-dayo-purple/10 text-dayo-purple px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <Star className="w-4 h-4" />
+                Your personal growth companion
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-dayo-gray-900 mb-6 leading-tight">
+                Your Day. Your Story.{' '}
+                <span className="text-transparent bg-clip-text bg-dayo-gradient">
+                  Your Growth.
+                </span>
+              </h1>
+              <p className="text-lg text-dayo-gray-500 mb-4 max-w-xl">
+                The diary that makes you want to write. Templates, mood tracking, insights — all in 2 minutes a day.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 mb-3">
+                <Link
+                  to="/signup"
+                  className="inline-flex items-center gap-2 bg-dayo-gradient text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-dayo-lg transition-all hover:scale-105"
+                >
+                  Start Your Journey
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+              <p className="text-sm text-dayo-gray-400">Free forever. No credit card required.</p>
+            </div>
+
+            {/* Right: Interactive Demo */}
+            <div className="flex-1 w-full max-w-sm lg:max-w-none">
+              <InteractiveDiaryDemo />
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Diary Features Showcase */}
+      <DiaryFeaturesShowcase />
+
+      {/* Before / After Comparison */}
+      <BeforeAfterComparison />
+
       {/* Mode Preview Section */}
-      <section className="py-20 px-6 bg-dayo-gray-50">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-dayo-gray-900 mb-4">
@@ -122,57 +96,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-dayo-gray-900 mb-4">
-              Everything you need to grow
-            </h2>
-            <p className="text-dayo-gray-500 max-w-2xl mx-auto">
-              Simple tools that make a big difference in your daily life.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <FeatureCard key={index} {...feature} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-dayo-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-dayo-gray-900 mb-4">
-              Loved by thousands
-            </h2>
-            <p className="text-dayo-gray-500">
-              Join a community of reflective thinkers and growing families.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-dayo-gray-100"
-              >
-                <p className="text-dayo-gray-600 mb-4 italic">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-dayo-gradient rounded-full flex items-center justify-center text-white font-semibold">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-dayo-gray-900">{testimonial.author}</p>
-                    <p className="text-sm text-dayo-gray-500">{testimonial.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Diary Testimonials */}
+      <DiaryTestimonials />
 
       {/* CTA Section */}
       <section className="py-20 px-6">
@@ -213,7 +138,7 @@ export default function LandingPage() {
               <a href="#" className="hover:text-dayo-gray-900 transition-colors">Contact</a>
             </div>
             <p className="text-sm text-dayo-gray-400">
-              © {new Date().getFullYear()} DAYO. All rights reserved.
+              &copy; {new Date().getFullYear()} DAYO. All rights reserved.
             </p>
           </div>
         </div>

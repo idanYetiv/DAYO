@@ -22,6 +22,16 @@ import {
   adultStreakCelebrations,
   kidsStreakCelebrations,
 } from '../data/encouragements'
+import {
+  adultTemplates,
+  kidsTemplates,
+  type DiaryTemplate,
+} from '../data/templates'
+import {
+  adultTags,
+  kidsTags,
+  type TagOption,
+} from '../data/tags'
 
 export interface ModeContent {
   moods: MoodOption[]
@@ -31,6 +41,8 @@ export interface ModeContent {
   highlightEmojis: string[]
   encouragements: typeof adultEncouragements
   streakCelebrations: Record<number, string>
+  templates: DiaryTemplate[]
+  tags: TagOption[]
 }
 
 export function useContentForMode(): ModeContent {
@@ -46,6 +58,8 @@ export function useContentForMode(): ModeContent {
         highlightEmojis: kidsHighlightEmojis,
         encouragements: kidsEncouragements,
         streakCelebrations: kidsStreakCelebrations,
+        templates: kidsTemplates,
+        tags: kidsTags,
       }
     }
 
@@ -57,6 +71,8 @@ export function useContentForMode(): ModeContent {
       highlightEmojis: adultHighlightEmojis,
       encouragements: adultEncouragements,
       streakCelebrations: adultStreakCelebrations,
+      templates: adultTemplates,
+      tags: adultTags,
     }
   }, [isKidsMode])
 }

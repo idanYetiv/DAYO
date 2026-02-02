@@ -108,7 +108,7 @@ export default function TodayPage() {
     })
   }
 
-  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[] }) => {
+  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[]; tags: string[]; templateId?: string | null }) => {
     setSelectedMood(data.mood)
     setDiaryText(data.text)
     if (user) {

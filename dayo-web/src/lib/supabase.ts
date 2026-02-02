@@ -29,6 +29,9 @@ export type Database = {
           photos: string[]
           gratitude: string[]
           highlights: DiaryHighlight[]
+          tags: string[]
+          bookmarked: boolean
+          template_id: string | null
           created_at: string
           updated_at: string
         }
@@ -41,6 +44,9 @@ export type Database = {
           photos?: string[]
           gratitude?: string[]
           highlights?: DiaryHighlight[]
+          tags?: string[]
+          bookmarked?: boolean
+          template_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -53,6 +59,9 @@ export type Database = {
           photos?: string[]
           gratitude?: string[]
           highlights?: DiaryHighlight[]
+          tags?: string[]
+          bookmarked?: boolean
+          template_id?: string | null
           created_at?: string
           updated_at?: string
         }

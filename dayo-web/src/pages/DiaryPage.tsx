@@ -5,6 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import DiaryEntryModal from '../components/diary/DiaryEntryModal'
+import TemplateSelector from '../components/diary/TemplateSelector'
+import DiarySearchPanel from '../components/diary/DiarySearchPanel'
+import SearchResultsList from '../components/diary/SearchResultsList'
+import MoodInsightsPanel from '../components/diary/MoodInsightsPanel'
 import {
   useDayEntry,
   useUpsertDayEntry,
@@ -12,7 +16,14 @@ import {
   useUpdateHighlights,
   type DiaryHighlight,
 } from '../hooks/useDiary'
+import { useDiarySearch, defaultFilters, hasActiveFilters, type DiarySearchFilters } from '../hooks/useDiarySearch'
+import { useContentForMode } from '../hooks/useContentForMode'
+import { useToggleBookmark, useUpdateTags } from '../hooks/useDiaryTags'
 import { diaryToast } from '../lib/toast'
+import { getMoodColors, getMoodCalendarBg } from '../lib/moodColors'
+import { countWords } from '../lib/diaryUtils'
+import BookmarkButton from '../components/diary/BookmarkButton'
+import type { DiaryTemplate } from '../data/templates'
 
 interface DiaryEntry {
   id: string
@@ -22,6 +33,9 @@ interface DiaryEntry {
   photos: string[]
   gratitude: string[]
   highlights: DiaryHighlight[]
+  tags: string[]
+  bookmarked: boolean
+  template_id: string | null
 }
 
 // Hook to fetch all diary entries for a month
@@ -82,9 +96,13 @@ const moodEmojis: Record<string, string> = {
 export default function DiaryPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [viewMode, setViewMode] = useState<'calendar' | 'timeline'>('calendar')
+  const [viewMode, setViewMode] = useState<'calendar' | 'timeline' | 'insights'>('calendar')
   const [showDiaryModal, setShowDiaryModal] = useState(false)
+  const [showTemplateSelector, setShowTemplateSelector] = useState(false)
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
   const [editDate, setEditDate] = useState<Date>(new Date())
+  const [showSearch, setShowSearch] = useState(false)
+  const [searchFilters, setSearchFilters] = useState<DiarySearchFilters>(defaultFilters)
 
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
@@ -109,10 +127,17 @@ export default function DiaryPage() {
   const editDateStr = format(editDate, 'yyyy-MM-dd')
   const { data: editEntry } = useDayEntry(editDateStr)
 
+  // Search
+  const isSearchActive = showSearch && hasActiveFilters(searchFilters)
+  const { data: searchResults, isLoading: searchLoading } = useDiarySearch(searchFilters, isSearchActive)
+  const { moodEmojis: contentMoodEmojis } = useContentForMode()
+
   // Mutations
   const upsertDayEntry = useUpsertDayEntry()
   const updateGratitude = useUpdateGratitude()
   const updateHighlights = useUpdateHighlights()
+  const updateTags = useUpdateTags()
+  const toggleBookmark = useToggleBookmark()
 
   const navigateMonth = (direction: 'prev' | 'next') => {
     const newMonth = new Date(currentMonth)
@@ -127,7 +152,19 @@ export default function DiaryPage() {
 
   const handleNewEntry = () => {
     setEditDate(new Date())
+    setSelectedTemplateId(null)
+    setShowTemplateSelector(true)
+  }
+
+  const handleTemplateSelect = (template: DiaryTemplate) => {
+    setSelectedTemplateId(template.id)
+    setShowTemplateSelector(false)
     setShowDiaryModal(true)
+  }
+
+  const handleChangeTemplate = () => {
+    setShowDiaryModal(false)
+    setShowTemplateSelector(true)
   }
 
   const handleDayClick = (day: Date) => {
@@ -147,6 +184,7 @@ export default function DiaryPage() {
   const handleEntryClick = (entry: DiaryEntry) => {
     const date = new Date(entry.date)
     setEditDate(date)
+    setSelectedTemplateId(entry.template_id || null)
     setShowDiaryModal(true)
   }
 
@@ -155,6 +193,8 @@ export default function DiaryPage() {
     text: string
     gratitude: string[]
     highlights: DiaryHighlight[]
+    tags: string[]
+    templateId?: string | null
   }) => {
     const dateStr = format(editDate, 'yyyy-MM-dd')
 
@@ -164,6 +204,7 @@ export default function DiaryPage() {
         date: dateStr,
         mood: data.mood,
         diaryText: data.text,
+        templateId: data.templateId,
       },
       {
         onSuccess: () => {
@@ -183,7 +224,15 @@ export default function DiaryPage() {
       updateHighlights.mutate({ date: dateStr, highlights: data.highlights })
     }
 
+    // Save tags
+    updateTags.mutate({ date: dateStr, tags: data.tags })
+
     setShowDiaryModal(false)
+  }
+
+  const handleToggleBookmark = (entry: DiaryEntry, e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleBookmark.mutate({ date: entry.date, bookmarked: !entry.bookmarked })
   }
 
   return (
@@ -194,7 +243,12 @@ export default function DiaryPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold text-dayo-gray-900">Diary</h1>
             <div className="flex items-center gap-2">
-              <button className="p-2 text-dayo-gray-400 hover:text-dayo-gray-600 transition-colors">
+              <button
+                onClick={() => setShowSearch(!showSearch)}
+                className={`p-2 transition-colors ${
+                  showSearch ? 'text-dayo-purple' : 'text-dayo-gray-400 hover:text-dayo-gray-600'
+                }`}
+              >
                 <Search className="w-5 h-5" />
               </button>
               <button
@@ -229,12 +283,48 @@ export default function DiaryPage() {
             >
               Timeline
             </button>
+            <button
+              onClick={() => setViewMode('insights')}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+                viewMode === 'insights'
+                  ? 'bg-white text-dayo-gray-900 shadow-sm'
+                  : 'text-dayo-gray-500'
+              }`}
+            >
+              Insights
+            </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-6">
-        {viewMode === 'calendar' ? (
+        {/* Search Panel */}
+        {showSearch && (
+          <div className="mb-6">
+            <DiarySearchPanel
+              filters={searchFilters}
+              onChange={setSearchFilters}
+              onClear={() => setSearchFilters(defaultFilters)}
+              resultCount={isSearchActive ? (searchResults?.length ?? null) : null}
+            />
+          </div>
+        )}
+
+        {/* Search Results */}
+        {isSearchActive ? (
+          <SearchResultsList
+            results={searchResults}
+            isLoading={searchLoading}
+            searchQuery={searchFilters.query}
+            moodEmojis={contentMoodEmojis}
+            onEntryClick={(entry) => {
+              const date = new Date(entry.date)
+              setEditDate(date)
+              setSelectedTemplateId(entry.template_id || null)
+              setShowDiaryModal(true)
+            }}
+          />
+        ) : viewMode === 'calendar' ? (
           <>
             {/* Calendar */}
             <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 mb-6">
@@ -293,7 +383,7 @@ export default function DiaryPage() {
                             : isTodayDate
                             ? 'bg-dayo-purple/10 text-dayo-purple font-semibold'
                             : hasEntry
-                            ? 'bg-emerald-50 hover:bg-emerald-100'
+                            ? getMoodCalendarBg(entry?.mood || null)
                             : 'hover:bg-dayo-gray-50'
                         }`}
                       >
@@ -408,7 +498,7 @@ export default function DiaryPage() {
               </div>
             )}
           </>
-        ) : (
+        ) : viewMode === 'timeline' ? (
           /* Timeline View */
           <div>
             {recentLoading ? (
@@ -417,49 +507,76 @@ export default function DiaryPage() {
               </div>
             ) : recentEntries && recentEntries.length > 0 ? (
               <div className="space-y-4">
-                {recentEntries.map((entry) => (
-                  <button
-                    key={entry.id}
-                    onClick={() => handleEntryClick(entry)}
-                    className="w-full text-left bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 hover:border-dayo-purple/30 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex flex-col items-center">
-                        <span className="text-3xl mb-1">
-                          {entry.mood ? moodEmojis[entry.mood] || entry.mood : '📝'}
-                        </span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-dayo-gray-900">
-                          {format(new Date(entry.date), 'EEEE')}
-                        </p>
-                        <p className="text-xs text-dayo-gray-400 mb-2">
-                          {format(new Date(entry.date), 'MMMM d, yyyy')}
-                        </p>
-                        <p className="text-dayo-gray-700 text-sm line-clamp-3">
-                          {entry.diary_text || 'No diary text'}
-                        </p>
-                        {entry.photos && entry.photos.length > 0 && (
-                          <div className="flex gap-1 mt-2">
-                            {entry.photos.slice(0, 3).map((photo, i) => (
-                              <img
-                                key={i}
-                                src={photo}
-                                alt=""
-                                className="w-12 h-12 object-cover rounded-lg"
-                              />
-                            ))}
-                            {entry.photos.length > 3 && (
-                              <div className="w-12 h-12 bg-dayo-gray-100 rounded-lg flex items-center justify-center text-xs text-dayo-gray-500">
-                                +{entry.photos.length - 3}
+                {recentEntries.map((entry) => {
+                  const colors = getMoodColors(entry.mood)
+                  const words = countWords(entry.diary_text)
+                  return (
+                    <div
+                      key={entry.id}
+                      className={`rounded-2xl shadow-sm border p-4 transition-colors ${colors.bg} ${colors.border}`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <button
+                          onClick={() => handleEntryClick(entry)}
+                          className="flex-1 text-left"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="flex flex-col items-center">
+                              <span className="text-3xl mb-1">
+                                {entry.mood ? moodEmojis[entry.mood] || entry.mood : '\u{1F4DD}'}
+                              </span>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-dayo-gray-900">
+                                {format(new Date(entry.date), 'EEEE')}
+                              </p>
+                              <p className="text-xs text-dayo-gray-400 mb-2">
+                                {format(new Date(entry.date), 'MMMM d, yyyy')}
+                              </p>
+                              <p className="text-dayo-gray-700 text-sm line-clamp-3">
+                                {entry.diary_text || 'No diary text'}
+                              </p>
+                              {entry.photos && entry.photos.length > 0 && (
+                                <div className="flex gap-1 mt-2">
+                                  {entry.photos.slice(0, 3).map((photo, i) => (
+                                    <img
+                                      key={i}
+                                      src={photo}
+                                      alt=""
+                                      className="w-12 h-12 object-cover rounded-lg"
+                                    />
+                                  ))}
+                                  {entry.photos.length > 3 && (
+                                    <div className="w-12 h-12 bg-dayo-gray-100 rounded-lg flex items-center justify-center text-xs text-dayo-gray-500">
+                                      +{entry.photos.length - 3}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                              {/* Tags + Word Count */}
+                              <div className="flex items-center gap-2 mt-2 flex-wrap">
+                                {entry.tags && entry.tags.length > 0 && entry.tags.map(tag => (
+                                  <span key={tag} className="text-xs bg-white/70 text-dayo-gray-600 px-2 py-0.5 rounded-full border border-dayo-gray-200">
+                                    {tag}
+                                  </span>
+                                ))}
+                                {words > 0 && (
+                                  <span className="text-xs text-dayo-gray-400 ml-auto">
+                                    {words} {words === 1 ? 'word' : 'words'}
+                                  </span>
+                                )}
                               </div>
-                            )}
+                            </div>
                           </div>
-                        )}
+                        </button>
+                        <BookmarkButton
+                          bookmarked={entry.bookmarked}
+                          onClick={(e) => handleToggleBookmark(entry, e)}
+                        />
                       </div>
                     </div>
-                  </button>
-                ))}
+                  )
+                })}
               </div>
             ) : (
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-6 text-center">
@@ -474,10 +591,19 @@ export default function DiaryPage() {
               </div>
             )}
           </div>
-        )}
+        ) : viewMode === 'insights' ? (
+          <MoodInsightsPanel />
+        ) : null}
       </main>
 
       <BottomNavigation />
+
+      {/* Template Selector */}
+      <TemplateSelector
+        isOpen={showTemplateSelector}
+        onClose={() => setShowTemplateSelector(false)}
+        onSelect={handleTemplateSelect}
+      />
 
       {/* Diary Entry Modal */}
       <DiaryEntryModal
@@ -489,7 +615,10 @@ export default function DiaryPage() {
         initialPhotos={editEntry?.photos || []}
         initialGratitude={editEntry?.gratitude || []}
         initialHighlights={editEntry?.highlights || []}
+        initialTags={editEntry?.tags || []}
+        templateId={selectedTemplateId}
         onSave={handleSaveDiary}
+        onChangeTemplate={handleChangeTemplate}
         isSaving={upsertDayEntry.isPending}
       />
     </div>
