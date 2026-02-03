@@ -14,6 +14,7 @@ import {
   type HabitWithCompletions,
 } from '../hooks/useHabits'
 import { toast } from 'sonner'
+import { useHaptics } from '../hooks/useHaptics'
 
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const defaultColors = ['#8B5CF6', '#10B981', '#F97316', '#3B82F6', '#EC4899', '#F59E0B']
@@ -31,6 +32,7 @@ export default function HabitsPage() {
   const createHabit = useCreateHabit()
   const deleteHabit = useDeleteHabit()
   const toggleCompletion = useToggleHabitCompletion()
+  const { notification } = useHaptics()
 
   // Stats
   const completedToday = habits?.filter(h => isHabitCompletedForDate(h, todayStr)).length || 0
@@ -45,6 +47,7 @@ export default function HabitsPage() {
         onSuccess: (result) => {
           if (result.action === 'added') {
             toast.success('Habit completed!')
+            notification('success')
           }
         },
         onError: () => {
@@ -59,6 +62,7 @@ export default function HabitsPage() {
       deleteHabit.mutate(habitId, {
         onSuccess: () => {
           toast.success('Habit deleted')
+          notification('warning')
         },
         onError: () => {
           toast.error('Failed to delete habit')

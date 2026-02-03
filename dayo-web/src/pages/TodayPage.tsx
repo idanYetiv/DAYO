@@ -9,6 +9,7 @@ import { useUserStats, useUpdateStreak } from '../hooks/useUserStats'
 import { useProfileMode } from '../hooks/useProfileMode'
 import { useContentForMode, useGreeting } from '../hooks/useContentForMode'
 import { taskToast, diaryToast } from '../lib/toast'
+import { useHaptics } from '../hooks/useHaptics'
 import QuoteCard from '../components/ui/QuoteCard'
 import StatsRow from '../components/ui/StatsRow'
 import TasksSection from '../components/planner/TasksSection'
@@ -28,6 +29,7 @@ export default function TodayPage() {
   const [showExportModal, setShowExportModal] = useState(false)
   const [diaryText, setDiaryText] = useState('')
 
+  const { notification } = useHaptics()
   const { isKidsMode } = useProfileMode()
   const { moodEmojis } = useContentForMode()
   const greetingText = useGreeting()
@@ -94,6 +96,7 @@ export default function TodayPage() {
         onSuccess: () => {
           if (!completed) {
             taskToast.completed()
+            notification('success')
           }
         },
         onError: () => taskToast.error(),
@@ -103,7 +106,10 @@ export default function TodayPage() {
 
   const handleDeleteTask = (id: string) => {
     deleteTask.mutate(id, {
-      onSuccess: () => taskToast.deleted(),
+      onSuccess: () => {
+        taskToast.deleted()
+        notification('warning')
+      },
       onError: () => taskToast.error(),
     })
   }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Check, Trash2, Star } from 'lucide-react'
+import { useHaptics } from '../../hooks/useHaptics'
 
 interface KidsTaskItemProps {
   id: string
@@ -23,11 +24,13 @@ export default function KidsTaskItem({
   const [sticker] = useState(() =>
     completedStickers[Math.floor(Math.random() * completedStickers.length)]
   )
+  const { notification } = useHaptics()
 
   const handleToggle = () => {
     if (!completed) {
       setShowSticker(true)
       setTimeout(() => setShowSticker(false), 1500)
+      notification('success')
     }
     onToggle(id, completed)
   }

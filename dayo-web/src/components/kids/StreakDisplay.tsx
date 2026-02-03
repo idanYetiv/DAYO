@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Flame } from 'lucide-react'
+import { useHaptics } from '../../hooks/useHaptics'
 import { kidsStreakCelebrations } from '../../data/encouragements'
 
 interface StreakDisplayProps {
@@ -9,14 +10,16 @@ interface StreakDisplayProps {
 
 export default function StreakDisplay({ streak, showCelebration = false }: StreakDisplayProps) {
   const [isAnimating, setIsAnimating] = useState(false)
+  const { impact } = useHaptics()
 
   useEffect(() => {
     if (showCelebration && streak > 0) {
       setIsAnimating(true)
+      impact('heavy')
       const timer = setTimeout(() => setIsAnimating(false), 2000)
       return () => clearTimeout(timer)
     }
-  }, [streak, showCelebration])
+  }, [streak, showCelebration]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Get celebration message if streak hits a milestone
   const celebrationMessage = getCelebrationMessage(streak)
