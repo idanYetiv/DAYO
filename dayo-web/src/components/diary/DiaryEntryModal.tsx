@@ -13,6 +13,7 @@ import WritingAtmosphere from './WritingAtmosphere'
 import SaveIndicator from './SaveIndicator'
 import WritingCompanion from './WritingCompanion'
 import PhotoSourceSheet from './PhotoSourceSheet'
+import { useHaptics } from '../../hooks/useHaptics'
 import { useFocusMode } from '../../hooks/useFocusMode'
 import { useWritingCompanion } from '../../hooks/useWritingCompanion'
 import type { DiaryHighlight } from '../../hooks/useDiary'
@@ -76,6 +77,7 @@ export default function DiaryEntryModal({
   const { moods, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
   const { isKidsMode } = useProfileMode()
   const { pickPhoto, isNative } = useNativeCamera()
+  const { impact, notification } = useHaptics()
 
   // Focus mode
   const { isFocusMode, toggleFocusMode, exitFocusMode } = useFocusMode()
@@ -208,6 +210,7 @@ export default function DiaryEntryModal({
   }
 
   const handleDeletePhoto = (photoUrl: string) => {
+    notification('warning')
     deletePhoto.mutate(photoUrl)
   }
 
@@ -230,6 +233,7 @@ export default function DiaryEntryModal({
   }
 
   const handleRemoveHighlight = (index: number) => {
+    impact('light')
     setHighlights(highlights.filter((_, i) => i !== index))
   }
 
@@ -374,7 +378,7 @@ export default function DiaryEntryModal({
             return (
               <button
                 key={mood.id}
-                onClick={() => setSelectedMood(mood.id)}
+                onClick={() => { setSelectedMood(mood.id); impact('light') }}
                 type="button"
                 className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                   isKidsMode ? 'min-w-[70px]' : ''
