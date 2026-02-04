@@ -9,6 +9,8 @@ import { useProfileMode } from './hooks/useProfileMode'
 import { useUserProfile } from './hooks/useUserProfile'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import DashboardPage from './pages/DashboardPage'
 import TodayPage from './pages/TodayPage'
 import DiaryPage from './pages/DiaryPage'
@@ -115,37 +117,53 @@ function OnboardingGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function PasswordRecoveryRedirect({ children }: { children: React.ReactNode }) {
+  const { isPasswordRecovery } = useAuthStore()
+  const location = useLocation()
+
+  if (isPasswordRecovery && location.pathname !== '/reset-password') {
+    return <Navigate to="/reset-password" replace />
+  }
+
+  return <>{children}</>
+}
+
 function AuthenticatedRoutes() {
   return (
-    <ProfileModeProvider>
-      <DarkModeApplier>
-        <BackgroundApplier>
-          <KidsModeClassApplier>
-            <OnboardingGuard>
-          <Routes>
-            {/* Onboarding */}
-            <Route path="/onboarding" element={<OnboardingPage />} />
+    <PasswordRecoveryRedirect>
+      <ProfileModeProvider>
+        <DarkModeApplier>
+          <BackgroundApplier>
+            <KidsModeClassApplier>
+              <OnboardingGuard>
+            <Routes>
+              {/* Onboarding */}
+              <Route path="/onboarding" element={<OnboardingPage />} />
 
-            {/* Protected routes */}
-            <Route path="/today" element={<TodayPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/diary" element={<DiaryPage />} />
-            <Route path="/goals" element={<GoalsPage />} />
-            <Route path="/habits" element={<HabitsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/ai" element={<AIAssistantPage />} />
+              {/* Password reset (authenticated via email link) */}
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-            {/* Redirect authenticated users from public routes */}
-            <Route path="/" element={<Navigate to="/today" />} />
-            <Route path="/login" element={<Navigate to="/today" />} />
-            <Route path="/signup" element={<Navigate to="/today" />} />
-          </Routes>
-            </OnboardingGuard>
-          </KidsModeClassApplier>
-        </BackgroundApplier>
-      </DarkModeApplier>
-    </ProfileModeProvider>
+              {/* Protected routes */}
+              <Route path="/today" element={<TodayPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/diary" element={<DiaryPage />} />
+              <Route path="/goals" element={<GoalsPage />} />
+              <Route path="/habits" element={<HabitsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/ai" element={<AIAssistantPage />} />
+
+              {/* Redirect authenticated users from public routes */}
+              <Route path="/" element={<Navigate to="/today" />} />
+              <Route path="/login" element={<Navigate to="/today" />} />
+              <Route path="/signup" element={<Navigate to="/today" />} />
+            </Routes>
+              </OnboardingGuard>
+            </KidsModeClassApplier>
+          </BackgroundApplier>
+        </DarkModeApplier>
+      </ProfileModeProvider>
+    </PasswordRecoveryRedirect>
   )
 }
 
@@ -155,6 +173,7 @@ function PublicRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       {/* Redirect to login for any protected route */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
