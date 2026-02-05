@@ -1,7 +1,7 @@
 # DAYO Open Tasks
 
 **Last Updated:** February 5, 2026
-**Status:** Core app complete, Kids/Adults mode shipped, Diary Export shipped, Sketch feature shipped, 409 tests, CI on PRs, deployed to production
+**Status:** Core app complete, Kids/Adults mode shipped, Diary Export shipped, Sketch feature shipped, 460 tests, CI on PRs with branch protection, deployed to production
 
 ---
 
@@ -26,6 +26,9 @@
 | Task 22b | Diary Entry Export - 3 templates (Journal, Gratitude, Highlights), share from modal & preview card | Feb 4 |
 | Task 22j | Sketch/Drawing in Diary - inline canvas in editor toolbar, pen/eraser, colors, brush sizes, auto-save | Feb 5 |
 | CI/CD | GitHub Actions workflow - runs tests on PRs, feature branch workflow | Feb 5 |
+| Background Fix | Custom backgrounds now visible through page containers, transparent overlays | Feb 5 |
+| Settings Fix | Theme color now applies to UI (5 colors), password modal feedback fixed | Feb 5 |
+| Tests | Added 51 new tests (Settings page 27, Background feature 24) - total 460 | Feb 5 |
 
 ---
 
@@ -311,7 +314,7 @@
 1. ~~Core app (Tasks, Diary, Calendar, Dashboard)~~ ✅
 2. ~~AI, Export, Streaks, Toasts~~ ✅
 3. ~~Kids/Adults Mode + Landing Page~~ ✅
-4. ~~Tests (262), Dark Mode, Backgrounds~~ ✅
+4. ~~Tests (460), Dark Mode, Backgrounds, Settings~~ ✅
 
 ### Phase A: Product Value (Web)
 5. **Task 21** - Improve Landing Page
