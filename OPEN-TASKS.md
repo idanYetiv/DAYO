@@ -25,6 +25,7 @@
 | Task 22a | DiaryPreviewCard inline writing - textarea, auto-save on blur, arrow to modal | Feb 4 |
 | Task 22b | Diary Entry Export - 3 templates (Journal, Gratitude, Highlights), share from modal & preview card | Feb 4 |
 | Task 22j | Sketch/Drawing in Diary - inline canvas in editor toolbar, pen/eraser, colors, brush sizes, auto-save | Feb 5 |
+| CI/CD | GitHub Actions workflow - runs tests on PRs, feature branch workflow | Feb 5 |
 
 ---
 
