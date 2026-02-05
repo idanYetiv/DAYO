@@ -67,6 +67,9 @@ function BackgroundApplier({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (profile?.background_image) {
       const bg = profile.background_image
+      // Add class to enable transparent page backgrounds
+      document.documentElement.classList.add('has-custom-bg')
+
       if (bg.startsWith('data:') || bg.startsWith('http')) {
         document.body.style.backgroundImage = `url(${bg})`
         document.body.style.backgroundSize = 'cover'
@@ -78,12 +81,14 @@ function BackgroundApplier({ children }: { children: React.ReactNode }) {
         document.body.style.backgroundAttachment = 'fixed'
       }
     } else {
+      document.documentElement.classList.remove('has-custom-bg')
       document.body.style.backgroundImage = ''
       document.body.style.backgroundSize = ''
       document.body.style.backgroundPosition = ''
       document.body.style.backgroundAttachment = ''
     }
     return () => {
+      document.documentElement.classList.remove('has-custom-bg')
       document.body.style.backgroundImage = ''
       document.body.style.backgroundSize = ''
       document.body.style.backgroundPosition = ''

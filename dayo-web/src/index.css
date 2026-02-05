@@ -70,6 +70,29 @@
   }
 }
 
+/* Custom background mode - make page containers transparent */
+.has-custom-bg body {
+  background-color: transparent !important;
+}
+
+.has-custom-bg .bg-dayo-gray-50,
+.has-custom-bg .bg-dayo-kids-yellow\/10,
+.has-custom-bg .bg-white:not(.modal-content):not([role="dialog"] *) {
+  background-color: transparent !important;
+}
+
+/* Semi-transparent overlays for readability with custom backgrounds */
+.has-custom-bg header,
+.has-custom-bg .bg-white.border-b {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+}
+
+.has-custom-bg.dark header,
+.has-custom-bg.dark .bg-white.border-b {
+  background-color: rgba(17, 24, 39, 0.9) !important;
+}
+
 /* Dark mode overrides for DAYO colors */
 .dark {
   /* Background colors */

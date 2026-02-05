@@ -82,6 +82,12 @@
 | 17 | Demo Data Seeder | Script to populate test data | S |
 | 20 | Direct Instagram API | Post directly to Instagram | L |
 
+### MEDIUM Priority - UX Design
+
+| # | Task | Description | Size |
+|---|------|-------------|------|
+| 34 | **Background/Theme UX Design** | UX expert to plan proper styling when custom backgrounds are applied - align headers, cards, overlays, readability. Currently functional but visually inconsistent. Consider if theme/background/dark mode should be separate or unified. | M |
+
 ### LOW Priority - Polish
 
 | # | Task | Description | Size |
