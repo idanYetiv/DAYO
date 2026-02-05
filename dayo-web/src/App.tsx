@@ -60,6 +60,37 @@ function DarkModeApplier({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+// Theme color mapping
+const themeColorMap: Record<string, { primary: string; gradient: string }> = {
+  purple: { primary: '#8B5CF6', gradient: 'linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)' },
+  blue: { primary: '#3B82F6', gradient: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)' },
+  green: { primary: '#10B981', gradient: 'linear-gradient(135deg, #10B981 0%, #84CC16 100%)' },
+  orange: { primary: '#F97316', gradient: 'linear-gradient(135deg, #F97316 0%, #FBBF24 100%)' },
+  pink: { primary: '#EC4899', gradient: 'linear-gradient(135deg, #EC4899 0%, #F472B6 100%)' },
+}
+
+// Component to apply theme color
+function ThemeColorApplier({ children }: { children: React.ReactNode }) {
+  const { data: profile } = useUserProfile()
+
+  useEffect(() => {
+    const themeColor = profile?.theme_color || 'purple'
+    const colors = themeColorMap[themeColor] || themeColorMap.purple
+
+    document.documentElement.style.setProperty('--dayo-primary', colors.primary)
+    document.documentElement.style.setProperty('--dayo-gradient', colors.gradient)
+    document.documentElement.setAttribute('data-theme', themeColor)
+
+    return () => {
+      document.documentElement.style.removeProperty('--dayo-primary')
+      document.documentElement.style.removeProperty('--dayo-gradient')
+      document.documentElement.removeAttribute('data-theme')
+    }
+  }, [profile?.theme_color])
+
+  return <>{children}</>
+}
+
 // Component to apply custom background
 function BackgroundApplier({ children }: { children: React.ReactNode }) {
   const { data: profile } = useUserProfile()
@@ -137,10 +168,11 @@ function AuthenticatedRoutes() {
   return (
     <PasswordRecoveryRedirect>
       <ProfileModeProvider>
-        <DarkModeApplier>
-          <BackgroundApplier>
-            <KidsModeClassApplier>
-              <OnboardingGuard>
+        <ThemeColorApplier>
+          <DarkModeApplier>
+            <BackgroundApplier>
+              <KidsModeClassApplier>
+                <OnboardingGuard>
             <Routes>
               {/* Onboarding */}
               <Route path="/onboarding" element={<OnboardingPage />} />
@@ -163,10 +195,11 @@ function AuthenticatedRoutes() {
               <Route path="/login" element={<Navigate to="/today" />} />
               <Route path="/signup" element={<Navigate to="/today" />} />
             </Routes>
-              </OnboardingGuard>
-            </KidsModeClassApplier>
-          </BackgroundApplier>
-        </DarkModeApplier>
+                </OnboardingGuard>
+              </KidsModeClassApplier>
+            </BackgroundApplier>
+          </DarkModeApplier>
+        </ThemeColorApplier>
       </ProfileModeProvider>
     </PasswordRecoveryRedirect>
   )
