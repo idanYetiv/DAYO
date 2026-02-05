@@ -1,9 +1,12 @@
-import { Bold, Italic, Underline, Heading2, Heading3, List, ListOrdered } from 'lucide-react'
+import { Bold, Italic, Underline, Heading2, Heading3, List, ListOrdered, PenTool } from 'lucide-react'
 import type { Editor } from '@tiptap/react'
 import { useProfileMode } from '../../hooks/useProfileMode'
 
 interface EditorToolbarProps {
   editor: Editor | null
+  isSketchOpen?: boolean
+  onToggleSketch?: () => void
+  hasSketch?: boolean
 }
 
 interface ToolbarButton {
@@ -13,7 +16,12 @@ interface ToolbarButton {
   isActive: () => boolean
 }
 
-export default function EditorToolbar({ editor }: EditorToolbarProps) {
+export default function EditorToolbar({
+  editor,
+  isSketchOpen,
+  onToggleSketch,
+  hasSketch,
+}: EditorToolbarProps) {
   const { isKidsMode } = useProfileMode()
 
   if (!editor) return null
@@ -65,7 +73,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
 
   return (
     <div
-      className={`flex gap-0.5 ${isKidsMode ? 'diary-editor-kids' : ''}`}
+      className={`flex items-center gap-0.5 ${isKidsMode ? 'diary-editor-kids' : ''}`}
       role="toolbar"
       aria-label="Text formatting"
     >
@@ -82,6 +90,27 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
           {btn.icon}
         </button>
       ))}
+
+      {/* Separator and Sketch button */}
+      {onToggleSketch && (
+        <>
+          <div className="w-px h-5 bg-dayo-gray-200 mx-1.5" />
+          <button
+            type="button"
+            onClick={onToggleSketch}
+            className={`editor-toolbar-btn relative ${isSketchOpen ? 'is-active' : ''}`}
+            aria-label={isKidsMode ? 'Draw' : 'Sketch'}
+            aria-pressed={isSketchOpen}
+            title={isKidsMode ? 'Draw something!' : 'Add sketch'}
+          >
+            <PenTool className="w-4 h-4" />
+            {/* Indicator dot when sketch exists */}
+            {hasSketch && !isSketchOpen && (
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-pink-500 rounded-full" />
+            )}
+          </button>
+        </>
+      )}
     </div>
   )
 }

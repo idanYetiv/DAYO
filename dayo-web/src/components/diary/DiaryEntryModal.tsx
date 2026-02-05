@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { format } from 'date-fns'
-import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, Tag, X, Trash2, Loader2, Maximize2, Minimize2 } from 'lucide-react'
+import { ArrowLeft, Save, Calendar, ImagePlus, Heart, Sparkles, Tag, X, Trash2, Loader2, Maximize2, Minimize2, Share2 } from 'lucide-react'
 import { usePhotoUpload } from '../../hooks/usePhotoUpload'
+import { useSketchUpload } from '../../hooks/useSketchUpload'
 import { useNativeCamera } from '../../hooks/useNativeCamera'
 import { useContentForMode } from '../../hooks/useContentForMode'
 import { useProfileMode } from '../../hooks/useProfileMode'
@@ -13,10 +14,13 @@ import WritingAtmosphere from './WritingAtmosphere'
 import SaveIndicator from './SaveIndicator'
 import WritingCompanion from './WritingCompanion'
 import PhotoSourceSheet from './PhotoSourceSheet'
+import DiaryExportModal from '../export/DiaryExportModal'
 import { useHaptics } from '../../hooks/useHaptics'
 import { useFocusMode } from '../../hooks/useFocusMode'
 import { useWritingCompanion } from '../../hooks/useWritingCompanion'
+import { stripToPlainText } from '../../lib/exportUtils'
 import type { DiaryHighlight } from '../../hooks/useDiary'
+import type { DiaryExportData } from '../../hooks/useExportImage'
 
 const DiaryEditor = lazy(() => import('./DiaryEditor'))
 
@@ -30,6 +34,7 @@ interface DiaryEntryModalProps {
   initialGratitude?: string[]
   initialHighlights?: DiaryHighlight[]
   initialTags?: string[]
+  initialSketchUrl?: string | null
   templateId?: string | null
   onSave: (data: {
     mood: string
@@ -37,6 +42,7 @@ interface DiaryEntryModalProps {
     gratitude: string[]
     highlights: DiaryHighlight[]
     tags: string[]
+    sketchUrl?: string | null
     templateId?: string | null
   }) => void
   onChangeTemplate?: () => void
@@ -54,6 +60,7 @@ export default function DiaryEntryModal({
   initialGratitude = [],
   initialHighlights = [],
   initialTags = [],
+  initialSketchUrl,
   templateId,
   onSave,
   onChangeTemplate,
@@ -64,8 +71,10 @@ export default function DiaryEntryModal({
   const [gratitude, setGratitude] = useState<string[]>(initialGratitude)
   const [highlights, setHighlights] = useState<DiaryHighlight[]>(initialHighlights)
   const [tags, setTags] = useState<string[]>(initialTags)
+  const [sketchDataUrl, setSketchDataUrl] = useState<string | null>(initialSketchUrl || null)
   const [activeSection, setActiveSection] = useState<'none' | 'gratitude' | 'highlights' | 'tags'>('none')
   const [showPhotoSheet, setShowPhotoSheet] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const hasInitialized = useRef(false)
 
@@ -74,7 +83,8 @@ export default function DiaryEntryModal({
 
   const dateStr = format(date, 'yyyy-MM-dd')
   const { uploadPhoto, deletePhoto, uploadProgress, maxPhotos } = usePhotoUpload(dateStr)
-  const { moods, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
+  const { uploadSketch, deleteSketch } = useSketchUpload(dateStr)
+  const { moods, moodEmojis, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
   const { isKidsMode } = useProfileMode()
   const { pickPhoto, isNative } = useNativeCamera()
   const { impact, notification } = useHaptics()
@@ -108,13 +118,14 @@ export default function DiaryEntryModal({
       setGratitude(initialGratitude.length > 0 ? initialGratitude : ['', '', ''])
       setHighlights(initialHighlights)
       setTags(initialTags)
+      setSketchDataUrl(initialSketchUrl || null)
       setActiveSection('none')
       hasInitialized.current = true
     }
     if (!isOpen) {
       hasInitialized.current = false
     }
-  }, [isOpen, initialMood, initialText, initialGratitude, initialHighlights, initialTags])
+  }, [isOpen, initialMood, initialText, initialGratitude, initialHighlights, initialTags, initialSketchUrl])
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -159,6 +170,16 @@ export default function DiaryEntryModal({
 
   if (!isOpen) return null
 
+  const handleSketchChange = async (dataUrl: string | null) => {
+    setSketchDataUrl(dataUrl)
+    // Auto-upload sketch to storage
+    if (dataUrl) {
+      uploadSketch.mutate(dataUrl)
+    } else {
+      deleteSketch.mutate()
+    }
+  }
+
   const handleSave = () => {
     cleanupAutoSave() // flush any pending auto-save
     const filteredGratitude = gratitude.filter(g => g.trim())
@@ -167,6 +188,7 @@ export default function DiaryEntryModal({
       mood: selectedMood,
       text: diaryText,
       gratitude: filteredGratitude,
+      sketchUrl: sketchDataUrl,
       highlights: filteredHighlights,
       tags,
       templateId: templateId || null,
@@ -258,6 +280,9 @@ export default function DiaryEntryModal({
             initialContent={diaryText}
             onChange={setDiaryText}
             placeholder={diaryPrompts.placeholder}
+            sketchDataUrl={sketchDataUrl}
+            onSketchChange={handleSketchChange}
+            mood={selectedMood}
           />
         </Suspense>
       </div>
@@ -301,6 +326,9 @@ export default function DiaryEntryModal({
                     initialContent={diaryText}
                     onChange={setDiaryText}
                     placeholder={diaryPrompts.placeholder}
+                    sketchDataUrl={sketchDataUrl}
+                    onSketchChange={handleSketchChange}
+                    mood={selectedMood}
                   />
                 </Suspense>
               </div>
@@ -358,6 +386,17 @@ export default function DiaryEntryModal({
           >
             <Maximize2 className="w-4 h-4" />
           </button>
+          {stripToPlainText(diaryText).length > 0 && (
+            <button
+              onClick={() => setShowExportModal(true)}
+              type="button"
+              className="p-2 text-dayo-gray-500 hover:text-dayo-purple transition-colors"
+              aria-label="Share diary entry"
+              title="Share diary entry"
+            >
+              <Share2 className="w-4 h-4" />
+            </button>
+          )}
           <button
             onClick={handleSave}
             disabled={isSaving}
@@ -631,6 +670,24 @@ export default function DiaryEntryModal({
         <PhotoSourceSheet
           onSelect={handleNativePhoto}
           onClose={() => setShowPhotoSheet(false)}
+        />
+      )}
+
+      {/* Diary Export Modal */}
+      {showExportModal && (
+        <DiaryExportModal
+          isOpen={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          data={{
+            date: dateStr,
+            dayOfWeek: format(date, 'EEEE'),
+            mood: selectedMood || 'okay',
+            moodEmoji: moodEmojis[selectedMood] || '😊',
+            diaryText: stripToPlainText(diaryText),
+            gratitude: gratitude.filter(g => g.trim()),
+            highlights: highlights.filter(h => h.text.trim()),
+            tags,
+          } satisfies DiaryExportData}
         />
       )}
     </div>

@@ -235,6 +235,153 @@ test.describe('Diary Photo Feature', () => {
   })
 })
 
+test.describe('Diary Sketch Feature', () => {
+  test('should show sketch button in editor toolbar', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Sketch button should be visible in toolbar
+      await expect(page.getByRole('button', { name: /sketch/i })).toBeVisible()
+    }
+  })
+
+  test('should open sketch section on button click', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Sketch section should appear with header
+      await expect(page.getByText(/sketch your thoughts/i)).toBeVisible()
+    }
+  })
+
+  test('should display sketch toolbar with tools', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Toolbar should show pen and eraser buttons
+      await expect(page.getByRole('button', { name: 'Pen' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Eraser' })).toBeVisible()
+    }
+  })
+
+  test('should display color palette', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Color buttons should be visible
+      await expect(page.getByRole('button', { name: 'Black' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Red' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Blue' })).toBeVisible()
+    }
+  })
+
+  test('should display brush size options', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Brush size buttons should be visible
+      await expect(page.getByRole('button', { name: 'Brush size S' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Brush size M' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Brush size L' })).toBeVisible()
+    }
+  })
+
+  test('should display undo and clear buttons', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Action buttons should be visible
+      await expect(page.getByRole('button', { name: 'Undo' })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Clear' })).toBeVisible()
+    }
+  })
+
+  test('should close sketch section on X button click', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Sketch section should be visible
+      await expect(page.getByText(/sketch your thoughts/i)).toBeVisible()
+
+      // Click close button
+      await page.getByRole('button', { name: 'Close sketch' }).click()
+
+      // Sketch section should be hidden
+      await expect(page.getByText(/sketch your thoughts/i)).not.toBeVisible()
+    }
+  })
+
+  test('should switch between pen and eraser', async ({ page }) => {
+    await page.goto('/today')
+    const onLoginPage = page.url().includes('/login')
+
+    if (!onLoginPage) {
+      // Open diary modal
+      await page.locator('[class*="rounded-2xl"]').first().click()
+
+      // Click sketch button
+      await page.getByRole('button', { name: /sketch/i }).click()
+
+      // Pen should be active by default
+      const penButton = page.getByRole('button', { name: 'Pen' })
+      await expect(penButton).toHaveClass(/bg-pink-500/)
+
+      // Click eraser
+      await page.getByRole('button', { name: 'Eraser' }).click()
+
+      // Eraser should now be active
+      const eraserButton = page.getByRole('button', { name: 'Eraser' })
+      await expect(eraserButton).toHaveClass(/bg-pink-500/)
+    }
+  })
+})
+
 test.describe('Diary Save Flow', () => {
   test.skip('should save diary with mood and text', async ({ page }) => {
     await page.goto('/today')

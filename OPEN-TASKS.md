@@ -1,7 +1,7 @@
 # DAYO Open Tasks
 
-**Last Updated:** February 3, 2026
-**Status:** Core app complete, Kids/Adults mode shipped, 348 tests, deployed to production
+**Last Updated:** February 5, 2026
+**Status:** Core app complete, Kids/Adults mode shipped, Diary Export shipped, Sketch feature shipped, 409 tests, CI on PRs, deployed to production
 
 ---
 
@@ -21,6 +21,10 @@
 | Tests | 262 tests - unit, component, integration | Jan 29 |
 | Fixes | Dark mode, custom backgrounds, habits nav | Jan 29 |
 | Task 26 | Haptic Feedback - native iOS haptics via @capacitor/haptics | Feb 3 |
+| Task 24 | Camera Integration - native camera, photo upload, gallery UI, iOS permissions | Feb 3 |
+| Task 22a | DiaryPreviewCard inline writing - textarea, auto-save on blur, arrow to modal | Feb 4 |
+| Task 22b | Diary Entry Export - 3 templates (Journal, Gratitude, Highlights), share from modal & preview card | Feb 4 |
+| Task 22j | Sketch/Drawing in Diary - inline canvas in editor toolbar, pen/eraser, colors, brush sizes, auto-save | Feb 5 |
 
 ---
 
@@ -31,14 +35,14 @@
 | # | Task | Description | Size |
 |---|------|-------------|------|
 | 21 | **Improve Landing Page** | Better visuals, animated demos, social proof, trust elements | L |
-| 22 | **Diary Capabilities** | Rich text, templates, mood insights, search, summaries | XL |
+| 22 | **Diary Capabilities** | Rich text, templates, mood insights, search, summaries (inline writing ✅) | XL |
 
 ### HIGH Priority - App Store Preparation (Native Features)
 
 | # | Task | Description | Size | Blocks |
 |---|------|-------------|------|--------|
 | 23 | **Push Notifications** | Daily reminders via Capacitor Push + Supabase Edge Functions | L | App Store |
-| 24 | **Camera Integration** | Photo capture for diary entries via Capacitor Camera plugin | M | App Store |
+| ~~24~~ | ~~**Camera Integration**~~ | ~~Photo capture for diary entries via Capacitor Camera plugin~~ | ~~M~~ | ✅ Done |
 | 25 | **Offline Support** | Service worker + local storage cache for offline diary/tasks | L | App Store |
 | ~~26~~ | ~~**Haptic Feedback**~~ | ~~Native haptics on task complete, mood select, streak milestone~~ | ~~S~~ | ✅ Done |
 | 27 | **Biometric Lock** | Face ID / Touch ID to protect private diary entries | M | App Store |
@@ -53,6 +57,21 @@
 | 31 | **App Store Metadata** | Screenshots, description, keywords, categories, pricing | M | 28 |
 | 32 | **TestFlight Beta** | Archive, upload, beta test with real devices | M | 29, 30 |
 | 33 | **App Store Submission** | Final review, submit for Apple review | S | 31, 32 |
+
+### HIGH Priority - Diary Capabilities (Task 22)
+
+| # | Task | Description | Size |
+|---|------|-------------|------|
+| 22a | ~~Inline Writing~~ | ~~DiaryPreviewCard textarea, auto-save on blur~~ | ✅ Done |
+| 22b | ~~Diary Entry Export~~ | ~~Share diary as styled card (3 templates, 3 styles, 2 formats)~~ | ✅ Done |
+| 22j | ~~Sketch/Drawing~~ | ~~Inline canvas in editor toolbar, pen/eraser, 8 colors, 4 brush sizes, kids mode~~ | ✅ Done |
+| 22c | Voice-to-Text Entry | Record voice memo, transcribe to diary text | L |
+| 22d | Custom Templates | Users create/save their own structured templates | M |
+| 22e | Daily Writing Goals | Word count goals, progress bar, streak milestones | S |
+| 22f | Weekly Digest | Auto-generated weekly summary of entries, moods, highlights | M |
+| 22g | Mood Correlations | Show mood vs tags/writing length/gratitude patterns | M |
+| 22h | Diary Timeline View | Scrollable timeline of past entries with previews | M |
+| 22i | Guided Journaling Flows | Step-by-step reflection prompts | M |
 
 ### MEDIUM Priority - Enhanced Features
 
@@ -293,7 +312,7 @@
 
 ### Phase B: Native Features (iOS)
 7. ~~**Task 26** - Haptic Feedback~~ ✅
-8. **Task 24** - Camera Integration
+8. ~~**Task 24** - Camera Integration~~ ✅
 9. **Task 23** - Push Notifications
 10. **Task 25** - Offline Support
 11. **Task 27** - Biometric Lock
