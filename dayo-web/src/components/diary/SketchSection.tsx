@@ -15,7 +15,7 @@ interface SketchSectionProps {
 
 export default function SketchSection({
   isOpen,
-  initialSketchUrl: _initialSketchUrl, // Reserved for future use
+  // initialSketchUrl - Reserved for future use when loading existing sketches
   onSketchChange,
   onClose,
   mood,
