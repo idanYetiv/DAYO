@@ -171,3 +171,89 @@
 .dark .hover\:bg-dayo-gray-100:hover {
   background-color: rgb(75 85 99) !important;
 }
+
+/* Theme Color Overrides */
+:root {
+  --dayo-primary: #8B5CF6;
+  --dayo-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+}
+
+/* Blue theme */
+[data-theme="blue"] .bg-dayo-purple {
+  background-color: #3B82F6 !important;
+}
+[data-theme="blue"] .text-dayo-purple {
+  color: #3B82F6 !important;
+}
+[data-theme="blue"] .border-dayo-purple {
+  border-color: #3B82F6 !important;
+}
+[data-theme="blue"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%) !important;
+}
+[data-theme="blue"] .ring-dayo-purple {
+  --tw-ring-color: #3B82F6 !important;
+}
+[data-theme="blue"] .focus\:ring-dayo-purple\/20:focus {
+  --tw-ring-color: rgb(59 130 246 / 0.2) !important;
+}
+
+/* Green theme */
+[data-theme="green"] .bg-dayo-purple {
+  background-color: #10B981 !important;
+}
+[data-theme="green"] .text-dayo-purple {
+  color: #10B981 !important;
+}
+[data-theme="green"] .border-dayo-purple {
+  border-color: #10B981 !important;
+}
+[data-theme="green"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #10B981 0%, #84CC16 100%) !important;
+}
+[data-theme="green"] .ring-dayo-purple {
+  --tw-ring-color: #10B981 !important;
+}
+[data-theme="green"] .focus\:ring-dayo-purple\/20:focus {
+  --tw-ring-color: rgb(16 185 129 / 0.2) !important;
+}
+
+/* Orange theme */
+[data-theme="orange"] .bg-dayo-purple {
+  background-color: #F97316 !important;
+}
+[data-theme="orange"] .text-dayo-purple {
+  color: #F97316 !important;
+}
+[data-theme="orange"] .border-dayo-purple {
+  border-color: #F97316 !important;
+}
+[data-theme="orange"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #F97316 0%, #FBBF24 100%) !important;
+}
+[data-theme="orange"] .ring-dayo-purple {
+  --tw-ring-color: #F97316 !important;
+}
+[data-theme="orange"] .focus\:ring-dayo-purple\/20:focus {
+  --tw-ring-color: rgb(249 115 22 / 0.2) !important;
+}
+
+/* Pink theme */
+[data-theme="pink"] .bg-dayo-purple {
+  background-color: #EC4899 !important;
+}
+[data-theme="pink"] .text-dayo-purple {
+  color: #EC4899 !important;
+}
+[data-theme="pink"] .border-dayo-purple {
+  border-color: #EC4899 !important;
+}
+[data-theme="pink"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #EC4899 0%, #F472B6 100%) !important;
+}
+[data-theme="pink"] .ring-dayo-purple {
+  --tw-ring-color: #EC4899 !important;
+}
+[data-theme="pink"] .focus\:ring-dayo-purple\/20:focus {
+  --tw-ring-color: rgb(236 72 153 / 0.2) !important;
+}

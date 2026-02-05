@@ -310,7 +310,17 @@ export default function SettingsPage() {
       {showPasswordModal && (
         <ChangePasswordModal
           onClose={() => setShowPasswordModal(false)}
-          onSubmit={changePassword.mutate}
+          onSubmit={(password) => {
+            changePassword.mutate(password, {
+              onSuccess: () => {
+                toast.success('Password changed successfully')
+                setShowPasswordModal(false)
+              },
+              onError: () => {
+                toast.error('Failed to change password')
+              }
+            })
+          }}
           isLoading={changePassword.isPending}
         />
       )}
@@ -493,8 +503,6 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
       return
     }
     onSubmit(password)
-    toast.success('Password changed successfully')
-    onClose()
   }
 
   return (
