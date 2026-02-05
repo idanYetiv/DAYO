@@ -140,7 +140,7 @@ describe('Settings Page Features', () => {
     it('should reject non-matching passwords', () => {
       const password = 'password123'
       const confirmPassword = 'password456'
-      expect(password === confirmPassword).toBe(false)
+      expect(password).not.toBe(confirmPassword)
     })
   })
 
@@ -152,7 +152,7 @@ describe('Settings Page Features', () => {
 
     it('should reject incorrect confirmation text', () => {
       const confirmText = 'delete'
-      expect(confirmText === 'DELETE').toBe(false)
+      expect(confirmText).not.toBe('DELETE')
     })
   })
 
