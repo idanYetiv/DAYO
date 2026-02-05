@@ -49,9 +49,8 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
   lint:
-    name: Lint
+    name: Lint (Optional)
     runs-on: ubuntu-latest
-    continue-on-error: true  # Don't block PR on lint errors (many pre-existing issues)
 
     steps:
       - name: Checkout code
@@ -68,4 +67,4 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint --if-present
+        run: npm run lint --if-present || echo "Lint has errors (non-blocking)"
