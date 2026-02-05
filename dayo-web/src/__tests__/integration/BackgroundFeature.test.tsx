@@ -1,56 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-// Mock supabase
-const mockGetUser = vi.fn()
-const mockSelect = vi.fn()
-const mockUpdate = vi.fn()
-const mockEq = vi.fn()
-const mockSingle = vi.fn()
-
-vi.mock('../../lib/supabase', () => ({
-  supabase: {
-    auth: {
-      getUser: () => mockGetUser(),
-    },
-    from: () => ({
-      select: () => ({
-        eq: () => ({
-          single: () => mockSingle(),
-        }),
-      }),
-      update: () => ({
-        eq: () => ({
-          select: () => ({
-            single: () => mockUpdate(),
-          }),
-        }),
-      }),
-    }),
-  },
-}))
-
-// Mock sonner toast
-vi.mock('sonner', () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn(),
-  },
-}))
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 
 describe('Background Feature', () => {
-  let queryClient: QueryClient
-
   beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    })
-    vi.clearAllMocks()
-
     // Reset body styles
     document.body.style.backgroundImage = ''
     document.body.style.backgroundSize = ''
@@ -59,7 +10,6 @@ describe('Background Feature', () => {
   })
 
   afterEach(() => {
-    queryClient.clear()
     // Clean up body styles
     document.body.style.backgroundImage = ''
     document.body.style.backgroundSize = ''
