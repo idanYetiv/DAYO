@@ -30,6 +30,30 @@ export function generateFilename(
   return `dayo-${dateStr}-${format}.png`
 }
 
+// Generate filename for diary export
+export function generateDiaryFilename(
+  date: string,
+  format: 'story' | 'post'
+): string {
+  const dateStr = date.replace(/-/g, '')
+  return `dayo-diary-${dateStr}-${format}.png`
+}
+
+// Strip HTML tags and collapse whitespace to plain text
+export function stripToPlainText(html: string): string {
+  if (!html) return ''
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 // Style configurations
 export const styleConfigs = {
   playful: {

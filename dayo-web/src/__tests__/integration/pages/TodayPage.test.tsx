@@ -220,8 +220,9 @@ describe('TodayPage Integration', () => {
   it('should display mood emoji when mood is set', () => {
     render(<TodayPage />)
 
-    // Happy mood should show the emoji
-    expect(screen.getByText('🥰')).toBeInTheDocument()
+    // Happy mood should show the emoji (may appear in multiple places)
+    const moodEmojis = screen.getAllByText('🥰')
+    expect(moodEmojis.length).toBeGreaterThanOrEqual(1)
   })
 
   it('should display task completion percentage', () => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, Moon, Sun, Flame, Share2 } from 'lucide-react'
@@ -17,7 +17,10 @@ import HabitsSection from '../components/planner/HabitsSection'
 import QuickAccessCards from '../components/ui/QuickAccessCards'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import DiaryEntryModal from '../components/diary/DiaryEntryModal'
+import DiaryPreviewCard from '../components/diary/DiaryPreviewCard'
 import ExportModal from '../components/export/ExportModal'
+import DiaryExportModal from '../components/export/DiaryExportModal'
+import { stripToPlainText } from '../lib/exportUtils'
 import StreakDisplay from '../components/kids/StreakDisplay'
 
 export default function TodayPage() {
@@ -27,12 +30,19 @@ export default function TodayPage() {
   const [selectedMood, setSelectedMood] = useState<string>('')
   const [showDiaryModal, setShowDiaryModal] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
+  const [showDiaryExportModal, setShowDiaryExportModal] = useState(false)
   const [diaryText, setDiaryText] = useState('')
 
   const { notification } = useHaptics()
   const { isKidsMode } = useProfileMode()
-  const { moodEmojis } = useContentForMode()
+  const { moodEmojis, diaryPrompts } = useContentForMode()
   const greetingText = useGreeting()
+
+  // Pick a random diary prompt, stable per session
+  const diaryPrompt = useMemo(
+    () => diaryPrompts.suggestions[Math.floor(Math.random() * diaryPrompts.suggestions.length)],
+    [diaryPrompts.suggestions]
+  )
 
   const today = format(selectedDate, 'yyyy-MM-dd')
 
@@ -114,7 +124,26 @@ export default function TodayPage() {
     })
   }
 
-  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[]; tags: string[]; templateId?: string | null }) => {
+  const handleQuickSaveDiary = (text: string) => {
+    setDiaryText(text)
+    if (user) {
+      upsertDayEntry.mutate(
+        {
+          date: today,
+          diaryText: text,
+        },
+        {
+          onSuccess: () => {
+            diaryToast.saved()
+            updateStreak.mutate(userId)
+          },
+          onError: () => diaryToast.error(),
+        }
+      )
+    }
+  }
+
+  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[]; tags: string[]; sketchUrl?: string | null; templateId?: string | null }) => {
     setSelectedMood(data.mood)
     setDiaryText(data.text)
     if (user) {
@@ -250,6 +279,20 @@ export default function TodayPage() {
           isCreating={createTask.isPending}
         />
 
+        {/* Diary Preview Card */}
+        <DiaryPreviewCard
+          diaryText={diaryText}
+          mood={moodEmoji}
+          gratitudeCount={dayEntry?.gratitude?.length || 0}
+          photosCount={dayEntry?.photos?.length || 0}
+          highlightsCount={dayEntry?.highlights?.length || 0}
+          prompt={diaryPrompt}
+          onOpen={() => setShowDiaryModal(true)}
+          onSave={handleQuickSaveDiary}
+          isKidsMode={isKidsMode}
+          onShare={stripToPlainText(diaryText).length > 0 ? () => setShowDiaryExportModal(true) : undefined}
+        />
+
         {/* Habits Section */}
         <HabitsSection onViewAll={() => navigate('/habits')} />
 
@@ -270,6 +313,7 @@ export default function TodayPage() {
         initialPhotos={dayEntry?.photos || []}
         initialGratitude={dayEntry?.gratitude || []}
         initialHighlights={dayEntry?.highlights || []}
+        initialSketchUrl={dayEntry?.sketch_url}
         onSave={handleSaveDiary}
         isSaving={upsertDayEntry.isPending}
       />
@@ -287,6 +331,22 @@ export default function TodayPage() {
           tasksCompleted: completedTasks,
           totalTasks: tasks.length,
           streak: currentStreak,
+        }}
+      />
+
+      {/* Diary Export Modal */}
+      <DiaryExportModal
+        isOpen={showDiaryExportModal}
+        onClose={() => setShowDiaryExportModal(false)}
+        data={{
+          date: today,
+          dayOfWeek: format(selectedDate, 'EEEE'),
+          mood: selectedMood || 'okay',
+          moodEmoji: moodEmojis[selectedMood] || '😊',
+          diaryText: stripToPlainText(diaryText),
+          gratitude: dayEntry?.gratitude || [],
+          highlights: dayEntry?.highlights || [],
+          tags: dayEntry?.tags || [],
         }}
       />
     </div>

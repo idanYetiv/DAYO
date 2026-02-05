@@ -22,6 +22,25 @@ export interface ExportData {
   streak: number
 }
 
+// Diary export types
+export type DiaryExportTemplate = 'diaryPage' | 'gratitudeCard' | 'highlightReel'
+
+export interface DiaryExportData {
+  date: string
+  dayOfWeek: string
+  mood: string
+  moodEmoji: string
+  diaryText: string
+  gratitude: string[]
+  highlights: DiaryHighlight[]
+  tags: string[]
+}
+
+interface DiaryHighlight {
+  emoji: string
+  text: string
+}
+
 // Dimensions for each format
 export const EXPORT_DIMENSIONS = {
   story: { width: 1080, height: 1920 },
