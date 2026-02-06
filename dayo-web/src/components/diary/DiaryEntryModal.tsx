@@ -266,13 +266,13 @@ export default function DiaryEntryModal({
   // Shared editor card for freewrite mode
   const editorCard = (
     <WritingAtmosphere mood={selectedMood}>
-      <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 min-h-[200px] flex flex-col relative z-10">
+      <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 min-h-[300px] md:min-h-[400px] flex flex-col flex-grow relative z-10">
         <div className="flex items-center gap-2 text-dayo-gray-400 mb-4 flex-shrink-0">
           <Calendar className="w-4 h-4" />
           <span className="text-sm">{format(date, 'EEEE, MMMM d, yyyy')}</span>
         </div>
         <Suspense fallback={
-          <div className="flex-1 flex items-center justify-center min-h-[150px]">
+          <div className="flex-1 flex items-center justify-center min-h-[200px]">
             <Loader2 className="w-5 h-5 animate-spin text-dayo-gray-400" />
           </div>
         }>

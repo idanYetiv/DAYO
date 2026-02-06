@@ -2,10 +2,18 @@
 
 .ProseMirror {
   outline: none;
-  min-height: 150px;
+  min-height: 250px;
   font-size: 1rem;
   line-height: 1.75;
   color: #334155; /* dayo-gray-700 */
+  flex: 1;
+}
+
+/* Smaller editor on mobile for space efficiency */
+@media (max-width: 640px) {
+  .ProseMirror {
+    min-height: 200px;
+  }
 }
 
 .ProseMirror p {
