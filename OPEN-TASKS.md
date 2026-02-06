@@ -1,7 +1,44 @@
 # DAYO Open Tasks
 
-**Last Updated:** February 5, 2026
-**Status:** Core app complete, Kids/Adults mode shipped, Diary Export shipped, Sketch feature shipped, 460 tests, CI on PRs with branch protection, deployed to production
+**Last Updated:** February 6, 2026
+**Status:** Core app complete, Push notifications deployed, 504 tests, CI on PRs
+
+---
+
+## iOS App Store Launch Checklist
+
+### Phase 1: Complete Native Features
+
+| # | Task | Status | Blocking |
+|---|------|--------|----------|
+| 23 | Push Notifications | ✅ Done | Needs device test |
+| 25 | Offline Support | ❌ Open | Critical for UX |
+| 27 | Biometric Lock | ❌ Open | Nice to have |
+
+### Phase 2: App Store Requirements
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 28 | App Icons & Branding | ⏳ In Progress | User creating logo |
+| 29 | Privacy & Permissions | ❌ Open | Privacy manifest required |
+| 30 | Code Signing & Profiles | ⚠️ Partial | Device registered, Xcode issue |
+| 31 | App Store Metadata | ❌ Open | Screenshots, description |
+
+### Phase 3: Testing & Submission
+
+| # | Task | Status | Depends On |
+|---|------|--------|------------|
+| 32 | TestFlight Beta | ❌ Open | 28, 29, 30 |
+| 33 | App Store Submission | ❌ Open | 32 |
+
+### Critical Path to App Store
+
+```
+Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ──▶ Submit
+              ⏳              ❌                  ❌            ❌
+```
+
+**Estimated remaining:** 4-5 major tasks
 
 ---
 
@@ -9,254 +46,137 @@
 
 | Task | Description | Date |
 |------|-------------|------|
-| Task 0 | Initial setup (Vite, React, TS, Tailwind, routing) | Jan 3 |
-| Task 1 | Supabase setup & database migration | Jan 3 |
-| Task 2-4 | Database hooks (Tasks, Diary, UserStats) | Jan 3 |
-| Task 5-8 | TodayPage, Dashboard, Calendar with real data | Jan 17 |
-| Task 11-12 | Streak system, Toast notifications | Jan 17 |
-| Task 19 | Instagram Export (3 templates, 3 styles, 2 formats) | Jan 18 |
-| Task 9-10 | AI Integration + Chat UI | Jan 19 |
-| iOS | Capacitor setup for App Store | Jan 29 |
-| Kids Mode | All 8 phases - profile, theme, content, components, onboarding, landing | Jan 29 |
-| Tests | 262 tests - unit, component, integration | Jan 29 |
-| Fixes | Dark mode, custom backgrounds, habits nav | Jan 29 |
-| Task 26 | Haptic Feedback - native iOS haptics via @capacitor/haptics | Feb 3 |
-| Task 24 | Camera Integration - native camera, photo upload, gallery UI, iOS permissions | Feb 3 |
-| Task 22a | DiaryPreviewCard inline writing - textarea, auto-save on blur, arrow to modal | Feb 4 |
-| Task 22b | Diary Entry Export - 3 templates (Journal, Gratitude, Highlights), share from modal & preview card | Feb 4 |
-| Task 22j | Sketch/Drawing in Diary - inline canvas in editor toolbar, pen/eraser, colors, brush sizes, auto-save | Feb 5 |
-| CI/CD | GitHub Actions workflow - runs tests on PRs, feature branch workflow | Feb 5 |
-| Background Fix | Custom backgrounds now visible through page containers, transparent overlays | Feb 5 |
-| Settings Fix | Theme color now applies to UI (5 colors), password modal feedback fixed | Feb 5 |
-| Tests | Added 51 new tests (Settings page 27, Background feature 24) - total 460 | Feb 5 |
+| Core App | Tasks, Diary, Calendar, Dashboard, Auth | Jan 3-17 |
+| AI + Export | AI Assistant, Instagram Export, Streaks | Jan 18-19 |
+| iOS Setup | Capacitor, Xcode project | Jan 29 |
+| Kids Mode | Profile types, themes, content, onboarding | Jan 29 |
+| Tests | 504 tests - unit, component, integration, E2E | Jan 29 |
+| Haptic Feedback | @capacitor/haptics integration | Feb 3 |
+| Camera Integration | Native camera, photo upload, gallery | Feb 3 |
+| Diary Enhancements | Inline writing, sketching, export templates | Feb 4-5 |
+| CI/CD | GitHub Actions, branch protection | Feb 5 |
+| Swipe Navigation | Day-to-day swipe gestures | Feb 6 |
+| AI Milestones | Word count milestones, celebrations | Feb 6 |
+| AI Daily Insights | Mood-based insights after save | Feb 6 |
+| Push Notifications | APNs, Edge Function, cron job | Feb 6 |
 
 ---
 
-## Open Tasks - Full Backlog
+## Open Tasks - Prioritized
 
-### HIGH Priority - Product Growth
+### HIGH Priority - iOS Launch Blockers
 
-| # | Task | Description | Size |
-|---|------|-------------|------|
-| 21 | **Improve Landing Page** | Better visuals, animated demos, social proof, trust elements | L |
-| 22 | **Diary Capabilities** | Rich text, templates, mood insights, search, summaries (inline writing ✅) | XL |
-
-### HIGH Priority - App Store Preparation (Native Features)
-
-| # | Task | Description | Size | Blocks |
+| # | Task | Description | Size | Status |
 |---|------|-------------|------|--------|
-| 23 | **Push Notifications** | Daily reminders via Capacitor Push + Supabase Edge Functions | L | App Store |
-| ~~24~~ | ~~**Camera Integration**~~ | ~~Photo capture for diary entries via Capacitor Camera plugin~~ | ~~M~~ | ✅ Done |
-| 25 | **Offline Support** | Service worker + local storage cache for offline diary/tasks | L | App Store |
-| ~~26~~ | ~~**Haptic Feedback**~~ | ~~Native haptics on task complete, mood select, streak milestone~~ | ~~S~~ | ✅ Done |
-| 27 | **Biometric Lock** | Face ID / Touch ID to protect private diary entries | M | App Store |
+| 28 | **App Icons & Branding** | 1024x1024 icon, splash screen, all sizes | M | ⏳ User creating |
+| 29 | **Privacy & Permissions** | PrivacyInfo.xcprivacy, Info.plist, privacy policy | M | ❌ |
+| 30 | **Code Signing** | Certificates, provisioning profiles (Xcode update needed) | M | ⚠️ Blocked |
+| 31 | **App Store Metadata** | Screenshots, description, keywords | M | ❌ |
+| 32 | **TestFlight Beta** | Archive, upload, beta test | M | ❌ |
+| 33 | **App Store Submit** | Final review, submit | S | ❌ |
 
-### HIGH Priority - App Store Submission
-
-| # | Task | Description | Size | Depends On |
-|---|------|-------------|------|------------|
-| 28 | **App Icons & Branding** | Generate all required icon sizes, branded splash screen | M | - |
-| 29 | **Privacy & Permissions** | Privacy manifest, Info.plist permissions, privacy policy page | M | 23, 24 |
-| 30 | **Code Signing & Profiles** | Apple Developer account, certificates, provisioning profiles | M | - |
-| 31 | **App Store Metadata** | Screenshots, description, keywords, categories, pricing | M | 28 |
-| 32 | **TestFlight Beta** | Archive, upload, beta test with real devices | M | 29, 30 |
-| 33 | **App Store Submission** | Final review, submit for Apple review | S | 31, 32 |
-
-### HIGH Priority - Diary Capabilities (Task 22)
+### HIGH Priority - User Experience
 
 | # | Task | Description | Size |
 |---|------|-------------|------|
-| 22a | ~~Inline Writing~~ | ~~DiaryPreviewCard textarea, auto-save on blur~~ | ✅ Done |
-| 22b | ~~Diary Entry Export~~ | ~~Share diary as styled card (3 templates, 3 styles, 2 formats)~~ | ✅ Done |
-| 22j | ~~Sketch/Drawing~~ | ~~Inline canvas in editor toolbar, pen/eraser, 8 colors, 4 brush sizes, kids mode~~ | ✅ Done |
-| 22c | Voice-to-Text Entry | Record voice memo, transcribe to diary text | L |
-| 22d | Custom Templates | Users create/save their own structured templates | M |
-| 22e | Daily Writing Goals | Word count goals, progress bar, streak milestones | S |
-| 22f | Weekly Digest | Auto-generated weekly summary of entries, moods, highlights | M |
-| 22g | Mood Correlations | Show mood vs tags/writing length/gratitude patterns | M |
-| 22h | Diary Timeline View | Scrollable timeline of past entries with previews | M |
-| 22i | Guided Journaling Flows | Step-by-step reflection prompts | M |
+| 25 | **Offline Support** | Service worker, local cache, sync queue | L |
+| 27 | **Biometric Lock** | Face ID / Touch ID for privacy | M |
 
-### MEDIUM Priority - Enhanced Features
+### MEDIUM Priority - Product Growth
 
 | # | Task | Description | Size |
 |---|------|-------------|------|
-| 14 | Image Upload | Supabase storage for diary photos (web) | M |
-| 17 | Demo Data Seeder | Script to populate test data | S |
-| 20 | Direct Instagram API | Post directly to Instagram | L |
+| 21 | **Landing Page Improvements** | Better visuals, demos, social proof | L |
+| 22c | **Voice-to-Text** | Record and transcribe diary entries | L |
+| 22d | **Custom Templates** | User-created diary templates | M |
+| 22e | **Daily Writing Goals** | Word count targets, progress bar | S |
+| 22f | **Weekly Digest** | Auto-generated weekly summary | M |
+| 22g | **Mood Correlations** | Mood vs activity patterns | M |
+| 22h | **Diary Timeline** | Scrollable timeline view | M |
+| 22i | **Guided Journaling** | Step-by-step prompts | M |
 
-### MEDIUM Priority - UX Design
+### MEDIUM Priority - Technical
 
 | # | Task | Description | Size |
 |---|------|-------------|------|
-| 34 | **Background/Theme UX Design** | UX expert to plan proper styling when custom backgrounds are applied - align headers, cards, overlays, readability. Currently functional but visually inconsistent. Consider if theme/background/dark mode should be separate or unified. | M |
+| 34 | **Error Tracking** | Sentry integration | S |
+| 35 | **Analytics** | User behavior tracking | M |
+| 36 | **Bundle Optimization** | Reduce JS bundle size | M |
+| 37 | **HTML Sanitization** | Sanitize diary content (security) | S |
 
 ### LOW Priority - Polish
 
 | # | Task | Description | Size |
 |---|------|-------------|------|
 | 13 | Loading Skeletons | Shimmer loading states | S |
-| 15 | Keyboard Shortcuts | Cmd+K, Cmd+D shortcuts | S |
+| 15 | Keyboard Shortcuts | Cmd+K, Cmd+D | S |
 | 16 | Animations | Framer Motion transitions | M |
-| 18 | Update README | Screenshots, docs, deployment guide | S |
+| 17 | Demo Data Seeder | Populate test data | S |
+| 18 | Update README | Screenshots, docs | S |
+| 20 | Direct Instagram API | Post directly to Instagram | L |
 
 ---
 
-## Detailed Task Breakdown - New Tasks
-
-### Task 23: Push Notifications
-**Priority:** HIGH (required for App Store)
-**Size:** L
-
-**What to do:**
-1. Install `@capacitor/push-notifications`
-2. Configure APNs (Apple Push Notification service)
-3. Create Supabase Edge Function for sending notifications
-4. Add notification preferences in Settings (already has toggle UI)
-5. Implement daily reminder at user's preferred time
-6. Notification types: daily reminder, streak at risk, weekly summary
-
-**Acceptance Criteria:**
-- [ ] Push permission prompt on first open
-- [ ] Daily reminder notification at set time
-- [ ] Streak at risk notification (if no activity by evening)
-- [ ] Notification settings toggle works
-- [ ] Works on physical iOS device
-
----
-
-### Task 24: Camera Integration
-**Priority:** HIGH (required for App Store)
-**Size:** M
-
-**What to do:**
-1. Install `@capacitor/camera`
-2. Add camera capture button in diary entry
-3. Add photo library picker
-4. Compress images before upload
-5. Store photos in Supabase Storage
-6. Display photos in diary entries
-7. Add NSCameraUsageDescription to Info.plist
-
-**Acceptance Criteria:**
-- [ ] Camera opens from diary
-- [ ] Photo library picker works
-- [ ] Photos display in diary entry
-- [ ] Photos persist across sessions
-- [ ] Works on physical iOS device
-
----
+## Detailed Task Descriptions
 
 ### Task 25: Offline Support
-**Priority:** HIGH (required for App Store)
+**Priority:** HIGH
 **Size:** L
+**Why:** Users expect mobile apps to work offline
 
-**What to do:**
+**Implementation:**
 1. Install `@capacitor/preferences` for local storage
-2. Cache today's tasks and diary locally
+2. Cache today's tasks and diary in local storage
 3. Queue mutations when offline
 4. Sync when connection returns
 5. Show offline indicator in UI
-6. Service worker for web (Vite PWA plugin)
+6. Add Vite PWA plugin for web
 
 **Acceptance Criteria:**
 - [ ] Can view today's tasks offline
-- [ ] Can add tasks offline (syncs later)
-- [ ] Can write diary offline (syncs later)
+- [ ] Can add/edit tasks offline
+- [ ] Can write diary offline
+- [ ] Changes sync when online
 - [ ] Offline indicator visible
-- [ ] No data loss on reconnection
-
----
-
-### Task 26: Haptic Feedback
-**Priority:** HIGH (required for App Store)
-**Size:** S
-
-**What to do:**
-1. Install `@capacitor/haptics`
-2. Add haptic feedback to:
-   - Task completion (success haptic)
-   - Mood selection (light impact)
-   - Streak milestone (heavy impact)
-   - Delete actions (warning haptic)
-3. Create `useHaptics()` hook
-4. No-op on web (graceful degradation)
-
-**Acceptance Criteria:**
-- [ ] Haptic on task complete
-- [ ] Haptic on mood select
-- [ ] Haptic on streak celebration
-- [ ] No errors on web
 
 ---
 
 ### Task 27: Biometric Lock
-**Priority:** HIGH (nice for App Store)
+**Priority:** HIGH (nice for privacy)
 **Size:** M
 
-**What to do:**
-1. Use `@capacitor-community/biometric-auth` or native plugin
+**Implementation:**
+1. Use `@capacitor-community/biometric-auth`
 2. Add "Lock with Face ID" toggle in Settings
-3. Require biometric auth on app open (when enabled)
+3. Require biometric on app open when enabled
 4. Fallback to device passcode
 5. Add NSFaceIDUsageDescription to Info.plist
 
 **Acceptance Criteria:**
-- [ ] Face ID / Touch ID prompt on app open
-- [ ] Toggle in settings to enable/disable
-- [ ] Passcode fallback works
+- [ ] Face ID prompt on app open
+- [ ] Settings toggle works
+- [ ] Passcode fallback
 - [ ] Graceful degradation on web
 
 ---
 
-### Task 28: App Icons & Branding
-**Priority:** HIGH
-**Size:** M
-
-**What to do:**
-1. Design DAYO app icon (or use existing "D" logo)
-2. Generate all required sizes:
-   - 1024x1024 (App Store)
-   - 180x180 (iPhone @3x)
-   - 120x120 (iPhone @2x)
-   - 167x167 (iPad Pro)
-   - 152x152 (iPad)
-   - 76x76 (iPad mini)
-   - 40x40 (Spotlight)
-   - 29x29 (Settings)
-3. Replace Capacitor default splash screen with branded version
-4. Test on multiple device sizes
-
----
-
 ### Task 29: Privacy & Permissions
-**Priority:** HIGH
+**Priority:** HIGH (required for App Store)
 **Size:** M
 
-**What to do:**
-1. Create PrivacyInfo.xcprivacy manifest
-2. Update Info.plist with:
-   - NSCameraUsageDescription
-   - NSPhotoLibraryUsageDescription
-   - NSFaceIDUsageDescription
-   - NSUserTrackingUsageDescription (if needed)
+**Implementation:**
+1. Create `PrivacyInfo.xcprivacy` manifest
+2. Update Info.plist:
+   - NSCameraUsageDescription ✅ (already added)
+   - NSPhotoLibraryUsageDescription ✅ (already added)
+   - NSFaceIDUsageDescription (for Task 27)
+   - NSUserTrackingUsageDescription (if analytics added)
 3. Create privacy policy page (web URL)
-4. Add privacy policy URL to Info.plist
-5. Declare data collection practices for App Store
+4. Declare data collection in App Store Connect
 
----
-
-### Task 30: Code Signing & Profiles
-**Priority:** HIGH
-**Size:** M
-**Prerequisites:** Apple Developer account ($99/year)
-
-**What to do:**
-1. Create App ID in Apple Developer portal (app.dayo.web)
-2. Generate iOS Distribution Certificate
-3. Create App Store provisioning profile
-4. Configure Xcode with Team ID and manual signing
-5. Test archive build locally
+**Files to create:**
+- `ios/App/App/PrivacyInfo.xcprivacy`
+- `src/pages/PrivacyPolicyPage.tsx` (or external URL)
 
 ---
 
@@ -264,83 +184,100 @@
 **Priority:** HIGH
 **Size:** M
 
-**What to do:**
-1. Create App Store Connect listing
-2. Write app description (short + long)
-3. Define keywords and categories (Lifestyle / Productivity)
-4. Capture screenshots on multiple device sizes:
-   - iPhone 6.7" (iPhone 15 Pro Max)
-   - iPhone 6.1" (iPhone 15)
-   - iPad Pro 12.9"
-5. Set pricing (Free)
-6. Set age rating
-7. Define territories
+**Required:**
+- App name: DAYO
+- Subtitle: Your Day. Your Story. Your Growth.
+- Description (short + long)
+- Keywords: diary, journal, mood, habits, goals, planner
+- Category: Lifestyle / Productivity
+- Age rating: 4+
+- Price: Free
+
+**Screenshots needed:**
+- iPhone 6.7" (iPhone 15 Pro Max)
+- iPhone 6.1" (iPhone 15)
+- iPad Pro 12.9" (optional)
+
+**Screens to capture:**
+1. Today page with tasks
+2. Diary entry with mood
+3. Dashboard with streaks
+4. Goals page
+5. AI Assistant
 
 ---
 
-### Task 32: TestFlight Beta
-**Priority:** HIGH
-**Size:** M
-
-**What to do:**
-1. Archive build in Xcode
-2. Upload to App Store Connect
-3. Add beta testers
-4. Test full flow on real device
-5. Fix any issues found
-6. Verify push notifications work
-7. Verify camera works
-8. Test offline mode
-
----
-
-### Task 33: App Store Submission
-**Priority:** HIGH
+### Task 34: Error Tracking (NEW)
+**Priority:** MEDIUM
 **Size:** S
 
-**What to do:**
-1. Final build with all features
-2. Complete App Store Connect review information
-3. Submit for App Review
-4. Monitor review status
-5. Respond to any rejection feedback
-6. Release to App Store
+**Implementation:**
+1. Install Sentry SDK
+2. Configure in main.tsx
+3. Add error boundaries
+4. Track unhandled exceptions
+5. Source map upload in CI
+
+---
+
+### Task 37: HTML Sanitization (NEW)
+**Priority:** MEDIUM (security)
+**Size:** S
+
+**Implementation:**
+1. Install DOMPurify
+2. Sanitize diary_text before save
+3. Sanitize on render
+4. Strip dangerous tags/attributes
 
 ---
 
 ## Recommended Order
 
-### Completed
-1. ~~Core app (Tasks, Diary, Calendar, Dashboard)~~ ✅
-2. ~~AI, Export, Streaks, Toasts~~ ✅
-3. ~~Kids/Adults Mode + Landing Page~~ ✅
-4. ~~Tests (460), Dark Mode, Backgrounds, Settings~~ ✅
+### Before App Store Submit
+1. ✅ Push Notifications (done)
+2. ⏳ App Icon (user creating)
+3. ❌ Privacy Manifest (Task 29)
+4. ❌ Xcode update + device test
+5. ❌ TestFlight (Task 32)
+6. ❌ App Store Metadata (Task 31)
+7. ❌ Submit (Task 33)
 
-### Phase A: Product Value (Web)
-5. **Task 21** - Improve Landing Page
-6. **Task 22** - Diary Capabilities
+### Post-Launch Phase 1
+1. Offline Support (Task 25)
+2. Biometric Lock (Task 27)
+3. Error Tracking (Task 34)
+4. HTML Sanitization (Task 37)
 
-### Phase B: Native Features (iOS)
-7. ~~**Task 26** - Haptic Feedback~~ ✅
-8. ~~**Task 24** - Camera Integration~~ ✅
-9. **Task 23** - Push Notifications
-10. **Task 25** - Offline Support
-11. **Task 27** - Biometric Lock
-
-### Phase C: App Store Submission
-12. **Task 28** - App Icons & Branding
-13. **Task 30** - Code Signing & Profiles
-14. **Task 29** - Privacy & Permissions
-15. **Task 31** - App Store Metadata
-16. **Task 32** - TestFlight Beta
-17. **Task 33** - App Store Submission
-
-### Phase D: Polish & Extras
-18. Task 14 - Image Upload (web)
-19. Tasks 13, 15, 16 - Loading, Shortcuts, Animations
-20. Task 17, 18 - Seeder, README
-21. Task 20 - Direct Instagram API
+### Post-Launch Phase 2
+1. Landing Page (Task 21)
+2. Voice-to-Text (Task 22c)
+3. Weekly Digest (Task 22f)
+4. Analytics (Task 35)
 
 ---
 
-*Total: 18 open tasks | Phases: A (Product) → B (Native) → C (App Store) → D (Polish)*
+## Blockers & Dependencies
+
+| Blocker | Affects | Resolution |
+|---------|---------|------------|
+| Xcode 26.2 vs iOS 26.2.1 | Device testing, TestFlight | Update Xcode |
+| App Icon design | Task 28, 31 | User creating externally |
+| Push notification test | Full validation | Needs device access |
+
+---
+
+## Quick Reference
+
+**Total Open Tasks:** 18
+**iOS Launch Critical:** 6 tasks
+**Estimated to App Store:** 4-5 tasks remaining
+
+**Priority Legend:**
+- 🔴 HIGH - Blocking App Store
+- 🟡 MEDIUM - Important for UX/growth
+- 🟢 LOW - Nice to have
+
+---
+
+*Last updated: February 6, 2026*
