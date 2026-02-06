@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, Moon, Sun, Flame, Share2 } from 'lucide-react'
@@ -10,6 +10,9 @@ import { useProfileMode } from '../hooks/useProfileMode'
 import { useContentForMode, useGreeting } from '../hooks/useContentForMode'
 import { taskToast, diaryToast } from '../lib/toast'
 import { useHaptics } from '../hooks/useHaptics'
+import { useSwipeNavigation } from '../hooks/useSwipeNavigation'
+import { useDiaryMilestones, type MilestoneInfo } from '../hooks/useDiaryMilestones'
+import { generateMilestoneCelebration, generateDailyInsight } from '../lib/openai'
 import QuoteCard from '../components/ui/QuoteCard'
 import StatsRow from '../components/ui/StatsRow'
 import TasksSection from '../components/planner/TasksSection'
@@ -20,6 +23,8 @@ import DiaryEntryModal from '../components/diary/DiaryEntryModal'
 import DiaryPreviewCard from '../components/diary/DiaryPreviewCard'
 import ExportModal from '../components/export/ExportModal'
 import DiaryExportModal from '../components/export/DiaryExportModal'
+import MilestoneCelebration from '../components/diary/MilestoneCelebration'
+import DailyInsightToast from '../components/diary/DailyInsightToast'
 import { stripToPlainText } from '../lib/exportUtils'
 import StreakDisplay from '../components/kids/StreakDisplay'
 
@@ -33,7 +38,13 @@ export default function TodayPage() {
   const [showDiaryExportModal, setShowDiaryExportModal] = useState(false)
   const [diaryText, setDiaryText] = useState('')
 
-  const { notification } = useHaptics()
+  // AI feedback state
+  const [celebrationMilestone, setCelebrationMilestone] = useState<MilestoneInfo | null>(null)
+  const [celebrationMessage, setCelebrationMessage] = useState('')
+  const [dailyInsight, setDailyInsight] = useState('')
+  const previousDiaryText = useRef<string>('')
+
+  const { notification, impact } = useHaptics()
   const { isKidsMode } = useProfileMode()
   const { moodEmojis, diaryPrompts } = useContentForMode()
   const greetingText = useGreeting()
@@ -53,6 +64,12 @@ export default function TodayPage() {
   // Fetch user stats for streak
   const userId = user?.id || ''
   const { data: userStats } = useUserStats(userId)
+
+  // Diary milestones hook
+  const { checkMilestones, countWords } = useDiaryMilestones({
+    userId,
+    isKidsMode,
+  })
 
   // Mutations
   const createTask = useCreateTask()
@@ -143,9 +160,12 @@ export default function TodayPage() {
     }
   }
 
-  const handleSaveDiary = (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[]; tags: string[]; sketchUrl?: string | null; templateId?: string | null }) => {
+  const handleSaveDiary = async (data: { mood: string; text: string; gratitude: string[]; highlights: DiaryHighlight[]; tags: string[]; sketchUrl?: string | null; templateId?: string | null }) => {
     setSelectedMood(data.mood)
     setDiaryText(data.text)
+    const wasNewEntry = !previousDiaryText.current && data.text
+    previousDiaryText.current = data.text
+
     if (user) {
       // Save diary text and mood
       upsertDayEntry.mutate(
@@ -155,10 +175,48 @@ export default function TodayPage() {
           diaryText: data.text,
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             diaryToast.saved()
             // Update streak on activity
             updateStreak.mutate(userId)
+
+            // Check for milestones and generate AI feedback
+            const wordCount = countWords(data.text)
+            if (wordCount >= 20) {
+              try {
+                // Check milestones
+                const milestoneResult = await checkMilestones(data.text, !!wasNewEntry)
+
+                if (milestoneResult?.newMilestone) {
+                  // Generate celebration message
+                  const message = await generateMilestoneCelebration({
+                    milestoneId: milestoneResult.newMilestone.id,
+                    milestoneTitle: milestoneResult.newMilestone.title,
+                    milestoneDescription: milestoneResult.newMilestone.description,
+                    totalEntries: milestoneResult.totalEntries,
+                    totalWords: milestoneResult.totalWords,
+                    isKidsMode,
+                  })
+                  setCelebrationMilestone(milestoneResult.newMilestone)
+                  setCelebrationMessage(message)
+                  notification('success')
+                } else {
+                  // Generate daily insight (only if no milestone)
+                  const insight = await generateDailyInsight({
+                    diaryText: data.text,
+                    mood: data.mood,
+                    gratitude: data.gratitude,
+                    highlights: data.highlights,
+                    isKidsMode,
+                  })
+                  if (insight) {
+                    setDailyInsight(insight)
+                  }
+                }
+              } catch (error) {
+                console.error('Error generating AI feedback:', error)
+              }
+            }
           },
           onError: () => diaryToast.error(),
         }
@@ -177,11 +235,24 @@ export default function TodayPage() {
     setShowDiaryModal(false)
   }
 
-  const navigateDate = (direction: 'prev' | 'next') => {
+  const navigateDate = useCallback((direction: 'prev' | 'next') => {
     const newDate = new Date(selectedDate)
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 1 : -1))
     setSelectedDate(newDate)
-  }
+  }, [selectedDate])
+
+  // Swipe navigation for day switching
+  const { handlers: swipeHandlers, isSwiping, swipeDirection, swipeProgress } = useSwipeNavigation({
+    onSwipeLeft: () => {
+      navigateDate('next')
+      impact('light')
+    },
+    onSwipeRight: () => {
+      navigateDate('prev')
+      impact('light')
+    },
+    enabled: !showDiaryModal && !showExportModal && !showDiaryExportModal,
+  })
 
   const completedTasks = tasks.filter((t) => t.completed).length
   const isToday = format(selectedDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
@@ -193,7 +264,33 @@ export default function TodayPage() {
   const moodEmoji = selectedMood ? (moodEmojis[selectedMood] || selectedMood) : null
 
   return (
-    <div className={`min-h-screen pb-24 ${isKidsMode ? 'bg-dayo-kids-yellow/10' : 'bg-dayo-gray-50'}`}>
+    <div
+      className={`min-h-screen pb-24 ${isKidsMode ? 'bg-dayo-kids-yellow/10' : 'bg-dayo-gray-50'} relative`}
+      {...swipeHandlers}
+    >
+      {/* Swipe Edge Indicators */}
+      {isSwiping && (
+        <>
+          {/* Left edge indicator (swipe right = previous) */}
+          <div
+            className={`fixed left-0 top-0 bottom-0 w-2 transition-opacity z-50 ${
+              isKidsMode ? 'bg-dayo-kids-orange' : 'bg-dayo-purple'
+            }`}
+            style={{
+              opacity: swipeDirection === 'right' ? Math.min(Math.abs(swipeProgress), 0.8) : 0,
+            }}
+          />
+          {/* Right edge indicator (swipe left = next) */}
+          <div
+            className={`fixed right-0 top-0 bottom-0 w-2 transition-opacity z-50 ${
+              isKidsMode ? 'bg-dayo-kids-orange' : 'bg-dayo-purple'
+            }`}
+            style={{
+              opacity: swipeDirection === 'left' ? Math.min(Math.abs(swipeProgress), 0.8) : 0,
+            }}
+          />
+        </>
+      )}
       {/* Header */}
       <header className={`px-4 py-4 ${isKidsMode ? 'bg-kids-gradient' : 'bg-white'}`}>
         <div className="max-w-lg mx-auto flex items-center justify-between">
@@ -349,6 +446,29 @@ export default function TodayPage() {
           tags: dayEntry?.tags || [],
         }}
       />
+
+      {/* Milestone Celebration Modal */}
+      {celebrationMilestone && (
+        <MilestoneCelebration
+          milestone={celebrationMilestone}
+          message={celebrationMessage}
+          isKidsMode={isKidsMode}
+          onClose={() => {
+            setCelebrationMilestone(null)
+            setCelebrationMessage('')
+          }}
+        />
+      )}
+
+      {/* Daily Insight Toast */}
+      {dailyInsight && !celebrationMilestone && (
+        <DailyInsightToast
+          insight={dailyInsight}
+          moodEmoji={moodEmoji || undefined}
+          isKidsMode={isKidsMode}
+          onClose={() => setDailyInsight('')}
+        />
+      )}
     </div>
   )
 }

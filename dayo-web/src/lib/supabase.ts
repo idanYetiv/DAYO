@@ -15,6 +15,9 @@ export interface DiaryHighlight {
   text: string
 }
 
+// Milestone types for diary achievements
+export type DiaryMilestoneId = 'first_entry' | 'words_100' | 'words_1000' | 'words_10000'
+
 // Database Types (will be auto-generated later)
 export type Database = {
   public: {
@@ -104,6 +107,9 @@ export type Database = {
           current_streak: number
           longest_streak: number
           last_active_date: string | null
+          total_diary_entries: number
+          total_word_count: number
+          milestones_achieved: DiaryMilestoneId[]
           created_at: string
           updated_at: string
         }
@@ -112,6 +118,9 @@ export type Database = {
           current_streak?: number
           longest_streak?: number
           last_active_date?: string | null
+          total_diary_entries?: number
+          total_word_count?: number
+          milestones_achieved?: DiaryMilestoneId[]
           created_at?: string
           updated_at?: string
         }
@@ -120,6 +129,9 @@ export type Database = {
           current_streak?: number
           longest_streak?: number
           last_active_date?: string | null
+          total_diary_entries?: number
+          total_word_count?: number
+          milestones_achieved?: DiaryMilestoneId[]
           created_at?: string
           updated_at?: string
         }
