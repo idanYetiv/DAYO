@@ -15,6 +15,34 @@ git config user.email "idanyativ@gmail.com"
 
 ---
 
+## ⛔ CRITICAL GIT RULE - NO EXCEPTIONS
+
+**NEVER push directly to `main`. ALWAYS use a PR.**
+
+This applies to:
+- Large features
+- Small fixes
+- 1-line changes
+- Config changes
+- Documentation updates
+- EVERYTHING
+
+**Required workflow:**
+```bash
+git checkout -b fix/descriptive-name   # Create branch
+# ... make changes ...
+git add <files>
+git commit -m "fix: description"
+git push -u origin fix/descriptive-name
+gh pr create --title "..." --body "..."  # Create PR
+gh pr merge <number> --squash --delete-branch  # Merge via PR
+git checkout main && git pull  # Update local main
+```
+
+**If you push to main directly, you are breaking the user's trust.**
+
+---
+
 ## 2. Project Overview
 
 **DAYO** = "Your Day. Your Story. Your Growth."
