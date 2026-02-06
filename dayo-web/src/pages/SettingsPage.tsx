@@ -29,6 +29,7 @@ import {
   useDeleteAccount,
   useChangePassword,
 } from '../hooks/useUserProfile'
+import { usePushNotifications } from '../hooks/usePushNotifications'
 import { toast } from 'sonner'
 
 const themeColors = [
@@ -47,6 +48,7 @@ export default function SettingsPage() {
   const deleteAccount = useDeleteAccount()
   const changePassword = useChangePassword()
   const { profileType, setProfileType, isKidsMode } = useProfileMode()
+  const { requestPermission, isSupported: isPushSupported } = usePushNotifications()
 
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -64,6 +66,35 @@ export default function SettingsPage() {
       {
         onSuccess: () => {
           toast.success(`${field === 'dark_mode' ? 'Dark mode' : field === 'notifications_enabled' ? 'Notifications' : 'Daily reminder'} ${newValue ? 'enabled' : 'disabled'}`)
+        },
+        onError: () => {
+          toast.error('Failed to update setting')
+        }
+      }
+    )
+  }
+
+  // Handle notifications toggle with push permission request
+  const handleNotificationsToggle = async () => {
+    if (!profile) return
+
+    const enabling = !profile.notifications_enabled
+
+    if (enabling && isPushSupported) {
+      // Request push permission first
+      const granted = await requestPermission()
+      if (!granted) {
+        toast.error('Push notifications permission denied. Please enable in device settings.')
+        return
+      }
+    }
+
+    // Update the setting
+    updateProfile.mutate(
+      { notifications_enabled: enabling },
+      {
+        onSuccess: () => {
+          toast.success(`Notifications ${enabling ? 'enabled' : 'disabled'}`)
         },
         onError: () => {
           toast.error('Failed to update setting')
@@ -172,7 +203,8 @@ export default function SettingsPage() {
                   icon={Bell}
                   label="Push Notifications"
                   value={profile.notifications_enabled}
-                  onToggle={() => handleToggle('notifications_enabled')}
+                  onToggle={handleNotificationsToggle}
+                  description={!isPushSupported ? 'Available on mobile app' : undefined}
                   hasBorder
                 />
                 {/* Daily Reminder */}

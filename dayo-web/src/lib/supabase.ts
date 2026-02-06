@@ -264,6 +264,35 @@ export type Database = {
           created_at?: string
         }
       }
+      device_tokens: {
+        Row: {
+          id: string
+          user_id: string
+          token: string
+          platform: 'ios' | 'android' | 'web'
+          device_name: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          token: string
+          platform: 'ios' | 'android' | 'web'
+          device_name?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          token?: string
+          platform?: 'ios' | 'android' | 'web'
+          device_name?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       user_profiles: {
         Row: {
           user_id: string
