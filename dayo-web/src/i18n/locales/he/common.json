@@ -11,9 +11,12 @@
   },
   "actions": {
     "save": "שמור",
+    "saveEntry": "שמור רשומה",
+    "saveAdventure": "שמור את ההרפתקה!",
     "cancel": "ביטול",
     "delete": "מחק",
     "add": "הוסף",
+    "adding": "מוסיף...",
     "edit": "ערוך",
     "close": "סגור",
     "confirm": "אישור",
@@ -21,7 +24,12 @@
     "back": "חזרה",
     "next": "הבא",
     "skip": "דלג",
-    "upgrade": "שדרג"
+    "upgrade": "שדרג",
+    "newQuote": "ציטוט חדש",
+    "tryIt": "נסה בעצמך",
+    "keepWriting": "המשך לכתוב",
+    "keepWritingKids": "יש! המשך לכתוב!",
+    "share": "שתף"
   },
   "greetings": {
     "adult": {
@@ -34,6 +42,60 @@
       "afternoon": "היי אלוף!",
       "evening": "כל הכבוד על היום!"
     }
+  },
+  "calendar": {
+    "weekDays": ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"],
+    "weekDaysShort": ["א", "ב", "ג", "ד", "ה", "ו", "ש"]
+  },
+  "diary": {
+    "title": {
+      "adult": "היומן של היום",
+      "adultAlt": "הרהור יומי",
+      "kids": "ההרפתקה של היום",
+      "kidsAlt": "יומן הרפתקאות"
+    },
+    "openFull": "פתח את היומן המלא",
+    "wordCount": "מילה {{count}}",
+    "wordCount_plural": "{{count}} מילים",
+    "gratitudeCount": "תודה {{count}}",
+    "gratitudeCount_plural": "{{count}} תודות",
+    "photoCount": "תמונה {{count}}",
+    "photoCount_plural": "{{count}} תמונות",
+    "highlightCount": "דגש {{count}}",
+    "highlightCount_plural": "{{count}} דגשים",
+    "chooseTemplate": "בחר תבנית",
+    "howFeeling": "איך אתה מרגיש?",
+    "moodQuestion": {
+      "adult": "איך אתה מרגיש היום?",
+      "kids": "איך אתה מרגיש?"
+    }
+  },
+  "toolbar": {
+    "bold": "מודגש",
+    "italic": "נטוי",
+    "underline": "קו תחתון",
+    "heading2": "כותרת 2",
+    "heading3": "כותרת 3",
+    "bulletList": "רשימת תבליטים",
+    "orderedList": "רשימה ממוספרת",
+    "draw": {
+      "adult": "שרטוט",
+      "kids": "צייר"
+    },
+    "drawHint": {
+      "adult": "הוסף שרטוט",
+      "kids": "צייר משהו!"
+    }
+  },
+  "timeRanges": {
+    "all": "כל הזמן",
+    "week": "השבוע",
+    "month": "החודש",
+    "year": "השנה"
+  },
+  "modes": {
+    "adults": "מבוגרים",
+    "kids": "ילדים"
   },
   "toast": {
     "task": {
@@ -120,9 +182,21 @@
       "nature": "טבע"
     }
   },
+  "landing": {
+    "notJustNotes": "לא סתם עוד אפליקציית רשימות",
+    "notJustNotesDesc": "ראה איך DAYO הופך כתיבת יומן פשוטה לחוויה עשירה ומלאת תובנות.",
+    "before": "לפני",
+    "withDayo": "עם DAYO",
+    "noMoodNoPhotos": "בלי מצב רוח. בלי תמונות. בלי תובנות."
+  },
   "errors": {
     "generic": "משהו השתבש",
     "network": "שגיאת רשת. אנא נסה שוב.",
     "unauthorized": "אנא התחבר כדי להמשיך"
+  },
+  "ai": {
+    "inputPlaceholder": "שאל אותי כל דבר...",
+    "thinking": "חושב...",
+    "error": "מצטער, לא הצלחתי לעבד את זה. נסה שוב."
   }
 }

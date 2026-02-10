@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, Flame, Share2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { useDirection } from '../hooks/useDirection'
 import { useAuthStore } from '../store/authStore'
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks'
 import { useDayEntry, useUpsertDayEntry, useUpdateGratitude, useUpdateHighlights, type DiaryHighlight } from '../hooks/useDiary'
@@ -30,6 +32,8 @@ import StreakDisplay from '../components/kids/StreakDisplay'
 import ThemedHeader from '../components/ui/ThemedHeader'
 
 export default function TodayPage() {
+  const { t } = useTranslation()
+  const { isRTL } = useDirection()
   const navigate = useNavigate()
   const { user } = useAuthStore()
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -313,11 +317,11 @@ export default function TodayPage() {
             onClick={() => navigateDate('prev')}
             className="p-2 text-dayo-gray-400 hover:text-dayo-gray-600 transition-colors"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className={`w-5 h-5 ${isRTL ? 'rtl-flip' : ''}`} />
           </button>
           <div className="text-center">
             <p className="font-semibold text-dayo-gray-900">
-              {isToday ? 'Today' : format(selectedDate, 'EEEE')}
+              {isToday ? t('nav.today') : format(selectedDate, 'EEEE')}
             </p>
             <p className="text-sm text-dayo-gray-500">
               {format(selectedDate, 'MMMM d, yyyy')}
@@ -327,7 +331,7 @@ export default function TodayPage() {
             onClick={() => navigateDate('next')}
             className="p-2 text-dayo-gray-400 hover:text-dayo-gray-600 transition-colors"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className={`w-5 h-5 ${isRTL ? 'rtl-flip' : ''}`} />
           </button>
         </div>
       </div>

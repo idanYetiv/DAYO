@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { RefreshCw, Heart } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const quotes = [
   { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
@@ -15,6 +16,7 @@ const quotes = [
 ]
 
 export default function QuoteCard() {
+  const { t } = useTranslation()
   const [currentQuote, setCurrentQuote] = useState(() =>
     quotes[Math.floor(Math.random() * quotes.length)]
   )
@@ -65,7 +67,7 @@ export default function QuoteCard() {
           className="flex items-center gap-2 text-white/90 hover:text-white transition-colors text-sm"
         >
           <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          New quote
+          {t('actions.newQuote')}
         </button>
 
         <button

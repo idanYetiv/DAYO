@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface ChatInputProps {
   onSend: (message: string) => void
@@ -10,8 +11,10 @@ interface ChatInputProps {
 export default function ChatInput({
   onSend,
   isLoading = false,
-  placeholder = 'Ask me anything...',
+  placeholder,
 }: ChatInputProps) {
+  const { t } = useTranslation()
+  const defaultPlaceholder = t('ai.inputPlaceholder')
   const [input, setInput] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -44,10 +47,10 @@ export default function ChatInput({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder || defaultPlaceholder}
           disabled={isLoading}
           rows={1}
-          className="w-full px-4 py-3 pr-12 bg-dayo-gray-50 border border-dayo-gray-200 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-dayo-purple/20 focus:border-dayo-purple disabled:opacity-50 text-sm"
+          className="w-full px-4 py-3 pe-12 bg-dayo-gray-50 border border-dayo-gray-200 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-dayo-purple/20 focus:border-dayo-purple disabled:opacity-50 text-sm"
         />
       </div>
       <button

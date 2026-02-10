@@ -1,21 +1,25 @@
+import { useTranslation } from 'react-i18next'
+
 export default function BeforeAfterComparison() {
+  const { t } = useTranslation()
+
   return (
     <section className="py-20 px-6 bg-dayo-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-dayo-gray-900 mb-4">
-            Not just another notes app
+            {t('landing.notJustNotes')}
           </h2>
           <p className="text-dayo-gray-500 max-w-2xl mx-auto">
-            See the difference a thoughtful diary experience makes.
+            {t('landing.notJustNotesDesc')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Before */}
           <div className="rounded-2xl border-2 border-dayo-gray-200 bg-white p-6 relative">
-            <div className="absolute -top-3 left-6 bg-dayo-gray-200 text-dayo-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-              BEFORE
+            <div className="absolute -top-3 start-6 bg-dayo-gray-200 text-dayo-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+              {t('landing.before')}
             </div>
             <div className="space-y-3 pt-2">
               <p className="text-sm text-dayo-gray-400 font-medium">Jan 31</p>
@@ -25,15 +29,15 @@ export default function BeforeAfterComparison() {
                 <p>Nothing else to say.</p>
               </div>
               <div className="pt-4 border-t border-dayo-gray-100">
-                <p className="text-xs text-dayo-gray-300 italic">No mood. No photos. No insights.</p>
+                <p className="text-xs text-dayo-gray-300 italic">{t('landing.noMoodNoPhotos')}</p>
               </div>
             </div>
           </div>
 
           {/* After */}
           <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-6 relative shadow-md">
-            <div className="absolute -top-3 left-6 bg-dayo-gradient text-white text-xs font-semibold px-3 py-1 rounded-full">
-              WITH DAYO
+            <div className="absolute -top-3 start-6 bg-dayo-gradient text-white text-xs font-semibold px-3 py-1 rounded-full">
+              {t('landing.withDayo')}
             </div>
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
@@ -70,7 +74,7 @@ export default function BeforeAfterComparison() {
                 <span className="text-xs bg-white text-dayo-gray-600 px-2 py-0.5 rounded-full border border-amber-200">
                   {'\u{1F4DA}'} Growth
                 </span>
-                <span className="text-xs text-dayo-gray-400 ml-auto">142 words</span>
+                <span className="text-xs text-dayo-gray-400 ms-auto">142 words</span>
               </div>
             </div>
           </div>

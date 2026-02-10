@@ -6,6 +6,7 @@ import { useSketchUpload } from '../../hooks/useSketchUpload'
 import { useNativeCamera } from '../../hooks/useNativeCamera'
 import { useContentForMode } from '../../hooks/useContentForMode'
 import { useProfileMode } from '../../hooks/useProfileMode'
+import { useDirection } from '../../hooks/useDirection'
 import { getTemplateById, isFrewriteTemplate, type DiaryTemplate } from '../../data/templates'
 import { useDebouncedUpsertDayEntry } from '../../hooks/useDiary'
 import TemplatedTextarea from './TemplatedTextarea'
@@ -86,6 +87,7 @@ export default function DiaryEntryModal({
   const { uploadSketch, deleteSketch } = useSketchUpload(dateStr)
   const { moods, moodEmojis, diaryPrompts, gratitudePrompts, highlightEmojis } = useContentForMode()
   const { isKidsMode } = useProfileMode()
+  const { isRTL } = useDirection()
   const { pickPhoto, isNative } = useNativeCamera()
   const { impact, notification } = useHaptics()
 
@@ -364,10 +366,10 @@ export default function DiaryEntryModal({
       <header className="flex-shrink-0 bg-white px-4 py-3 flex items-center justify-between border-b border-dayo-gray-100 safe-area-top">
         <button
           onClick={handleClose}
-          className="p-2 -ml-2 text-dayo-gray-600 hover:text-dayo-gray-900 transition-colors"
+          className="p-2 -ms-2 text-dayo-gray-600 hover:text-dayo-gray-900 transition-colors"
           type="button"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rtl-flip' : ''}`} />
         </button>
         <div className="flex items-center gap-3">
           <div className="text-center">
