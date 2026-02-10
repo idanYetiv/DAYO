@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, MemoryRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { isNativePlatform } from './lib/platform'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
@@ -7,6 +8,7 @@ import { useAuthStore } from './store/authStore'
 import { ProfileModeProvider } from './contexts/ProfileModeContext'
 import { useProfileMode } from './hooks/useProfileMode'
 import { useUserProfile } from './hooks/useUserProfile'
+import { useDirection } from './hooks/useDirection'
 import { visualThemes, type VisualThemeId } from './data/visualThemes'
 import ThemeDecorations from './components/ui/ThemeDecorations'
 import LoginPage from './pages/LoginPage'
@@ -40,6 +42,19 @@ function KidsModeClassApplier({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.remove('kids-mode')
     }
   }, [isKidsMode])
+
+  return <>{children}</>
+}
+
+// Component to apply text direction for RTL languages
+function DirectionApplier({ children }: { children: React.ReactNode }) {
+  const { dir } = useDirection()
+  const { i18n } = useTranslation()
+
+  useEffect(() => {
+    document.documentElement.setAttribute('dir', dir)
+    document.documentElement.setAttribute('lang', i18n.language)
+  }, [dir, i18n.language])
 
   return <>{children}</>
 }
@@ -279,6 +294,7 @@ function PublicRoutes() {
 
 function App() {
   const { user, loading, initialize } = useAuthStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
     initialize()
@@ -289,7 +305,7 @@ function App() {
       <div className="flex items-center justify-center min-h-screen bg-dayo-gray-50">
         <div className="text-center">
           <img src="/logo.png" alt="DAYO" className="w-12 h-12 rounded-2xl mx-auto mb-4" />
-          <p className="text-dayo-gray-500">Loading DAYO...</p>
+          <p className="text-dayo-gray-500">{t('loading')}</p>
         </div>
       </div>
     )
@@ -297,22 +313,24 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster
-        position="top-center"
-        richColors
-        toastOptions={{
-          duration: 3000,
-        }}
-      />
-      {isNativePlatform() ? (
-        <MemoryRouter initialEntries={[user ? '/today' : '/login']}>
-          {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
-        </MemoryRouter>
-      ) : (
-        <BrowserRouter>
-          {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
-        </BrowserRouter>
-      )}
+      <DirectionApplier>
+        <Toaster
+          position="top-center"
+          richColors
+          toastOptions={{
+            duration: 3000,
+          }}
+        />
+        {isNativePlatform() ? (
+          <MemoryRouter initialEntries={[user ? '/today' : '/login']}>
+            {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
+          </MemoryRouter>
+        ) : (
+          <BrowserRouter>
+            {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
+          </BrowserRouter>
+        )}
+      </DirectionApplier>
     </QueryClientProvider>
   )
 }

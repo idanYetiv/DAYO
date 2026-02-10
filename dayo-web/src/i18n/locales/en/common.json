@@ -1,0 +1,128 @@
+{
+  "appName": "DAYO",
+  "loading": "Loading DAYO...",
+  "nav": {
+    "today": "Today",
+    "calendar": "Calendar",
+    "ai": "AI",
+    "goals": "Goals",
+    "diary": "Diary",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "add": "Add",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "done": "Done",
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "upgrade": "Upgrade"
+  },
+  "greetings": {
+    "adult": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "kids": {
+      "morning": "Good morning, superstar!",
+      "afternoon": "Hey there, champion!",
+      "evening": "Great job today!"
+    }
+  },
+  "toast": {
+    "task": {
+      "created": {
+        "adult": "Task added",
+        "kids": "Awesome! New adventure added!"
+      },
+      "completed": {
+        "adult": "Great job!",
+        "kids": "WOOHOO! You did it!"
+      },
+      "deleted": {
+        "adult": "Task removed",
+        "kids": "Task zapped away!"
+      },
+      "error": "Failed to update task"
+    },
+    "diary": {
+      "saved": {
+        "adult": "Entry saved",
+        "kids": "Your story is saved!"
+      },
+      "moodUpdated": "Mood updated",
+      "error": "Failed to save diary"
+    },
+    "streak": {
+      "continued": "{{days}} day streak!",
+      "continuedKids": "{{days}} days in a row! You're on FIRE!",
+      "milestone": "Amazing! {{days}} day streak!",
+      "broken": "Streak reset. Start fresh today!"
+    },
+    "habit": {
+      "completed": {
+        "adult": "Habit completed",
+        "kids": "Super star!"
+      }
+    },
+    "goal": {
+      "milestone": {
+        "adult": "Milestone achieved!",
+        "kids": "AMAZING! You reached a goal!"
+      }
+    },
+    "weeklyReview": {
+      "adult": "Time to reflect on your week",
+      "kids": "Let's see all your awesome adventures!"
+    },
+    "success": "Success!",
+    "error": "Something went wrong"
+  },
+  "streakCelebrations": {
+    "adult": {
+      "3": "Nice streak going!",
+      "7": "One week strong!",
+      "14": "Two weeks of consistency!",
+      "30": "One month milestone!",
+      "50": "Halfway to 100!",
+      "100": "100 days! Incredible!"
+    },
+    "kids": {
+      "3": "You're building a streak! Keep going!",
+      "7": "ONE WHOLE WEEK! You're amazing!",
+      "14": "TWO WEEKS?! You're a superstar!",
+      "30": "A WHOLE MONTH! You're LEGENDARY!",
+      "50": "FIFTY DAYS! You're unstoppable!",
+      "100": "100 DAYS!! CHAMPION OF THE WORLD!"
+    }
+  },
+  "tags": {
+    "adult": {
+      "work": "Work",
+      "family": "Family",
+      "health": "Health",
+      "growth": "Growth",
+      "fun": "Fun",
+      "travel": "Travel"
+    },
+    "kids": {
+      "school": "School",
+      "friends": "Friends",
+      "sports": "Sports",
+      "art": "Art",
+      "games": "Games",
+      "nature": "Nature"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "network": "Network error. Please try again.",
+    "unauthorized": "Please sign in to continue"
+  }
+}

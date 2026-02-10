@@ -5,6 +5,9 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Enable RTL and LTR variants for directional styles
+  // Use rtl: and ltr: prefixes for direction-specific styles
+  // e.g., rtl:mr-4 will apply margin-right: 1rem only in RTL mode
   theme: {
     extend: {
       colors: {

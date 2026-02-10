@@ -1,7 +1,26 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import BottomNavigation from '../../../components/ui/BottomNavigation'
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      // Map translation keys to English labels
+      const translations: Record<string, string> = {
+        'nav.today': 'Today',
+        'nav.calendar': 'Calendar',
+        'nav.ai': 'AI',
+        'nav.goals': 'Goals',
+        'nav.diary': 'Diary',
+        'nav.settings': 'Settings',
+      }
+      return translations[key] || key
+    },
+    i18n: { language: 'en' },
+  }),
+}))
 
 // Helper component to check location
 function LocationDisplay() {

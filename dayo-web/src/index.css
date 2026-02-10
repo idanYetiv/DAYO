@@ -70,6 +70,100 @@
   }
 }
 
+/* ================================
+   RTL (Right-to-Left) Support
+   ================================ */
+
+/* Base RTL text alignment */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Flip chevron icons in RTL - add .rtl-flip class to icons that should mirror */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* CSS Logical Properties utility classes for bidirectional layouts */
+@layer utilities {
+  /* Margin inline utilities */
+  .ms-auto { margin-inline-start: auto; }
+  .me-auto { margin-inline-end: auto; }
+  .ms-0 { margin-inline-start: 0; }
+  .me-0 { margin-inline-end: 0; }
+  .ms-1 { margin-inline-start: 0.25rem; }
+  .me-1 { margin-inline-end: 0.25rem; }
+  .ms-2 { margin-inline-start: 0.5rem; }
+  .me-2 { margin-inline-end: 0.5rem; }
+  .ms-3 { margin-inline-start: 0.75rem; }
+  .me-3 { margin-inline-end: 0.75rem; }
+  .ms-4 { margin-inline-start: 1rem; }
+  .me-4 { margin-inline-end: 1rem; }
+  .ms-5 { margin-inline-start: 1.25rem; }
+  .me-5 { margin-inline-end: 1.25rem; }
+  .ms-6 { margin-inline-start: 1.5rem; }
+  .me-6 { margin-inline-end: 1.5rem; }
+
+  /* Padding inline utilities */
+  .ps-0 { padding-inline-start: 0; }
+  .pe-0 { padding-inline-end: 0; }
+  .ps-1 { padding-inline-start: 0.25rem; }
+  .pe-1 { padding-inline-end: 0.25rem; }
+  .ps-2 { padding-inline-start: 0.5rem; }
+  .pe-2 { padding-inline-end: 0.5rem; }
+  .ps-3 { padding-inline-start: 0.75rem; }
+  .pe-3 { padding-inline-end: 0.75rem; }
+  .ps-4 { padding-inline-start: 1rem; }
+  .pe-4 { padding-inline-end: 1rem; }
+  .ps-5 { padding-inline-start: 1.25rem; }
+  .pe-5 { padding-inline-end: 1.25rem; }
+  .ps-6 { padding-inline-start: 1.5rem; }
+  .pe-6 { padding-inline-end: 1.5rem; }
+
+  /* Inset inline (for positioning) */
+  .start-0 { inset-inline-start: 0; }
+  .end-0 { inset-inline-end: 0; }
+  .start-1 { inset-inline-start: 0.25rem; }
+  .end-1 { inset-inline-end: 0.25rem; }
+  .start-2 { inset-inline-start: 0.5rem; }
+  .end-2 { inset-inline-end: 0.5rem; }
+  .start-3 { inset-inline-start: 0.75rem; }
+  .end-3 { inset-inline-end: 0.75rem; }
+  .start-4 { inset-inline-start: 1rem; }
+  .end-4 { inset-inline-end: 1rem; }
+  .start-auto { inset-inline-start: auto; }
+  .end-auto { inset-inline-end: auto; }
+
+  /* Border inline */
+  .border-s { border-inline-start-width: 1px; }
+  .border-e { border-inline-end-width: 1px; }
+  .border-s-0 { border-inline-start-width: 0; }
+  .border-e-0 { border-inline-end-width: 0; }
+
+  /* Rounded corners logical */
+  .rounded-s { border-start-start-radius: 0.25rem; border-end-start-radius: 0.25rem; }
+  .rounded-e { border-start-end-radius: 0.25rem; border-end-end-radius: 0.25rem; }
+  .rounded-s-lg { border-start-start-radius: 0.5rem; border-end-start-radius: 0.5rem; }
+  .rounded-e-lg { border-start-end-radius: 0.5rem; border-end-end-radius: 0.5rem; }
+  .rounded-s-xl { border-start-start-radius: 0.75rem; border-end-start-radius: 0.75rem; }
+  .rounded-e-xl { border-start-end-radius: 0.75rem; border-end-end-radius: 0.75rem; }
+  .rounded-s-2xl { border-start-start-radius: 1rem; border-end-start-radius: 1rem; }
+  .rounded-e-2xl { border-start-end-radius: 1rem; border-end-end-radius: 1rem; }
+
+  /* Text alignment logical */
+  .text-start { text-align: start; }
+  .text-end { text-align: end; }
+}
+
+/* RTL-specific overrides */
+[dir="rtl"] .space-x-1 > * + * { margin-right: 0.25rem; margin-left: 0; }
+[dir="rtl"] .space-x-2 > * + * { margin-right: 0.5rem; margin-left: 0; }
+[dir="rtl"] .space-x-3 > * + * { margin-right: 0.75rem; margin-left: 0; }
+[dir="rtl"] .space-x-4 > * + * { margin-right: 1rem; margin-left: 0; }
+
+/* Flex direction in RTL - items naturally flow from right to left */
+[dir="rtl"] .flex-row { flex-direction: row; }
+
 /* Custom background mode - make page containers transparent */
 .has-custom-bg body {
   background-color: transparent !important;
