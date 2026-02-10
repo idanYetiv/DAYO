@@ -1,8 +1,38 @@
+import i18n from '../i18n'
+
 export interface DiaryPrompt {
   placeholder: string
   suggestions: string[]
 }
 
+// Helper to get translated prompts
+export function getAdultPrompts(): DiaryPrompt {
+  const suggestions = i18n.t('diary.adult.suggestions', { ns: 'prompts', returnObjects: true }) as string[]
+  return {
+    placeholder: i18n.t('diary.adult.placeholder', { ns: 'prompts' }),
+    suggestions: Array.isArray(suggestions) ? suggestions : [],
+  }
+}
+
+export function getKidsPrompts(): DiaryPrompt {
+  const suggestions = i18n.t('diary.kids.suggestions', { ns: 'prompts', returnObjects: true }) as string[]
+  return {
+    placeholder: i18n.t('diary.kids.placeholder', { ns: 'prompts' }),
+    suggestions: Array.isArray(suggestions) ? suggestions : [],
+  }
+}
+
+export function getAdultGratitudePrompts(): string[] {
+  const prompts = i18n.t('gratitude.adult', { ns: 'prompts', returnObjects: true }) as string[]
+  return Array.isArray(prompts) ? prompts : []
+}
+
+export function getKidsGratitudePrompts(): string[] {
+  const prompts = i18n.t('gratitude.kids', { ns: 'prompts', returnObjects: true }) as string[]
+  return Array.isArray(prompts) ? prompts : []
+}
+
+// Static exports for backward compatibility
 export const adultPrompts: DiaryPrompt = {
   placeholder: 'Dear diary, today...',
   suggestions: [
@@ -38,7 +68,7 @@ export const kidsGratitudePrompts = [
   'I feel lucky because...',
 ]
 
-// Highlight emojis
+// Highlight emojis (no translation needed)
 export const adultHighlightEmojis = ['🎯', '💪', '🎉', '📚', '🏃', '🍽️', '💼', '❤️', '🌟', '✅']
 
 export const kidsHighlightEmojis = ['⭐', '🎮', '🎨', '⚽', '🎸', '📖', '🍕', '🎂', '🏆', '🌈']

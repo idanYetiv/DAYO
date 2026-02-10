@@ -1,0 +1,58 @@
+{
+  "diary": {
+    "adult": {
+      "placeholder": "Dear diary, today...",
+      "suggestions": [
+        "What made you smile today?",
+        "What challenged you?",
+        "What are you grateful for?",
+        "What did you learn?",
+        "How did you take care of yourself?"
+      ]
+    },
+    "kids": {
+      "placeholder": "Today was so cool because...",
+      "suggestions": [
+        "What was the BEST part of today?",
+        "Who did you play with?",
+        "What made you laugh?",
+        "What new thing did you try?",
+        "What do you want to do tomorrow?"
+      ]
+    }
+  },
+  "gratitude": {
+    "adult": [
+      "I'm grateful for...",
+      "Today I appreciated...",
+      "Something that made me happy..."
+    ],
+    "kids": [
+      "I love...",
+      "The best thing is...",
+      "I feel lucky because..."
+    ]
+  },
+  "templates": {
+    "morningIntention": {
+      "name": "Morning Intention",
+      "description": "Start your day with clarity"
+    },
+    "eveningReflection": {
+      "name": "Evening Reflection",
+      "description": "Reflect on your day"
+    },
+    "gratitudeDeepDive": {
+      "name": "Gratitude Deep Dive",
+      "description": "Explore what you're thankful for"
+    },
+    "weeklyReview": {
+      "name": "Weekly Review",
+      "description": "Look back at your week"
+    },
+    "freeWrite": {
+      "name": "Free Write",
+      "description": "Write whatever comes to mind"
+    }
+  }
+}

@@ -1,17 +1,18 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useProfileMode } from './useProfileMode'
 import {
-  adultMoods,
-  kidsMoods,
+  getAdultMoods,
+  getKidsMoods,
   adultMoodEmojis,
   kidsMoodEmojis,
   type MoodOption,
 } from '../data/moods'
 import {
-  adultPrompts,
-  kidsPrompts,
-  adultGratitudePrompts,
-  kidsGratitudePrompts,
+  getAdultPrompts,
+  getKidsPrompts,
+  getAdultGratitudePrompts,
+  getKidsGratitudePrompts,
   adultHighlightEmojis,
   kidsHighlightEmojis,
   type DiaryPrompt,
@@ -28,8 +29,8 @@ import {
   type DiaryTemplate,
 } from '../data/templates'
 import {
-  adultTags,
-  kidsTags,
+  getTranslatedAdultTags,
+  getTranslatedKidsTags,
   type TagOption,
 } from '../data/tags'
 
@@ -47,34 +48,37 @@ export interface ModeContent {
 
 export function useContentForMode(): ModeContent {
   const { isKidsMode } = useProfileMode()
+  const { i18n } = useTranslation()
 
+  // Include language in dependencies to refresh content when language changes
   return useMemo(() => {
     if (isKidsMode) {
       return {
-        moods: kidsMoods,
+        moods: getKidsMoods(),
         moodEmojis: kidsMoodEmojis,
-        diaryPrompts: kidsPrompts,
-        gratitudePrompts: kidsGratitudePrompts,
+        diaryPrompts: getKidsPrompts(),
+        gratitudePrompts: getKidsGratitudePrompts(),
         highlightEmojis: kidsHighlightEmojis,
         encouragements: kidsEncouragements,
         streakCelebrations: kidsStreakCelebrations,
         templates: kidsTemplates,
-        tags: kidsTags,
+        tags: getTranslatedKidsTags(),
       }
     }
 
     return {
-      moods: adultMoods,
+      moods: getAdultMoods(),
       moodEmojis: adultMoodEmojis,
-      diaryPrompts: adultPrompts,
-      gratitudePrompts: adultGratitudePrompts,
+      diaryPrompts: getAdultPrompts(),
+      gratitudePrompts: getAdultGratitudePrompts(),
       highlightEmojis: adultHighlightEmojis,
       encouragements: adultEncouragements,
       streakCelebrations: adultStreakCelebrations,
       templates: adultTemplates,
-      tags: adultTags,
+      tags: getTranslatedAdultTags(),
     }
-  }, [isKidsMode])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isKidsMode, i18n.language])
 }
 
 // Helper function to get mood emoji for display
@@ -87,26 +91,27 @@ export function useMoodEmoji(moodId: string | null | undefined): string | null {
 
 // Helper function to get greeting based on time of day
 export function useGreeting(): string {
-  const { encouragements } = useContentForMode()
+  const { t } = useTranslation()
+  const { isKidsMode } = useProfileMode()
   const hour = new Date().getHours()
 
-  if (hour < 12) return encouragements.morningGreeting
-  if (hour < 18) return encouragements.afternoonGreeting
-  return encouragements.eveningGreeting
+  const mode = isKidsMode ? 'kids' : 'adult'
+  if (hour < 12) return t(`greetings.${mode}.morning`)
+  if (hour < 18) return t(`greetings.${mode}.afternoon`)
+  return t(`greetings.${mode}.evening`)
 }
 
 // Helper to get streak celebration message
 export function useStreakCelebration(streakDays: number): string | null {
-  const { streakCelebrations } = useContentForMode()
+  const { t } = useTranslation()
+  const { isKidsMode } = useProfileMode()
 
-  // Find the highest milestone that's been reached
-  const milestones = Object.keys(streakCelebrations)
-    .map(Number)
-    .sort((a, b) => b - a)
+  const mode = isKidsMode ? 'kids' : 'adult'
+  const milestones = [100, 50, 30, 14, 7, 3]
 
   for (const milestone of milestones) {
     if (streakDays >= milestone) {
-      return streakCelebrations[milestone]
+      return t(`streakCelebrations.${mode}.${milestone}`)
     }
   }
 

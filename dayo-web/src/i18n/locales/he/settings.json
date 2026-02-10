@@ -1,0 +1,157 @@
+{
+  "title": "הגדרות",
+  "sections": {
+    "preferences": "העדפות",
+    "profileMode": "מצב פרופיל",
+    "appearance": "מראה",
+    "account": "חשבון",
+    "privacyData": "פרטיות ונתונים",
+    "support": "תמיכה"
+  },
+  "preferences": {
+    "darkMode": "מצב כהה",
+    "pushNotifications": "התראות",
+    "dailyReminder": "תזכורת יומית",
+    "notificationsUnavailable": "זמין באפליקציה"
+  },
+  "profileMode": {
+    "title": "סוג פרופיל",
+    "adult": {
+      "label": "מצב מבוגרים",
+      "description": "חוויית יומן רגועה ומהורהרת"
+    },
+    "kids": {
+      "label": "מצב ילדים",
+      "description": "יומן הרפתקאות כיפי וצבעוני"
+    },
+    "switchedTo": "עברת למצב {{mode}}"
+  },
+  "appearance": {
+    "visualTheme": "ערכת נושא",
+    "accentColor": "צבע מבטא",
+    "background": "רקע",
+    "custom": "מותאם אישית",
+    "default": "ברירת מחדל"
+  },
+  "account": {
+    "email": "אימייל",
+    "notSet": "לא הוגדר",
+    "changePassword": "שנה סיסמה"
+  },
+  "privacyData": {
+    "exportData": "ייצוא נתונים",
+    "exportDescription": "הורד את כל הנתונים שלך כ-JSON",
+    "deleteAccount": "מחק חשבון"
+  },
+  "support": {
+    "helpCenter": "מרכז עזרה",
+    "sendFeedback": "שלח משוב"
+  },
+  "premium": {
+    "title": "שדרג לפרימיום",
+    "description": "פתח את כל התכונות והסר מגבלות"
+  },
+  "signOut": "התנתק",
+  "version": "DAYO גרסה {{version}}",
+  "modals": {
+    "changePassword": {
+      "title": "שנה סיסמה",
+      "newPassword": "סיסמה חדשה",
+      "confirmPassword": "אשר סיסמה",
+      "submit": "שנה סיסמה",
+      "errors": {
+        "tooShort": "הסיסמה חייבת להיות לפחות 6 תווים",
+        "mismatch": "הסיסמאות אינן תואמות"
+      },
+      "success": "הסיסמה שונתה בהצלחה",
+      "error": "נכשל בשינוי הסיסמה"
+    },
+    "deleteAccount": {
+      "title": "מחק חשבון",
+      "warning": "פעולה זו לא ניתנת לביטול. כל הנתונים שלך כולל משימות, רשומות יומן, מטרות והרגלים יימחקו לצמיתות.",
+      "confirmLabel": "הקלד \"DELETE\" לאישור",
+      "confirmPlaceholder": "DELETE",
+      "cancel": "ביטול",
+      "submit": "מחק חשבון",
+      "success": "החשבון נמחק",
+      "error": "נכשל במחיקת החשבון"
+    },
+    "themeColor": {
+      "title": "צבע ערכת נושא",
+      "colors": {
+        "purple": "סגול",
+        "blue": "כחול",
+        "green": "ירוק",
+        "orange": "כתום",
+        "pink": "ורוד"
+      },
+      "success": "צבע המבטא עודכן"
+    },
+    "visualTheme": {
+      "title": "ערכת נושא",
+      "themes": {
+        "default": {
+          "name": "ברירת מחדל",
+          "description": "נקי ומינימלי"
+        },
+        "nightRitual": {
+          "name": "טקס לילה",
+          "description": "ירח, כוכבים, לילה שקט"
+        },
+        "diary": {
+          "name": "יומן שקיעה",
+          "description": "שקיעה חמה מעל המים"
+        },
+        "privateNotebook": {
+          "name": "מחברת פרטית",
+          "description": "פשטות דמוית נייר"
+        },
+        "cosmicCalm": {
+          "name": "שלווה קוסמית",
+          "description": "שלווה בחלל העמוק"
+        }
+      },
+      "success": "ערכת הנושא עודכנה"
+    },
+    "editProfile": {
+      "title": "ערוך פרופיל",
+      "displayName": "שם תצוגה",
+      "placeholder": "השם שלך",
+      "submit": "שמור שינויים",
+      "success": "הפרופיל עודכן"
+    },
+    "background": {
+      "title": "רקע",
+      "presets": "תבניות",
+      "customPhoto": "תמונה מותאמת",
+      "uploadPrompt": "העלה תמונה משלך",
+      "currentCustom": "תמונה נוכחית",
+      "success": "הרקע עודכן",
+      "backgrounds": {
+        "default": "ברירת מחדל",
+        "purpleMist": "ערפל סגול",
+        "oceanBlue": "כחול אוקיינוס",
+        "sunset": "שקיעה",
+        "forest": "יער",
+        "nightSky": "שמי לילה",
+        "rainbow": "קשת",
+        "candyLand": "ארץ הממתקים",
+        "spaceAdventure": "הרפתקת חלל",
+        "jungle": "ג'ונגל",
+        "underTheSea": "מתחת למים",
+        "sunshine": "שמש"
+      }
+    },
+    "language": {
+      "title": "שפה",
+      "success": "השפה עודכנה"
+    }
+  },
+  "toast": {
+    "enabled": "{{setting}} מופעל",
+    "disabled": "{{setting}} כבוי",
+    "updateError": "נכשל בעדכון ההגדרה",
+    "exportSuccess": "הנתונים יוצאו בהצלחה",
+    "exportError": "נכשל בייצוא הנתונים"
+  }
+}

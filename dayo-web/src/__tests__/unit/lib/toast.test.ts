@@ -11,6 +11,36 @@ vi.mock('sonner', () => ({
   }),
 }))
 
+// Mock i18n - the toast module uses i18n.t() which returns the translation key in tests
+vi.mock('../../../i18n', () => ({
+  default: {
+    t: (key: string, options?: Record<string, unknown>) => {
+      // Return the translation key (or interpolated value for streak messages)
+      if (options && 'days' in options) {
+        // Handle streak messages with interpolation
+        if (key === 'toast.streak.continued' || key === 'toast.streak.continuedKids') {
+          return `${options.days} day streak!`
+        }
+        if (key === 'toast.streak.milestone') {
+          return `Amazing! ${options.days} day streak!`
+        }
+      }
+      // Map translation keys to expected English values for tests
+      const translations: Record<string, string> = {
+        'toast.task.created.adult': 'Task added',
+        'toast.task.completed.adult': 'Great job!',
+        'toast.task.deleted.adult': 'Task removed',
+        'toast.task.error': 'Failed to update task',
+        'toast.diary.saved.adult': 'Entry saved',
+        'toast.diary.moodUpdated': 'Mood updated',
+        'toast.diary.error': 'Failed to save diary',
+        'toast.streak.broken': 'Streak reset. Start fresh today!',
+      }
+      return translations[key] || key
+    },
+  },
+}))
+
 describe('Toast Utilities', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -24,12 +54,12 @@ describe('Toast Utilities', () => {
 
     it('should show success toast when task completed', () => {
       taskToast.completed()
-      expect(toast.success).toHaveBeenCalledWith('Task completed!')
+      expect(toast.success).toHaveBeenCalledWith('Great job!')
     })
 
     it('should show toast when task deleted', () => {
       taskToast.deleted()
-      expect(toast).toHaveBeenCalledWith('Task deleted')
+      expect(toast).toHaveBeenCalledWith('Task removed')
     })
 
     it('should show error toast with default message', () => {
@@ -46,7 +76,7 @@ describe('Toast Utilities', () => {
   describe('diaryToast', () => {
     it('should show success toast when diary saved', () => {
       diaryToast.saved()
-      expect(toast.success).toHaveBeenCalledWith('Diary saved')
+      expect(toast.success).toHaveBeenCalledWith('Entry saved')
     })
 
     it('should show success toast when mood updated', () => {

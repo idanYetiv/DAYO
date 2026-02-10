@@ -18,7 +18,9 @@ import {
   Users,
   Image,
   Upload,
+  Globe,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
 import { useProfileMode, type ProfileType } from '../hooks/useProfileMode'
 import BottomNavigation from '../components/ui/BottomNavigation'
@@ -31,18 +33,20 @@ import {
 } from '../hooks/useUserProfile'
 import { usePushNotifications } from '../hooks/usePushNotifications'
 import { toast } from 'sonner'
-import { visualThemes, visualThemesList, type VisualThemeId } from '../data/visualThemes'
+import { visualThemesList, type VisualThemeId } from '../data/visualThemes'
 import ThemedHeader from '../components/ui/ThemedHeader'
+import { supportedLanguages, type LanguageCode } from '../i18n'
 
 const themeColors = [
-  { id: 'purple', label: 'Purple', color: '#8B5CF6' },
-  { id: 'blue', label: 'Blue', color: '#3B82F6' },
-  { id: 'green', label: 'Green', color: '#10B981' },
-  { id: 'orange', label: 'Orange', color: '#F97316' },
-  { id: 'pink', label: 'Pink', color: '#EC4899' },
+  { id: 'purple', labelKey: 'modals.themeColor.colors.purple', color: '#8B5CF6' },
+  { id: 'blue', labelKey: 'modals.themeColor.colors.blue', color: '#3B82F6' },
+  { id: 'green', labelKey: 'modals.themeColor.colors.green', color: '#10B981' },
+  { id: 'orange', labelKey: 'modals.themeColor.colors.orange', color: '#F97316' },
+  { id: 'pink', labelKey: 'modals.themeColor.colors.pink', color: '#EC4899' },
 ] as const
 
 export default function SettingsPage() {
+  const { t, i18n } = useTranslation('settings')
   const { user, signOut } = useAuthStore()
   const { data: profile, isLoading } = useUserProfile()
   const updateProfile = useUpdateUserProfile()
@@ -59,19 +63,28 @@ export default function SettingsPage() {
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showProfileModeModal, setShowProfileModeModal] = useState(false)
   const [showBackgroundModal, setShowBackgroundModal] = useState(false)
+  const [showLanguageModal, setShowLanguageModal] = useState(false)
+
+  const currentLanguage = supportedLanguages.find(l => l.code === i18n.language) || supportedLanguages[0]
 
   const handleToggle = (field: 'dark_mode' | 'notifications_enabled' | 'daily_reminder_enabled') => {
     if (!profile) return
 
     const newValue = !profile[field]
+    const settingName = field === 'dark_mode'
+      ? t('preferences.darkMode')
+      : field === 'notifications_enabled'
+        ? t('preferences.pushNotifications')
+        : t('preferences.dailyReminder')
+
     updateProfile.mutate(
       { [field]: newValue },
       {
         onSuccess: () => {
-          toast.success(`${field === 'dark_mode' ? 'Dark mode' : field === 'notifications_enabled' ? 'Notifications' : 'Daily reminder'} ${newValue ? 'enabled' : 'disabled'}`)
+          toast.success(t(newValue ? 'toast.enabled' : 'toast.disabled', { setting: settingName }))
         },
         onError: () => {
-          toast.error('Failed to update setting')
+          toast.error(t('toast.updateError'))
         }
       }
     )
@@ -87,7 +100,7 @@ export default function SettingsPage() {
       // Request push permission first
       const granted = await requestPermission()
       if (!granted) {
-        toast.error('Push notifications permission denied. Please enable in device settings.')
+        toast.error(t('toast.updateError'))
         return
       }
     }
@@ -97,10 +110,10 @@ export default function SettingsPage() {
       { notifications_enabled: enabling },
       {
         onSuccess: () => {
-          toast.success(`Notifications ${enabling ? 'enabled' : 'disabled'}`)
+          toast.success(t(enabling ? 'toast.enabled' : 'toast.disabled', { setting: t('preferences.pushNotifications') }))
         },
         onError: () => {
-          toast.error('Failed to update setting')
+          toast.error(t('toast.updateError'))
         }
       }
     )
@@ -116,10 +129,10 @@ export default function SettingsPage() {
         a.download = `dayo-export-${new Date().toISOString().split('T')[0]}.json`
         a.click()
         URL.revokeObjectURL(url)
-        toast.success('Data exported successfully')
+        toast.success(t('toast.exportSuccess'))
       },
       onError: () => {
-        toast.error('Failed to export data')
+        toast.error(t('toast.exportError'))
       }
     })
   }
@@ -127,24 +140,30 @@ export default function SettingsPage() {
   const handleDeleteAccount = () => {
     deleteAccount.mutate(undefined, {
       onSuccess: () => {
-        toast.success('Account deleted')
+        toast.success(t('modals.deleteAccount.success'))
         signOut()
       },
       onError: () => {
-        toast.error('Failed to delete account')
+        toast.error(t('modals.deleteAccount.error'))
       }
     })
   }
 
+  const handleLanguageChange = (langCode: LanguageCode) => {
+    i18n.changeLanguage(langCode)
+    toast.success(t('modals.language.success'))
+    setShowLanguageModal(false)
+  }
+
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      <ThemedHeader title="Settings" showLogo={false} />
+      <ThemedHeader title={t('title')} showLogo={false} />
 
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* User Card */}
         <button
           onClick={() => setShowProfileModal(true)}
-          className="w-full bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 mb-6 text-left"
+          className="w-full bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-4 mb-6 text-start"
         >
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-dayo-gradient rounded-full flex items-center justify-center text-white text-2xl font-bold">
@@ -156,7 +175,7 @@ export default function SettingsPage() {
               </h2>
               <p className="text-sm text-dayo-gray-500">{user?.email}</p>
             </div>
-            <ChevronRight className="w-5 h-5 text-dayo-gray-400" />
+            <ChevronRight className="w-5 h-5 text-dayo-gray-400 rtl-flip" />
           </div>
         </button>
 
@@ -165,11 +184,11 @@ export default function SettingsPage() {
           <div className="flex items-center gap-3">
             <Crown className="w-10 h-10" />
             <div className="flex-1">
-              <p className="font-semibold">Upgrade to Premium</p>
-              <p className="text-sm text-white/80">Unlock all features and remove limits</p>
+              <p className="font-semibold">{t('premium.title')}</p>
+              <p className="text-sm text-white/80">{t('premium.description')}</p>
             </div>
             <button className="bg-white text-dayo-purple px-4 py-2 rounded-xl text-sm font-medium">
-              Upgrade
+              {t('actions.upgrade', { ns: 'common' })}
             </button>
           </div>
         </div>
@@ -186,29 +205,29 @@ export default function SettingsPage() {
             {/* Preferences */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Preferences
+                {t('sections.preferences')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 {/* Dark Mode */}
                 <SettingToggle
                   icon={profile.dark_mode ? Moon : Sun}
-                  label="Dark Mode"
+                  label={t('preferences.darkMode')}
                   value={profile.dark_mode}
                   onToggle={() => handleToggle('dark_mode')}
                 />
                 {/* Notifications */}
                 <SettingToggle
                   icon={Bell}
-                  label="Push Notifications"
+                  label={t('preferences.pushNotifications')}
                   value={profile.notifications_enabled}
                   onToggle={handleNotificationsToggle}
-                  description={!isPushSupported ? 'Available on mobile app' : undefined}
+                  description={!isPushSupported ? t('preferences.notificationsUnavailable') : undefined}
                   hasBorder
                 />
                 {/* Daily Reminder */}
                 <SettingToggle
                   icon={Bell}
-                  label="Daily Reminder"
+                  label={t('preferences.dailyReminder')}
                   description={profile.daily_reminder_time?.slice(0, 5) || '09:00'}
                   value={profile.daily_reminder_enabled}
                   onToggle={() => handleToggle('daily_reminder_enabled')}
@@ -220,13 +239,13 @@ export default function SettingsPage() {
             {/* Profile Mode */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Profile Mode
+                {t('sections.profileMode')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
                   icon={Users}
-                  label="Profile Type"
-                  description={isKidsMode ? 'Kids Mode' : 'Adults Mode'}
+                  label={t('profileMode.title')}
+                  description={isKidsMode ? t('profileMode.kids.label') : t('profileMode.adult.label')}
                   onClick={() => setShowProfileModeModal(true)}
                 />
               </div>
@@ -235,26 +254,33 @@ export default function SettingsPage() {
             {/* Appearance */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Appearance
+                {t('sections.appearance')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
-                  icon={Palette}
-                  label="Visual Theme"
-                  description={visualThemes[profile.visual_theme as VisualThemeId || 'default']?.name || 'Default'}
-                  onClick={() => setShowVisualThemeModal(true)}
+                  icon={Globe}
+                  label={t('modals.language.title')}
+                  description={currentLanguage.nativeLabel}
+                  onClick={() => setShowLanguageModal(true)}
                 />
                 <SettingLink
                   icon={Palette}
-                  label="Accent Color"
-                  description={themeColors.find(c => c.id === profile.theme_color)?.label || 'Purple'}
+                  label={t('appearance.visualTheme')}
+                  description={t(`modals.visualTheme.themes.${profile.visual_theme === 'night-ritual' ? 'nightRitual' : profile.visual_theme === 'private-notebook' ? 'privateNotebook' : profile.visual_theme === 'cosmic-calm' ? 'cosmicCalm' : profile.visual_theme || 'default'}.name`)}
+                  onClick={() => setShowVisualThemeModal(true)}
+                  hasBorder
+                />
+                <SettingLink
+                  icon={Palette}
+                  label={t('appearance.accentColor')}
+                  description={t(themeColors.find(c => c.id === profile.theme_color)?.labelKey || 'modals.themeColor.colors.purple')}
                   onClick={() => setShowThemeModal(true)}
                   hasBorder
                 />
                 <SettingLink
                   icon={Image}
-                  label="Background"
-                  description={profile.background_image ? 'Custom' : 'Default'}
+                  label={t('appearance.background')}
+                  description={profile.background_image ? t('appearance.custom') : t('appearance.default')}
                   onClick={() => setShowBackgroundModal(true)}
                   hasBorder
                 />
@@ -264,19 +290,19 @@ export default function SettingsPage() {
             {/* Account */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Account
+                {t('sections.account')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
                   icon={Mail}
-                  label="Email"
-                  description={user?.email || 'Not set'}
+                  label={t('account.email')}
+                  description={user?.email || t('account.notSet')}
                   onClick={() => {}}
                   disabled
                 />
                 <SettingLink
                   icon={Lock}
-                  label="Change Password"
+                  label={t('account.changePassword')}
                   onClick={() => setShowPasswordModal(true)}
                   hasBorder
                 />
@@ -286,19 +312,19 @@ export default function SettingsPage() {
             {/* Privacy & Data */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Privacy & Data
+                {t('sections.privacyData')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
                   icon={Download}
-                  label="Export Data"
-                  description="Download all your data as JSON"
+                  label={t('privacyData.exportData')}
+                  description={t('privacyData.exportDescription')}
                   onClick={handleExportData}
                   isLoading={exportData.isPending}
                 />
                 <SettingLink
                   icon={Trash2}
-                  label="Delete Account"
+                  label={t('privacyData.deleteAccount')}
                   onClick={() => setShowDeleteModal(true)}
                   isDanger
                   hasBorder
@@ -309,17 +335,17 @@ export default function SettingsPage() {
             {/* Support */}
             <div>
               <h3 className="text-xs font-semibold text-dayo-gray-400 uppercase tracking-wider mb-2 px-1">
-                Support
+                {t('sections.support')}
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
                   icon={HelpCircle}
-                  label="Help Center"
+                  label={t('support.helpCenter')}
                   onClick={() => window.open('https://dayo.app/help', '_blank')}
                 />
                 <SettingLink
                   icon={Mail}
-                  label="Send Feedback"
+                  label={t('support.sendFeedback')}
                   onClick={() => window.open('mailto:support@dayo.app', '_blank')}
                   hasBorder
                 />
@@ -334,12 +360,12 @@ export default function SettingsPage() {
           className="w-full mt-6 flex items-center justify-center gap-2 p-4 bg-white rounded-2xl shadow-sm border border-dayo-gray-100 text-red-500 font-medium hover:bg-red-50 transition-colors"
         >
           <LogOut className="w-5 h-5" />
-          Sign Out
+          {t('signOut')}
         </button>
 
         {/* App Version */}
         <p className="text-center text-xs text-dayo-gray-400 mt-6">
-          DAYO v1.0.0
+          {t('version', { version: '1.0.0' })}
         </p>
       </main>
 
@@ -350,11 +376,11 @@ export default function SettingsPage() {
           onSubmit={(password) => {
             changePassword.mutate(password, {
               onSuccess: () => {
-                toast.success('Password changed successfully')
+                toast.success(t('modals.changePassword.success'))
                 setShowPasswordModal(false)
               },
               onError: () => {
-                toast.error('Failed to change password')
+                toast.error(t('modals.changePassword.error'))
               }
             })
           }}
@@ -377,7 +403,7 @@ export default function SettingsPage() {
           onSelect={(color) => {
             updateProfile.mutate({ theme_color: color }, {
               onSuccess: () => {
-                toast.success('Accent color updated')
+                toast.success(t('modals.themeColor.success'))
                 setShowThemeModal(false)
               }
             })
@@ -392,7 +418,7 @@ export default function SettingsPage() {
           onSelect={(themeId) => {
             updateProfile.mutate({ visual_theme: themeId }, {
               onSuccess: () => {
-                toast.success('Visual theme updated')
+                toast.success(t('modals.visualTheme.success'))
                 setShowVisualThemeModal(false)
               }
             })
@@ -407,7 +433,7 @@ export default function SettingsPage() {
           onSubmit={(name) => {
             updateProfile.mutate({ display_name: name }, {
               onSuccess: () => {
-                toast.success('Profile updated')
+                toast.success(t('modals.editProfile.success'))
                 setShowProfileModal(false)
               }
             })
@@ -422,7 +448,7 @@ export default function SettingsPage() {
           onClose={() => setShowProfileModeModal(false)}
           onSelect={(mode) => {
             setProfileType(mode)
-            toast.success(`Switched to ${mode === 'kid' ? 'Kids' : 'Adults'} mode`)
+            toast.success(t('profileMode.switchedTo', { mode: mode === 'kid' ? t('profileMode.kids.label') : t('profileMode.adult.label') }))
             setShowProfileModeModal(false)
           }}
         />
@@ -436,11 +462,19 @@ export default function SettingsPage() {
           onSelect={(bg) => {
             updateProfile.mutate({ background_image: bg }, {
               onSuccess: () => {
-                toast.success('Background updated')
+                toast.success(t('modals.background.success'))
                 setShowBackgroundModal(false)
               }
             })
           }}
+        />
+      )}
+
+      {showLanguageModal && (
+        <LanguageModal
+          currentLanguage={i18n.language as LanguageCode}
+          onClose={() => setShowLanguageModal(false)}
+          onSelect={handleLanguageChange}
         />
       )}
 
@@ -675,11 +709,13 @@ interface ThemeColorModalProps {
 }
 
 function ThemeColorModal({ currentColor, onClose, onSelect }: ThemeColorModalProps) {
+  const { t } = useTranslation('settings')
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
-          <h2 className="text-lg font-semibold text-dayo-gray-900">Theme Color</h2>
+          <h2 className="text-lg font-semibold text-dayo-gray-900">{t('modals.themeColor.title')}</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
             <X className="w-5 h-5" />
           </button>
@@ -696,8 +732,8 @@ function ThemeColorModal({ currentColor, onClose, onSelect }: ThemeColorModalPro
                 className="w-8 h-8 rounded-full"
                 style={{ backgroundColor: theme.color }}
               />
-              <span className="flex-1 text-left font-medium text-dayo-gray-900">
-                {theme.label}
+              <span className="flex-1 text-start font-medium text-dayo-gray-900">
+                {t(theme.labelKey)}
               </span>
               {currentColor === theme.id && (
                 <Check className="w-5 h-5 text-dayo-purple" />
@@ -1045,6 +1081,49 @@ function BackgroundModal({ currentBackground, isKidsMode, onClose, onSelect }: B
               />
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Language Modal
+interface LanguageModalProps {
+  currentLanguage: LanguageCode
+  onClose: () => void
+  onSelect: (langCode: LanguageCode) => void
+}
+
+function LanguageModal({ currentLanguage, onClose, onSelect }: LanguageModalProps) {
+  const { t } = useTranslation('settings')
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
+          <h2 className="text-lg font-semibold text-dayo-gray-900">{t('modals.language.title')}</h2>
+          <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 space-y-2">
+          {supportedLanguages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => onSelect(lang.code)}
+              className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-dayo-gray-50"
+            >
+              <span className="text-2xl">{lang.code === 'he' ? '🇮🇱' : '🇺🇸'}</span>
+              <div className="flex-1 text-start">
+                <span className="font-medium text-dayo-gray-900">{lang.nativeLabel}</span>
+                <span className="text-sm text-dayo-gray-500 ms-2">({lang.label})</span>
+              </div>
+              {currentLanguage === lang.code && (
+                <Check className="w-5 h-5 text-dayo-purple" />
+              )}
+            </button>
+          ))}
         </div>
       </div>
     </div>

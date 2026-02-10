@@ -1,0 +1,157 @@
+{
+  "title": "Settings",
+  "sections": {
+    "preferences": "Preferences",
+    "profileMode": "Profile Mode",
+    "appearance": "Appearance",
+    "account": "Account",
+    "privacyData": "Privacy & Data",
+    "support": "Support"
+  },
+  "preferences": {
+    "darkMode": "Dark Mode",
+    "pushNotifications": "Push Notifications",
+    "dailyReminder": "Daily Reminder",
+    "notificationsUnavailable": "Available on mobile app"
+  },
+  "profileMode": {
+    "title": "Profile Type",
+    "adult": {
+      "label": "Adults Mode",
+      "description": "Calm, reflective journaling experience"
+    },
+    "kids": {
+      "label": "Kids Mode",
+      "description": "Fun, colorful adventure journal"
+    },
+    "switchedTo": "Switched to {{mode}} mode"
+  },
+  "appearance": {
+    "visualTheme": "Visual Theme",
+    "accentColor": "Accent Color",
+    "background": "Background",
+    "custom": "Custom",
+    "default": "Default"
+  },
+  "account": {
+    "email": "Email",
+    "notSet": "Not set",
+    "changePassword": "Change Password"
+  },
+  "privacyData": {
+    "exportData": "Export Data",
+    "exportDescription": "Download all your data as JSON",
+    "deleteAccount": "Delete Account"
+  },
+  "support": {
+    "helpCenter": "Help Center",
+    "sendFeedback": "Send Feedback"
+  },
+  "premium": {
+    "title": "Upgrade to Premium",
+    "description": "Unlock all features and remove limits"
+  },
+  "signOut": "Sign Out",
+  "version": "DAYO v{{version}}",
+  "modals": {
+    "changePassword": {
+      "title": "Change Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Change Password",
+      "errors": {
+        "tooShort": "Password must be at least 6 characters",
+        "mismatch": "Passwords do not match"
+      },
+      "success": "Password changed successfully",
+      "error": "Failed to change password"
+    },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "warning": "This action cannot be undone. All your data including tasks, diary entries, goals, and habits will be permanently deleted.",
+      "confirmLabel": "Type \"DELETE\" to confirm",
+      "confirmPlaceholder": "DELETE",
+      "cancel": "Cancel",
+      "submit": "Delete Account",
+      "success": "Account deleted",
+      "error": "Failed to delete account"
+    },
+    "themeColor": {
+      "title": "Theme Color",
+      "colors": {
+        "purple": "Purple",
+        "blue": "Blue",
+        "green": "Green",
+        "orange": "Orange",
+        "pink": "Pink"
+      },
+      "success": "Accent color updated"
+    },
+    "visualTheme": {
+      "title": "Visual Theme",
+      "themes": {
+        "default": {
+          "name": "Default",
+          "description": "Clean and minimal"
+        },
+        "nightRitual": {
+          "name": "Night Ritual",
+          "description": "Moon, stars, peaceful night"
+        },
+        "diary": {
+          "name": "Sunset Diary",
+          "description": "Warm sunset over water"
+        },
+        "privateNotebook": {
+          "name": "Private Notebook",
+          "description": "Paper-like simplicity"
+        },
+        "cosmicCalm": {
+          "name": "Cosmic Calm",
+          "description": "Deep space serenity"
+        }
+      },
+      "success": "Visual theme updated"
+    },
+    "editProfile": {
+      "title": "Edit Profile",
+      "displayName": "Display Name",
+      "placeholder": "Your name",
+      "submit": "Save Changes",
+      "success": "Profile updated"
+    },
+    "background": {
+      "title": "Background",
+      "presets": "Presets",
+      "customPhoto": "Custom Photo",
+      "uploadPrompt": "Upload your own photo",
+      "currentCustom": "Current Custom",
+      "success": "Background updated",
+      "backgrounds": {
+        "default": "Default",
+        "purpleMist": "Purple Mist",
+        "oceanBlue": "Ocean Blue",
+        "sunset": "Sunset",
+        "forest": "Forest",
+        "nightSky": "Night Sky",
+        "rainbow": "Rainbow",
+        "candyLand": "Candy Land",
+        "spaceAdventure": "Space Adventure",
+        "jungle": "Jungle",
+        "underTheSea": "Under the Sea",
+        "sunshine": "Sunshine"
+      }
+    },
+    "language": {
+      "title": "Language",
+      "success": "Language updated"
+    }
+  },
+  "toast": {
+    "enabled": "{{setting}} enabled",
+    "disabled": "{{setting}} disabled",
+    "updateError": "Failed to update setting",
+    "exportSuccess": "Data exported successfully",
+    "exportError": "Failed to export data"
+  }
+}

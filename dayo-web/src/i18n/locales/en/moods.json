@@ -1,0 +1,16 @@
+{
+  "adult": {
+    "amazing": "Amazing",
+    "happy": "Happy",
+    "okay": "Okay",
+    "sad": "Sad",
+    "stressed": "Stressed"
+  },
+  "kids": {
+    "amazing": "ROAR Amazing!",
+    "happy": "Puppy Happy!",
+    "okay": "Turtle Fine",
+    "sad": "Bunny Sad",
+    "tired": "Bear Tired"
+  }
+}
