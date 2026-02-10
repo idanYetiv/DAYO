@@ -13,9 +13,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-dayo-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-dayo-gradient rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-lg">D</span>
-            </div>
+            <img src="/logo.png" alt="DAYO" className="w-10 h-10 rounded-xl" />
             <span className="font-bold text-xl text-dayo-gray-900">DAYO</span>
           </div>
           <div className="flex items-center gap-4">
@@ -126,9 +124,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-dayo-gradient rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">D</span>
-              </div>
+              <img src="/logo.png" alt="DAYO" className="w-8 h-8 rounded-lg" />
               <span className="font-bold text-dayo-gray-900">DAYO</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-dayo-gray-500">

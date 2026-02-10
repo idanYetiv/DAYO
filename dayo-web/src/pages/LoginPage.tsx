@@ -50,6 +50,7 @@ export default function LoginPage() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           {/* Logo/Brand */}
           <div className="text-center mb-8">
+            <img src="/logo.png" alt="DAYO" className="w-16 h-16 rounded-2xl mx-auto mb-3" />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
               DAYO
             </h1>

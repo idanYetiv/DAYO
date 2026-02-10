@@ -31,9 +31,7 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-gradient-to-br from-dayo-gray-50 to-dayo-purple/5 flex flex-col">
       {/* Header */}
       <header className="px-6 py-8 text-center">
-        <div className="w-16 h-16 bg-dayo-gradient rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-dayo">
-          <span className="text-white font-bold text-2xl">D</span>
-        </div>
+        <img src="/logo.png" alt="DAYO" className="w-16 h-16 rounded-2xl mx-auto mb-4 shadow-dayo" />
         <h1 className="text-3xl font-bold text-dayo-gray-900 mb-2">
           Welcome to DAYO
         </h1>
