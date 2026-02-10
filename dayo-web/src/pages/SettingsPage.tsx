@@ -31,6 +31,8 @@ import {
 } from '../hooks/useUserProfile'
 import { usePushNotifications } from '../hooks/usePushNotifications'
 import { toast } from 'sonner'
+import { visualThemes, visualThemesList, type VisualThemeId } from '../data/visualThemes'
+import ThemedHeader from '../components/ui/ThemedHeader'
 
 const themeColors = [
   { id: 'purple', label: 'Purple', color: '#8B5CF6' },
@@ -53,6 +55,7 @@ export default function SettingsPage() {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showThemeModal, setShowThemeModal] = useState(false)
+  const [showVisualThemeModal, setShowVisualThemeModal] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showProfileModeModal, setShowProfileModeModal] = useState(false)
   const [showBackgroundModal, setShowBackgroundModal] = useState(false)
@@ -135,12 +138,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
-        <div className="max-w-lg mx-auto">
-          <h1 className="text-xl font-bold text-dayo-gray-900">Settings</h1>
-        </div>
-      </header>
+      <ThemedHeader title="Settings" showLogo={false} />
 
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* User Card */}
@@ -242,9 +240,16 @@ export default function SettingsPage() {
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
                   icon={Palette}
-                  label="Theme Color"
+                  label="Visual Theme"
+                  description={visualThemes[profile.visual_theme as VisualThemeId || 'default']?.name || 'Default'}
+                  onClick={() => setShowVisualThemeModal(true)}
+                />
+                <SettingLink
+                  icon={Palette}
+                  label="Accent Color"
                   description={themeColors.find(c => c.id === profile.theme_color)?.label || 'Purple'}
                   onClick={() => setShowThemeModal(true)}
+                  hasBorder
                 />
                 <SettingLink
                   icon={Image}
@@ -372,8 +377,23 @@ export default function SettingsPage() {
           onSelect={(color) => {
             updateProfile.mutate({ theme_color: color }, {
               onSuccess: () => {
-                toast.success('Theme color updated')
+                toast.success('Accent color updated')
                 setShowThemeModal(false)
+              }
+            })
+          }}
+        />
+      )}
+
+      {showVisualThemeModal && profile && (
+        <VisualThemeModal
+          currentTheme={(profile.visual_theme as VisualThemeId) || 'default'}
+          onClose={() => setShowVisualThemeModal(false)}
+          onSelect={(themeId) => {
+            updateProfile.mutate({ visual_theme: themeId }, {
+              onSuccess: () => {
+                toast.success('Visual theme updated')
+                setShowVisualThemeModal(false)
               }
             })
           }}
@@ -539,7 +559,7 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
           <h2 className="text-lg font-semibold text-dayo-gray-900">Change Password</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
@@ -599,7 +619,7 @@ function DeleteAccountModal({ onClose, onConfirm, isLoading }: DeleteAccountModa
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
           <h2 className="text-lg font-semibold text-red-500">Delete Account</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
@@ -657,7 +677,7 @@ interface ThemeColorModalProps {
 function ThemeColorModal({ currentColor, onClose, onSelect }: ThemeColorModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
           <h2 className="text-lg font-semibold text-dayo-gray-900">Theme Color</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
@@ -690,6 +710,124 @@ function ThemeColorModal({ currentColor, onClose, onSelect }: ThemeColorModalPro
   )
 }
 
+// Visual Theme Modal
+interface VisualThemeModalProps {
+  currentTheme: VisualThemeId
+  onClose: () => void
+  onSelect: (themeId: VisualThemeId) => void
+}
+
+// Theme preview decorations
+const themeDecorations: Record<VisualThemeId, React.ReactNode> = {
+  'default': null,
+  'night-ritual': (
+    // Moon and stars
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute top-2 right-3 w-6 h-6 bg-yellow-100 rounded-full shadow-lg shadow-yellow-200/50" />
+      <div className="absolute top-2 right-3 w-5 h-5 bg-[#1a1a2e] rounded-full translate-x-1" />
+      {/* Stars */}
+      <div className="absolute top-3 left-3 w-1 h-1 bg-white rounded-full opacity-80" />
+      <div className="absolute top-5 left-8 w-0.5 h-0.5 bg-white rounded-full opacity-60" />
+      <div className="absolute top-2 left-12 w-1 h-1 bg-white rounded-full opacity-70" />
+      <div className="absolute bottom-4 left-4 w-0.5 h-0.5 bg-white rounded-full opacity-50" />
+      {/* Clouds */}
+      <div className="absolute bottom-2 right-0 w-16 h-4 bg-gradient-to-t from-slate-700/30 to-transparent rounded-full blur-sm" />
+    </div>
+  ),
+  'diary': (
+    // Sun setting
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-5 bg-gradient-to-t from-orange-400 to-yellow-300 rounded-t-full opacity-90" />
+      {/* Water reflection */}
+      <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-orange-500/40 to-transparent" />
+    </div>
+  ),
+  'private-notebook': (
+    // Notebook lines
+    <div className="absolute inset-0 overflow-hidden opacity-30">
+      <div className="absolute top-4 left-2 right-2 h-px bg-gray-400" />
+      <div className="absolute top-7 left-2 right-2 h-px bg-gray-400" />
+      <div className="absolute top-10 left-2 right-2 h-px bg-gray-400" />
+      <div className="absolute top-13 left-2 right-2 h-px bg-gray-400" />
+    </div>
+  ),
+  'cosmic-calm': (
+    // Stars and nebula
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Stars */}
+      <div className="absolute top-2 left-3 w-1 h-1 bg-purple-200 rounded-full opacity-90" />
+      <div className="absolute top-4 left-8 w-0.5 h-0.5 bg-white rounded-full opacity-70" />
+      <div className="absolute top-3 right-4 w-1 h-1 bg-purple-300 rounded-full opacity-80" />
+      <div className="absolute top-6 left-5 w-0.5 h-0.5 bg-white rounded-full opacity-60" />
+      <div className="absolute bottom-3 right-6 w-1 h-1 bg-indigo-300 rounded-full opacity-75" />
+      <div className="absolute bottom-5 left-10 w-0.5 h-0.5 bg-white rounded-full opacity-50" />
+      <div className="absolute top-8 right-8 w-0.5 h-0.5 bg-purple-200 rounded-full opacity-65" />
+      {/* Nebula glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-8 bg-purple-500/20 rounded-full blur-xl" />
+    </div>
+  ),
+}
+
+function VisualThemeModal({ currentTheme, onClose, onSelect }: VisualThemeModalProps) {
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white modal-content dark:bg-gray-800 rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-dayo-gray-900 dark:text-white">Visual Theme</h2>
+          <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 overflow-y-auto flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            {visualThemesList.map((theme) => (
+              <button
+                key={theme.id}
+                onClick={() => onSelect(theme.id)}
+                className={`p-3 rounded-xl border-2 transition-all text-left ${
+                  currentTheme === theme.id
+                    ? 'border-dayo-purple ring-2 ring-dayo-purple/20'
+                    : 'border-dayo-gray-200 dark:border-gray-600 hover:border-dayo-gray-300'
+                }`}
+              >
+                <div
+                  className="h-20 rounded-lg mb-2 relative overflow-hidden"
+                  style={{ background: theme.backgroundImage || theme.colors.gradient }}
+                >
+                  {/* Theme decorations */}
+                  {themeDecorations[theme.id]}
+
+                  {/* Mini card preview */}
+                  <div
+                    className="absolute bottom-1.5 left-1.5 right-1.5 h-6 rounded opacity-90"
+                    style={{
+                      background: theme.colors.cardBg,
+                      border: theme.isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)'
+                    }}
+                  />
+
+                  {currentTheme === theme.id && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <Check className="w-6 h-6 text-white" />
+                    </div>
+                  )}
+                </div>
+                <p className="font-medium text-dayo-gray-900 dark:text-white text-sm">
+                  {theme.name}
+                </p>
+                <p className="text-xs text-dayo-gray-500 dark:text-gray-400">
+                  {theme.description}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Edit Profile Modal
 interface EditProfileModalProps {
   displayName: string
@@ -708,7 +846,7 @@ function EditProfileModal({ displayName, onClose, onSubmit, isLoading }: EditPro
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
           <h2 className="text-lg font-semibold text-dayo-gray-900">Edit Profile</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
@@ -767,7 +905,7 @@ const profileModes: { id: ProfileType; label: string; description: string; emoji
 function ProfileModeModal({ currentMode, onClose, onSelect }: ProfileModeModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md">
+      <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
           <h2 className="text-lg font-semibold text-dayo-gray-900">Profile Mode</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">

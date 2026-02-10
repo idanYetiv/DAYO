@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import { ChevronLeft, ChevronRight, Moon, Sun, Flame, Share2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Flame, Share2 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks'
 import { useDayEntry, useUpsertDayEntry, useUpdateGratitude, useUpdateHighlights, type DiaryHighlight } from '../hooks/useDiary'
 import { useUserStats, useUpdateStreak } from '../hooks/useUserStats'
 import { useProfileMode } from '../hooks/useProfileMode'
-import { useContentForMode, useGreeting } from '../hooks/useContentForMode'
+import { useContentForMode } from '../hooks/useContentForMode'
 import { taskToast, diaryToast } from '../lib/toast'
 import { useHaptics } from '../hooks/useHaptics'
 import { useSwipeNavigation } from '../hooks/useSwipeNavigation'
@@ -27,6 +27,7 @@ import MilestoneCelebration from '../components/diary/MilestoneCelebration'
 import DailyInsightToast from '../components/diary/DailyInsightToast'
 import { stripToPlainText } from '../lib/exportUtils'
 import StreakDisplay from '../components/kids/StreakDisplay'
+import ThemedHeader from '../components/ui/ThemedHeader'
 
 export default function TodayPage() {
   const navigate = useNavigate()
@@ -47,7 +48,6 @@ export default function TodayPage() {
   const { notification, impact } = useHaptics()
   const { isKidsMode } = useProfileMode()
   const { moodEmojis, diaryPrompts } = useContentForMode()
-  const greetingText = useGreeting()
 
   // Pick a random diary prompt, stable per session
   const diaryPrompt = useMemo(
@@ -90,15 +90,6 @@ export default function TodayPage() {
       setSelectedMood('')
     }
   }, [dayEntry])
-
-  // Get greeting icon based on time of day
-  const getGreetingIcon = () => {
-    const hour = new Date().getHours()
-    if (hour < 18) return Sun
-    return Moon
-  }
-
-  const GreetingIcon = getGreetingIcon()
 
   const handleAddTask = (title: string) => {
     createTask.mutate(
@@ -291,23 +282,14 @@ export default function TodayPage() {
           />
         </>
       )}
-      {/* Header */}
-      <header className={`px-4 py-4 ${isKidsMode ? 'bg-kids-gradient' : 'bg-white'}`}>
-        <div className="max-w-lg mx-auto flex items-center justify-between">
+      <ThemedHeader
+        showLogo={true}
+        className={isKidsMode ? 'bg-kids-gradient' : ''}
+        rightContent={
           <div className="flex items-center gap-2">
-            <GreetingIcon className={`w-5 h-5 ${isKidsMode ? 'text-white' : 'text-dayo-orange'}`} />
-            <h1 className={`text-xl font-bold ${isKidsMode ? 'text-white' : 'text-dayo-gray-900'}`}>
-              {greetingText}
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
             <button
               onClick={() => setShowExportModal(true)}
-              className={`p-2 transition-colors rounded-full ${
-                isKidsMode
-                  ? 'text-white/80 hover:text-white hover:bg-white/20'
-                  : 'text-dayo-gray-400 hover:text-dayo-purple hover:bg-dayo-gray-100'
-              }`}
+              className="p-2 transition-colors rounded-full themed-header-icon"
               title="Share your day"
             >
               <Share2 className="w-5 h-5" />
@@ -317,12 +299,12 @@ export default function TodayPage() {
             ) : (
               <div className="flex items-center gap-2 bg-dayo-orange text-white px-3 py-1.5 rounded-full text-sm font-medium">
                 <Flame className="w-4 h-4" />
-                {currentStreak} day streak
+                {currentStreak}
               </div>
             )}
           </div>
-        </div>
-      </header>
+        }
+      />
 
       {/* Date Navigation */}
       <div className="bg-white border-b border-dayo-gray-100 px-4 py-3">

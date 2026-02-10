@@ -7,6 +7,8 @@ import { useAuthStore } from './store/authStore'
 import { ProfileModeProvider } from './contexts/ProfileModeContext'
 import { useProfileMode } from './hooks/useProfileMode'
 import { useUserProfile } from './hooks/useUserProfile'
+import { visualThemes, type VisualThemeId } from './data/visualThemes'
+import ThemeDecorations from './components/ui/ThemeDecorations'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
@@ -130,6 +132,60 @@ function BackgroundApplier({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+// Component to apply visual theme
+function VisualThemeApplier({ children }: { children: React.ReactNode }) {
+  const { data: profile } = useUserProfile()
+
+  useEffect(() => {
+    const themeId = (profile?.visual_theme || 'default') as VisualThemeId
+    const theme = visualThemes[themeId]
+    if (!theme) return
+
+    const root = document.documentElement
+
+    // Apply CSS variables
+    root.style.setProperty('--visual-theme-primary', theme.colors.primary)
+    root.style.setProperty('--visual-theme-gradient', theme.colors.gradient)
+    root.style.setProperty('--visual-theme-bg', theme.colors.background)
+    root.style.setProperty('--visual-theme-card-bg', theme.colors.cardBg)
+    root.style.setProperty('--visual-theme-text', theme.colors.textPrimary)
+    root.style.setProperty('--visual-theme-text-secondary', theme.colors.textSecondary)
+
+    // Apply dark class for dark themes (unless user has explicit dark mode setting)
+    if (theme.isDark && themeId !== 'default') {
+      root.classList.add('dark')
+    }
+
+    // Apply theme-specific class
+    root.setAttribute('data-visual-theme', themeId)
+
+    // Apply background image if theme has one and user doesn't have custom background
+    if (theme.backgroundImage && !profile?.background_image) {
+      document.body.style.backgroundImage = theme.backgroundImage
+      document.body.style.backgroundSize = 'cover'
+      document.body.style.backgroundAttachment = 'fixed'
+    }
+
+    return () => {
+      root.removeAttribute('data-visual-theme')
+      root.style.removeProperty('--visual-theme-primary')
+      root.style.removeProperty('--visual-theme-gradient')
+      root.style.removeProperty('--visual-theme-bg')
+      root.style.removeProperty('--visual-theme-card-bg')
+      root.style.removeProperty('--visual-theme-text')
+      root.style.removeProperty('--visual-theme-text-secondary')
+      // Only clear background if it was set by visual theme
+      if (theme.backgroundImage && !profile?.background_image) {
+        document.body.style.backgroundImage = ''
+        document.body.style.backgroundSize = ''
+        document.body.style.backgroundAttachment = ''
+      }
+    }
+  }, [profile?.visual_theme, profile?.background_image])
+
+  return <>{children}</>
+}
+
 // Component to check onboarding status and redirect if needed
 function OnboardingGuard({ children }: { children: React.ReactNode }) {
   const { onboardingCompleted, isLoading } = useProfileMode()
@@ -170,9 +226,11 @@ function AuthenticatedRoutes() {
       <ProfileModeProvider>
         <ThemeColorApplier>
           <DarkModeApplier>
-            <BackgroundApplier>
-              <KidsModeClassApplier>
-                <OnboardingGuard>
+            <VisualThemeApplier>
+              <BackgroundApplier>
+                <KidsModeClassApplier>
+                  <OnboardingGuard>
+                    <ThemeDecorations />
             <Routes>
               {/* Onboarding */}
               <Route path="/onboarding" element={<OnboardingPage />} />
@@ -195,9 +253,10 @@ function AuthenticatedRoutes() {
               <Route path="/login" element={<Navigate to="/today" />} />
               <Route path="/signup" element={<Navigate to="/today" />} />
             </Routes>
-                </OnboardingGuard>
-              </KidsModeClassApplier>
-            </BackgroundApplier>
+                  </OnboardingGuard>
+                </KidsModeClassApplier>
+              </BackgroundApplier>
+            </VisualThemeApplier>
           </DarkModeApplier>
         </ThemeColorApplier>
       </ProfileModeProvider>
@@ -229,9 +288,7 @@ function App() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-dayo-gray-50">
         <div className="text-center">
-          <div className="w-12 h-12 bg-dayo-gradient rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-xl">D</span>
-          </div>
+          <img src="/logo.png" alt="DAYO" className="w-12 h-12 rounded-2xl mx-auto mb-4" />
           <p className="text-dayo-gray-500">Loading DAYO...</p>
         </div>
       </div>

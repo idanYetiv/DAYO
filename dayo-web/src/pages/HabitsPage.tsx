@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { Plus, Flame, Check, MoreHorizontal, TrendingUp, Award, Loader2, X } from 'lucide-react'
 import BottomNavigation from '../components/ui/BottomNavigation'
+import ThemedHeader from '../components/ui/ThemedHeader'
 import {
   useHabits,
   useCreateHabit,
@@ -73,45 +74,46 @@ export default function HabitsPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
+      <ThemedHeader
+        title="Habits"
+        showLogo={false}
+        rightContent={
+          <button
+            onClick={() => setShowNewHabitModal(true)}
+            className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
+          >
+            <Plus className="w-4 h-4" />
+            New Habit
+          </button>
+        }
+      />
+      {/* Stats Row */}
+      <div className="themed-header px-4 pb-3 -mt-1">
         <div className="max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-dayo-gray-900">Habits</h1>
-            <button
-              onClick={() => setShowNewHabitModal(true)}
-              className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
-            >
-              <Plus className="w-4 h-4" />
-              New Habit
-            </button>
-          </div>
-
-          {/* Stats Row */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <div className="flex items-center justify-center gap-1 text-2xl font-bold text-emerald-500">
                 {completedToday}/{totalHabits}
               </div>
-              <p className="text-xs text-dayo-gray-500">Today</p>
+              <p className="text-xs themed-text-secondary">Today</p>
             </div>
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <div className="flex items-center justify-center gap-1">
                 <Flame className="w-5 h-5 text-dayo-orange" />
                 <span className="text-2xl font-bold text-dayo-orange">{totalStreak}</span>
               </div>
-              <p className="text-xs text-dayo-gray-500">Total Streak</p>
+              <p className="text-xs themed-text-secondary">Total Streak</p>
             </div>
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <div className="flex items-center justify-center gap-1">
                 <TrendingUp className="w-5 h-5 text-dayo-purple" />
                 <span className="text-2xl font-bold text-dayo-purple">{weekCompletionRate}%</span>
               </div>
-              <p className="text-xs text-dayo-gray-500">This Week</p>
+              <p className="text-xs themed-text-secondary">This Week</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* Loading State */}

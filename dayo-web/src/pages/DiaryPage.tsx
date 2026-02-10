@@ -23,6 +23,7 @@ import { diaryToast } from '../lib/toast'
 import { getMoodColors, getMoodCalendarBg } from '../lib/moodColors'
 import { countWords } from '../lib/diaryUtils'
 import BookmarkButton from '../components/diary/BookmarkButton'
+import ThemedHeader from '../components/ui/ThemedHeader'
 import type { DiaryTemplate } from '../data/templates'
 
 interface DiaryEntry {
@@ -237,32 +238,33 @@ export default function DiaryPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
-        <div className="max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-dayo-gray-900">Diary</h1>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowSearch(!showSearch)}
-                className={`p-2 transition-colors ${
-                  showSearch ? 'text-dayo-purple' : 'text-dayo-gray-400 hover:text-dayo-gray-600'
-                }`}
-              >
-                <Search className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleNewEntry}
-                className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
-              >
-                <Plus className="w-4 h-4" />
-                New Entry
-              </button>
-            </div>
+      <ThemedHeader
+        title="Diary"
+        showLogo={false}
+        rightContent={
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className={`p-2 rounded-lg transition-colors ${
+                showSearch ? 'text-dayo-purple bg-dayo-purple/10' : 'themed-header-icon'
+              }`}
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNewEntry}
+              className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
+            >
+              <Plus className="w-4 h-4" />
+              New Entry
+            </button>
           </div>
-
-          {/* View Toggle */}
-          <div className="flex bg-dayo-gray-100 rounded-xl p-1">
+        }
+      />
+      {/* View Toggle */}
+      <div className="themed-header px-4 pb-3 -mt-1">
+        <div className="max-w-lg mx-auto">
+          <div className="flex view-toggle-bar rounded-xl p-1">
             <button
               onClick={() => setViewMode('calendar')}
               className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
@@ -295,7 +297,7 @@ export default function DiaryPage() {
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* Search Panel */}
