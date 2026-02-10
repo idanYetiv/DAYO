@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, Target, ChevronRight, Trophy, Calendar, MoreHorizontal, Loader2, X, Trash2 } from 'lucide-react'
 import BottomNavigation from '../components/ui/BottomNavigation'
+import ThemedHeader from '../components/ui/ThemedHeader'
 import { useGoals, useCreateGoal, useDeleteGoal, useToggleMilestone, useCreateMilestone, useDeleteMilestone, calculateGoalProgress, type GoalWithMilestones } from '../hooks/useGoals'
 import { toast } from 'sonner'
 
@@ -99,37 +100,38 @@ export default function GoalsPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
+      <ThemedHeader
+        title="Goals"
+        showLogo={false}
+        rightContent={
+          <button
+            onClick={() => setShowNewGoalModal(true)}
+            className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
+          >
+            <Plus className="w-4 h-4" />
+            New Goal
+          </button>
+        }
+      />
+      {/* Stats */}
+      <div className="themed-header px-4 pb-3 -mt-1">
         <div className="max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-dayo-gray-900">Goals</h1>
-            <button
-              onClick={() => setShowNewGoalModal(true)}
-              className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
-            >
-              <Plus className="w-4 h-4" />
-              New Goal
-            </button>
-          </div>
-
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-dayo-purple">{stats.total}</p>
-              <p className="text-xs text-dayo-gray-500">Total</p>
+              <p className="text-xs themed-text-secondary">Total</p>
             </div>
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-emerald-500">{stats.completed}</p>
-              <p className="text-xs text-dayo-gray-500">Completed</p>
+              <p className="text-xs themed-text-secondary">Completed</p>
             </div>
-            <div className="bg-dayo-gray-50 rounded-xl p-3 text-center">
+            <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-dayo-orange">{stats.inProgress}</p>
-              <p className="text-xs text-dayo-gray-500">In Progress</p>
+              <p className="text-xs themed-text-secondary">In Progress</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* Category Filter */}

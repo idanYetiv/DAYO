@@ -257,3 +257,597 @@
 [data-theme="pink"] .focus\:ring-dayo-purple\/20:focus {
   --tw-ring-color: rgb(236 72 153 / 0.2) !important;
 }
+
+/* ================================
+   VISUAL THEMES
+   ================================ */
+
+/* Theme decoration animations */
+/* ================================
+   THEMED HEADER
+   ================================ */
+
+.themed-header {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.themed-header-title {
+  color: #1F2937;
+}
+
+/* Night Ritual header */
+[data-visual-theme="night-ritual"] .themed-header {
+  background: linear-gradient(to bottom, rgba(15, 12, 41, 0.9), rgba(26, 26, 46, 0.8));
+  border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+}
+
+[data-visual-theme="night-ritual"] .themed-header-title {
+  color: #FBBF24;
+}
+
+/* Diary header */
+[data-visual-theme="diary"] .themed-header {
+  background: linear-gradient(to bottom, rgba(30, 58, 95, 0.85), rgba(194, 65, 12, 0.7));
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+[data-visual-theme="diary"] .themed-header-title {
+  color: #FEF3C7;
+}
+
+/* Private Notebook header */
+[data-visual-theme="private-notebook"] .themed-header {
+  background: rgba(250, 250, 249, 0.95);
+  border-bottom: 1px solid #E7E5E4;
+}
+
+[data-visual-theme="private-notebook"] .themed-header-title {
+  color: #1C1917;
+}
+
+/* Cosmic Calm header */
+[data-visual-theme="cosmic-calm"] .themed-header {
+  background: linear-gradient(to bottom, rgba(15, 10, 31, 0.9), rgba(30, 17, 69, 0.8));
+  border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+}
+
+[data-visual-theme="cosmic-calm"] .themed-header-title {
+  color: #C4B5FD;
+}
+
+/* Themed header icons */
+.themed-header-icon {
+  color: #9CA3AF;
+}
+
+.themed-header-icon:hover {
+  color: #6B7280;
+}
+
+[data-visual-theme="night-ritual"] .themed-header-icon {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-visual-theme="night-ritual"] .themed-header-icon:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-visual-theme="diary"] .themed-header-icon {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-visual-theme="diary"] .themed-header-icon:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+[data-visual-theme="cosmic-calm"] .themed-header-icon {
+  color: rgba(196, 181, 253, 0.6);
+}
+
+[data-visual-theme="cosmic-calm"] .themed-header-icon:hover {
+  color: rgba(196, 181, 253, 0.9);
+}
+
+/* Themed text secondary */
+.themed-text-secondary {
+  color: #6B7280;
+}
+
+[data-visual-theme="night-ritual"] .themed-text-secondary {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-visual-theme="diary"] .themed-text-secondary {
+  color: #78716C;
+}
+
+[data-visual-theme="cosmic-calm"] .themed-text-secondary {
+  color: rgba(196, 181, 253, 0.8);
+}
+
+/* Stats cards */
+.stats-card {
+  background-color: #F9FAFB;
+}
+
+[data-visual-theme="night-ritual"] .stats-card {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+[data-visual-theme="diary"] .stats-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+[data-visual-theme="private-notebook"] .stats-card {
+  background: #FFFFFF;
+  border: 1px solid #E7E5E4;
+}
+
+[data-visual-theme="cosmic-calm"] .stats-card {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+/* View toggle bar */
+.view-toggle-bar {
+  background-color: #F3F4F6;
+}
+
+[data-visual-theme="night-ritual"] .view-toggle-bar {
+  background: rgba(251, 191, 36, 0.15);
+}
+
+[data-visual-theme="diary"] .view-toggle-bar {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+[data-visual-theme="cosmic-calm"] .view-toggle-bar {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+/* ================================
+   BOTTOM NAVIGATION - Themed
+   ================================ */
+
+/* Default bottom nav */
+.bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-nav-item {
+  color: #9CA3AF;
+}
+
+.bottom-nav-item:hover {
+  color: #6B7280;
+}
+
+.bottom-nav-item.active {
+  color: #8B5CF6;
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* Night Ritual nav */
+[data-visual-theme="night-ritual"] .bottom-nav-bar {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.2) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  box-shadow: 0 4px 30px rgba(251, 191, 36, 0.15);
+}
+
+[data-visual-theme="night-ritual"] .bottom-nav-item {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-visual-theme="night-ritual"] .bottom-nav-item:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-visual-theme="night-ritual"] .bottom-nav-item.active {
+  color: #FBBF24;
+  background: rgba(251, 191, 36, 0.2);
+}
+
+/* Diary nav */
+[data-visual-theme="diary"] .bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(234, 88, 12, 0.15);
+  box-shadow: 0 4px 30px rgba(234, 88, 12, 0.1);
+}
+
+[data-visual-theme="diary"] .bottom-nav-item {
+  color: #A8A29E;
+}
+
+[data-visual-theme="diary"] .bottom-nav-item:hover {
+  color: #78716C;
+}
+
+[data-visual-theme="diary"] .bottom-nav-item.active {
+  color: #EA580C;
+  background: rgba(234, 88, 12, 0.1);
+}
+
+/* Private Notebook nav */
+[data-visual-theme="private-notebook"] .bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #E7E5E4;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-visual-theme="private-notebook"] .bottom-nav-item {
+  color: #A8A29E;
+}
+
+[data-visual-theme="private-notebook"] .bottom-nav-item:hover {
+  color: #78716C;
+}
+
+[data-visual-theme="private-notebook"] .bottom-nav-item.active {
+  color: #57534E;
+  background: rgba(120, 113, 108, 0.1);
+}
+
+/* Cosmic Calm nav */
+[data-visual-theme="cosmic-calm"] .bottom-nav-bar {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(99, 102, 241, 0.15) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  box-shadow: 0 4px 30px rgba(139, 92, 246, 0.15);
+}
+
+[data-visual-theme="cosmic-calm"] .bottom-nav-item {
+  color: rgba(196, 181, 253, 0.6);
+}
+
+[data-visual-theme="cosmic-calm"] .bottom-nav-item:hover {
+  color: rgba(196, 181, 253, 0.8);
+}
+
+[data-visual-theme="cosmic-calm"] .bottom-nav-item.active {
+  color: #C4B5FD;
+  background: rgba(167, 139, 250, 0.2);
+}
+
+/* ================================
+   THEME ANIMATIONS
+   ================================ */
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes shootingStar {
+  0% { opacity: 0; transform: translateX(0) translateY(0); }
+  10% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateX(100px) translateY(60px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Ensure page content is above theme decorations */
+[data-visual-theme] .min-h-screen {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+[data-visual-theme] main,
+[data-visual-theme] header {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Ensure all interactive elements receive pointer events */
+[data-visual-theme] button,
+[data-visual-theme] a,
+[data-visual-theme] input,
+[data-visual-theme] textarea,
+[data-visual-theme] select,
+[data-visual-theme] [role="button"] {
+  pointer-events: auto;
+}
+
+/* Visual Theme CSS Variables */
+:root {
+  --visual-theme-primary: #8B5CF6;
+  --visual-theme-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --visual-theme-bg: #F9FAFB;
+  --visual-theme-card-bg: #FFFFFF;
+  --visual-theme-text: #111827;
+  --visual-theme-text-secondary: #6B7280;
+}
+
+/* ================================
+   NIGHT RITUAL THEME
+   Moon, stars, peaceful night sky
+   ================================ */
+[data-visual-theme="night-ritual"] {
+  --visual-theme-primary: #F59E0B;
+  --visual-theme-gradient: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  --visual-theme-bg: #1a1a2e;
+  --visual-theme-card-bg: rgba(251, 191, 36, 0.15);
+  --visual-theme-text: #FFFFFF;
+  --visual-theme-text-secondary: #E5E7EB;
+}
+
+[data-visual-theme="night-ritual"] .bg-dayo-purple {
+  background-color: #F59E0B !important;
+}
+
+[data-visual-theme="night-ritual"] .text-dayo-purple {
+  color: #F59E0B !important;
+}
+
+[data-visual-theme="night-ritual"] .border-dayo-purple {
+  border-color: #F59E0B !important;
+}
+
+[data-visual-theme="night-ritual"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%) !important;
+}
+
+[data-visual-theme="night-ritual"] .ring-dayo-purple {
+  --tw-ring-color: #F59E0B !important;
+}
+
+[data-visual-theme="night-ritual"] .bg-dayo-gray-50 {
+  background-color: transparent !important;
+}
+
+[data-visual-theme="night-ritual"] .bg-white:not(.modal-content) {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(251, 191, 36, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(251, 191, 36, 0.15) !important;
+}
+
+[data-visual-theme="night-ritual"] header.bg-white {
+  background: linear-gradient(to bottom, rgba(15, 12, 41, 0.98), rgba(26, 26, 46, 0.95)) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2) !important;
+}
+
+[data-visual-theme="night-ritual"] .text-dayo-gray-900 {
+  color: #FFFFFF !important;
+}
+
+[data-visual-theme="night-ritual"] .text-dayo-gray-800,
+[data-visual-theme="night-ritual"] .text-dayo-gray-700 {
+  color: #F3F4F6 !important;
+}
+
+[data-visual-theme="night-ritual"] .text-dayo-gray-600,
+[data-visual-theme="night-ritual"] .text-dayo-gray-500 {
+  color: #E5E7EB !important;
+}
+
+[data-visual-theme="night-ritual"] .text-dayo-gray-400 {
+  color: #D1D5DB !important;
+}
+
+[data-visual-theme="night-ritual"] .border-dayo-gray-100,
+[data-visual-theme="night-ritual"] .border-dayo-gray-200 {
+  border-color: rgba(251, 191, 36, 0.2) !important;
+}
+
+[data-visual-theme="night-ritual"] input,
+[data-visual-theme="night-ritual"] textarea {
+  background-color: rgba(251, 191, 36, 0.1) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-visual-theme="night-ritual"] input::placeholder,
+[data-visual-theme="night-ritual"] textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ================================
+   DIARY THEME
+   Warm sunset over water
+   ================================ */
+[data-visual-theme="diary"] {
+  --visual-theme-primary: #EA580C;
+  --visual-theme-gradient: linear-gradient(135deg, #EA580C 0%, #F59E0B 100%);
+  --visual-theme-bg: #FFF7ED;
+  --visual-theme-card-bg: rgba(255, 255, 255, 0.95);
+  --visual-theme-text: #1C1917;
+  --visual-theme-text-secondary: #78716C;
+}
+
+[data-visual-theme="diary"] .bg-dayo-purple {
+  background-color: #EA580C !important;
+}
+
+[data-visual-theme="diary"] .text-dayo-purple {
+  color: #EA580C !important;
+}
+
+[data-visual-theme="diary"] .border-dayo-purple {
+  border-color: #EA580C !important;
+}
+
+[data-visual-theme="diary"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #EA580C 0%, #F59E0B 100%) !important;
+}
+
+[data-visual-theme="diary"] .ring-dayo-purple {
+  --tw-ring-color: #EA580C !important;
+}
+
+[data-visual-theme="diary"] .bg-dayo-gray-50 {
+  background-color: transparent !important;
+}
+
+[data-visual-theme="diary"] .bg-white:not(.modal-content) {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(234, 88, 12, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(234, 88, 12, 0.1) !important;
+}
+
+[data-visual-theme="diary"] header.bg-white {
+  background: linear-gradient(to bottom, rgba(255, 247, 237, 0.95), rgba(255, 237, 213, 0.9)) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(234, 88, 12, 0.15) !important;
+}
+
+[data-visual-theme="diary"] .text-dayo-gray-900 {
+  color: #1C1917 !important;
+}
+
+[data-visual-theme="diary"] .text-dayo-gray-600,
+[data-visual-theme="diary"] .text-dayo-gray-500 {
+  color: #57534E !important;
+}
+
+/* ================================
+   PRIVATE NOTEBOOK THEME
+   Clean, minimal, paper-like
+   ================================ */
+[data-visual-theme="private-notebook"] {
+  --visual-theme-primary: #78716C;
+  --visual-theme-gradient: linear-gradient(135deg, #A8A29E 0%, #D6D3D1 100%);
+  --visual-theme-bg: #FAFAF9;
+  --visual-theme-card-bg: #FFFFFF;
+  --visual-theme-text: #1C1917;
+  --visual-theme-text-secondary: #78716C;
+}
+
+[data-visual-theme="private-notebook"] .bg-dayo-purple {
+  background-color: #57534E !important;
+}
+
+[data-visual-theme="private-notebook"] .text-dayo-purple {
+  color: #57534E !important;
+}
+
+[data-visual-theme="private-notebook"] .border-dayo-purple {
+  border-color: #57534E !important;
+}
+
+[data-visual-theme="private-notebook"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #78716C 0%, #A8A29E 100%) !important;
+}
+
+[data-visual-theme="private-notebook"] .ring-dayo-purple {
+  --tw-ring-color: #78716C !important;
+}
+
+[data-visual-theme="private-notebook"] .bg-dayo-gray-50 {
+  background-color: #FAFAF9 !important;
+}
+
+[data-visual-theme="private-notebook"] .bg-white:not(.modal-content) {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E7E5E4 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-visual-theme="private-notebook"] header.bg-white {
+  background-color: #FAFAF9 !important;
+  border-bottom: 1px solid #E7E5E4 !important;
+}
+
+[data-visual-theme="private-notebook"] .border-dayo-gray-100,
+[data-visual-theme="private-notebook"] .border-dayo-gray-200 {
+  border-color: #E7E5E4 !important;
+}
+
+/* ================================
+   COSMIC CALM THEME
+   Deep space, stars, purple nebula
+   ================================ */
+[data-visual-theme="cosmic-calm"] {
+  --visual-theme-primary: #A78BFA;
+  --visual-theme-gradient: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+  --visual-theme-bg: #0f0a1f;
+  --visual-theme-card-bg: rgba(139, 92, 246, 0.12);
+  --visual-theme-text: #F3F4F6;
+  --visual-theme-text-secondary: #C4B5FD;
+}
+
+[data-visual-theme="cosmic-calm"] .bg-dayo-purple {
+  background-color: #A78BFA !important;
+}
+
+[data-visual-theme="cosmic-calm"] .text-dayo-purple {
+  color: #A78BFA !important;
+}
+
+[data-visual-theme="cosmic-calm"] .border-dayo-purple {
+  border-color: #A78BFA !important;
+}
+
+[data-visual-theme="cosmic-calm"] .bg-dayo-gradient {
+  background-image: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%) !important;
+}
+
+[data-visual-theme="cosmic-calm"] .ring-dayo-purple {
+  --tw-ring-color: #A78BFA !important;
+}
+
+[data-visual-theme="cosmic-calm"] .bg-dayo-gray-50 {
+  background-color: transparent !important;
+}
+
+[data-visual-theme="cosmic-calm"] .bg-white:not(.modal-content) {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(167, 139, 250, 0.25) !important;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15) !important;
+}
+
+[data-visual-theme="cosmic-calm"] header.bg-white {
+  background: linear-gradient(to bottom, rgba(15, 10, 31, 0.98), rgba(30, 17, 69, 0.95)) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2) !important;
+}
+
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-900 {
+  color: #F3F4F6 !important;
+}
+
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-800,
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-700 {
+  color: #E5E7EB !important;
+}
+
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-600,
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-500 {
+  color: #C4B5FD !important;
+}
+
+[data-visual-theme="cosmic-calm"] .text-dayo-gray-400 {
+  color: #A78BFA !important;
+}
+
+[data-visual-theme="cosmic-calm"] .border-dayo-gray-100,
+[data-visual-theme="cosmic-calm"] .border-dayo-gray-200 {
+  border-color: rgba(167, 139, 250, 0.2) !important;
+}
+
+[data-visual-theme="cosmic-calm"] input,
+[data-visual-theme="cosmic-calm"] textarea {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+  border-color: rgba(167, 139, 250, 0.3) !important;
+  color: #F3F4F6 !important;
+}
+
+[data-visual-theme="cosmic-calm"] input::placeholder,
+[data-visual-theme="cosmic-calm"] textarea::placeholder {
+  color: rgba(196, 181, 253, 0.6) !important;
+}

@@ -162,21 +162,19 @@ describe('TodayPage Integration', () => {
     vi.clearAllMocks()
   })
 
-  it('should render the page with greeting', () => {
+  it('should render the page with DAYO header', () => {
     render(<TodayPage />)
 
-    // Should show a greeting based on time of day
-    const greetings = ['Good morning', 'Good afternoon', 'Good evening']
-    const hasGreeting = greetings.some((g) => screen.queryByText(g))
-    expect(hasGreeting).toBe(true)
+    // Should show DAYO in the header
+    expect(screen.getByText('DAYO')).toBeInTheDocument()
   })
 
   it('should display current streak in header', () => {
     render(<TodayPage />)
 
-    // There are two elements with streak text - header badge and quick access
-    const streakElements = screen.getAllByText(/5 day streak/)
-    expect(streakElements.length).toBeGreaterThan(0)
+    // Streak is shown as a number badge in the header
+    // The number 5 should be visible (from mock data)
+    expect(screen.getByText('5')).toBeInTheDocument()
   })
 
   it('should display date header section', () => {

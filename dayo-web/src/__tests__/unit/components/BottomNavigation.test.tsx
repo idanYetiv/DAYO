@@ -34,14 +34,14 @@ describe('BottomNavigation Component', () => {
     renderWithRouter('/today')
 
     const todayButton = screen.getByText('Today').closest('button')
-    expect(todayButton).toHaveClass('text-dayo-purple')
+    expect(todayButton).toHaveClass('active')
   })
 
   it('should highlight calendar when on calendar page', () => {
     renderWithRouter('/calendar')
 
     const calendarButton = screen.getByText('Calendar').closest('button')
-    expect(calendarButton).toHaveClass('text-dayo-purple')
+    expect(calendarButton).toHaveClass('active')
   })
 
   it('should navigate to correct routes on click', () => {

@@ -8,6 +8,7 @@ import { useDayEntry } from '../hooks/useDiary'
 import { supabase } from '../lib/supabase'
 import Calendar from '../components/planner/Calendar'
 import BottomNavigation from '../components/ui/BottomNavigation'
+import ThemedHeader from '../components/ui/ThemedHeader'
 
 export default function CalendarPage() {
   const { user } = useAuthStore()
@@ -62,20 +63,15 @@ export default function CalendarPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
-        <div className="max-w-lg mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link
-              to="/today"
-              className="p-2 -ml-2 text-dayo-gray-600 hover:text-dayo-gray-900"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <h1 className="text-xl font-bold text-dayo-gray-900">Calendar</h1>
-          </div>
-        </div>
-      </header>
+      <ThemedHeader
+        title="Calendar"
+        showLogo={false}
+        leftContent={
+          <Link to="/today" className="p-2 -ml-2 themed-header-icon rounded-lg">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+        }
+      />
 
       {/* Main Content */}
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6">

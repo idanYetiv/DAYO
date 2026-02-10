@@ -8,6 +8,7 @@ import { useDayEntry } from '../hooks/useDiary'
 import { useUserStats } from '../hooks/useUserStats'
 import ChatWindow from '../components/ai/ChatWindow'
 import BottomNavigation from '../components/ui/BottomNavigation'
+import ThemedHeader from '../components/ui/ThemedHeader'
 
 export default function AIAssistantPage() {
   const { user } = useAuthStore()
@@ -50,32 +51,34 @@ export default function AIAssistantPage() {
 
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-20 flex flex-col">
-      {/* Header */}
-      <header className="bg-white px-4 py-4 border-b border-dayo-gray-100">
-        <div className="max-w-lg mx-auto flex items-center justify-between">
+      <ThemedHeader
+        showLogo={false}
+        leftContent={
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-dayo-gradient rounded-xl flex items-center justify-center">
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-dayo-gray-900 flex items-center gap-2">
+              <h1 className="themed-header-title text-lg font-bold flex items-center gap-2">
                 AI Assistant
                 <Sparkles className="w-4 h-4 text-dayo-orange" />
               </h1>
-              <p className="text-xs text-dayo-gray-500">
+              <p className="text-xs themed-text-secondary">
                 {isMockMode ? 'Demo mode' : 'Powered by GPT-4o'}
               </p>
             </div>
           </div>
+        }
+        rightContent={
           <button
             onClick={clearMessages}
-            className="p-2 text-dayo-gray-400 hover:text-dayo-gray-600 transition-colors"
+            className="p-2 themed-header-icon rounded-lg transition-colors"
             title="Clear conversation"
           >
             <Trash2 className="w-5 h-5" />
           </button>
-        </div>
-      </header>
+        }
+      />
 
       {/* Context Banner */}
       <div className="bg-dayo-purple/5 px-4 py-2 border-b border-dayo-purple/10">
