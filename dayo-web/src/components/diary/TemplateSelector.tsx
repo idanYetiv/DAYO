@@ -1,5 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useProfileMode } from '../../hooks/useProfileMode'
+import { useDirection } from '../../hooks/useDirection'
 import { getTemplatesForMode, type DiaryTemplate } from '../../data/templates'
 
 interface TemplateSelectorProps {
@@ -9,6 +11,8 @@ interface TemplateSelectorProps {
 }
 
 export default function TemplateSelector({ isOpen, onClose, onSelect }: TemplateSelectorProps) {
+  const { t } = useTranslation()
+  const { isRTL } = useDirection()
   const { isKidsMode } = useProfileMode()
   const templates = getTemplatesForMode(isKidsMode)
 
@@ -27,15 +31,15 @@ export default function TemplateSelector({ isOpen, onClose, onSelect }: Template
       }`}>
         <button
           onClick={onClose}
-          className={`p-2 -ml-2 transition-colors ${
+          className={`p-2 -ms-2 transition-colors ${
             isKidsMode ? 'text-white/80 hover:text-white' : 'text-dayo-gray-600 hover:text-dayo-gray-900'
           }`}
           type="button"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rtl-flip' : ''}`} />
         </button>
         <h2 className={`font-semibold ${isKidsMode ? 'text-white' : 'text-dayo-gray-900'}`}>
-          Choose Template
+          {t('diary.chooseTemplate')}
         </h2>
         <div className="w-9" />
       </header>

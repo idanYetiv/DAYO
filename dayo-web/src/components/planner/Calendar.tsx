@@ -13,6 +13,8 @@ import {
   endOfWeek,
 } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { useDirection } from '../../hooks/useDirection'
 
 interface CalendarProps {
   selectedDate: Date
@@ -25,6 +27,8 @@ export default function Calendar({
   onDateSelect,
   daysWithEntries = [],
 }: CalendarProps) {
+  const { t } = useTranslation()
+  const { isRTL } = useDirection()
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(selectedDate))
 
   const monthStart = startOfMonth(currentMonth)
@@ -34,7 +38,7 @@ export default function Calendar({
 
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd })
 
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const weekDays = t('calendar.weekDays', { returnObjects: true }) as string[]
 
   const navigateMonth = (direction: 'prev' | 'next') => {
     setCurrentMonth(
@@ -61,7 +65,7 @@ export default function Calendar({
           onClick={() => navigateMonth('prev')}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
         >
-          <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronLeft className={`w-5 h-5 text-gray-600 dark:text-gray-300 ${isRTL ? 'rtl-flip' : ''}`} />
         </button>
         <div className="text-center">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -71,14 +75,14 @@ export default function Calendar({
             onClick={goToToday}
             className="text-xs text-dayo-orange hover:underline mt-1"
           >
-            Today
+            {t('nav.today')}
           </button>
         </div>
         <button
           onClick={() => navigateMonth('next')}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
         >
-          <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronRight className={`w-5 h-5 text-gray-600 dark:text-gray-300 ${isRTL ? 'rtl-flip' : ''}`} />
         </button>
       </div>
 

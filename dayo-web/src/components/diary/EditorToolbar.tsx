@@ -1,6 +1,7 @@
 import { Bold, Italic, Underline, Heading2, Heading3, List, ListOrdered, PenTool } from 'lucide-react'
 import type { Editor } from '@tiptap/react'
 import { useProfileMode } from '../../hooks/useProfileMode'
+import { useTranslation } from 'react-i18next'
 
 interface EditorToolbarProps {
   editor: Editor | null
@@ -22,6 +23,7 @@ export default function EditorToolbar({
   onToggleSketch,
   hasSketch,
 }: EditorToolbarProps) {
+  const { t } = useTranslation()
   const { isKidsMode } = useProfileMode()
 
   if (!editor) return null
@@ -29,43 +31,43 @@ export default function EditorToolbar({
   const buttons: ToolbarButton[] = [
     {
       icon: <Bold className="w-4 h-4" />,
-      label: 'Bold',
+      label: t('toolbar.bold'),
       action: () => editor.chain().focus().toggleBold().run(),
       isActive: () => editor.isActive('bold'),
     },
     {
       icon: <Italic className="w-4 h-4" />,
-      label: 'Italic',
+      label: t('toolbar.italic'),
       action: () => editor.chain().focus().toggleItalic().run(),
       isActive: () => editor.isActive('italic'),
     },
     {
       icon: <Underline className="w-4 h-4" />,
-      label: 'Underline',
+      label: t('toolbar.underline'),
       action: () => editor.chain().focus().toggleUnderline().run(),
       isActive: () => editor.isActive('underline'),
     },
     {
       icon: <Heading2 className="w-4 h-4" />,
-      label: 'Heading 2',
+      label: t('toolbar.heading2'),
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: () => editor.isActive('heading', { level: 2 }),
     },
     {
       icon: <Heading3 className="w-4 h-4" />,
-      label: 'Heading 3',
+      label: t('toolbar.heading3'),
       action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
       isActive: () => editor.isActive('heading', { level: 3 }),
     },
     {
       icon: <List className="w-4 h-4" />,
-      label: 'Bullet List',
+      label: t('toolbar.bulletList'),
       action: () => editor.chain().focus().toggleBulletList().run(),
       isActive: () => editor.isActive('bulletList'),
     },
     {
       icon: <ListOrdered className="w-4 h-4" />,
-      label: 'Ordered List',
+      label: t('toolbar.orderedList'),
       action: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: () => editor.isActive('orderedList'),
     },
@@ -99,14 +101,14 @@ export default function EditorToolbar({
             type="button"
             onClick={onToggleSketch}
             className={`editor-toolbar-btn relative ${isSketchOpen ? 'is-active' : ''}`}
-            aria-label={isKidsMode ? 'Draw' : 'Sketch'}
+            aria-label={isKidsMode ? t('toolbar.draw.kids') : t('toolbar.draw.adult')}
             aria-pressed={isSketchOpen}
-            title={isKidsMode ? 'Draw something!' : 'Add sketch'}
+            title={isKidsMode ? t('toolbar.drawHint.kids') : t('toolbar.drawHint.adult')}
           >
             <PenTool className="w-4 h-4" />
             {/* Indicator dot when sketch exists */}
             {hasSketch && !isSketchOpen && (
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-pink-500 rounded-full" />
+              <span className="absolute -top-0.5 -end-0.5 w-2 h-2 bg-pink-500 rounded-full" />
             )}
           </button>
         </>

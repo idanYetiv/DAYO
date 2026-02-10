@@ -11,9 +11,12 @@
   },
   "actions": {
     "save": "Save",
+    "saveEntry": "Save Entry",
+    "saveAdventure": "Save My Adventure!",
     "cancel": "Cancel",
     "delete": "Delete",
     "add": "Add",
+    "adding": "Adding...",
     "edit": "Edit",
     "close": "Close",
     "confirm": "Confirm",
@@ -21,7 +24,12 @@
     "back": "Back",
     "next": "Next",
     "skip": "Skip",
-    "upgrade": "Upgrade"
+    "upgrade": "Upgrade",
+    "newQuote": "New quote",
+    "tryIt": "Try it yourself",
+    "keepWriting": "Keep Writing",
+    "keepWritingKids": "Yay! Keep Writing!",
+    "share": "Share"
   },
   "greetings": {
     "adult": {
@@ -34,6 +42,60 @@
       "afternoon": "Hey there, champion!",
       "evening": "Great job today!"
     }
+  },
+  "calendar": {
+    "weekDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "weekDaysShort": ["S", "M", "T", "W", "T", "F", "S"]
+  },
+  "diary": {
+    "title": {
+      "adult": "Today's Diary",
+      "adultAlt": "Daily Reflection",
+      "kids": "Today's Adventure",
+      "kidsAlt": "Adventure Journal"
+    },
+    "openFull": "Open full diary",
+    "wordCount": "{{count}} word",
+    "wordCount_plural": "{{count}} words",
+    "gratitudeCount": "{{count}} gratitude",
+    "gratitudeCount_plural": "{{count}} gratitudes",
+    "photoCount": "{{count}} photo",
+    "photoCount_plural": "{{count}} photos",
+    "highlightCount": "{{count}} highlight",
+    "highlightCount_plural": "{{count}} highlights",
+    "chooseTemplate": "Choose a template",
+    "howFeeling": "How are you feeling?",
+    "moodQuestion": {
+      "adult": "How are you feeling today?",
+      "kids": "How are you feeling?"
+    }
+  },
+  "toolbar": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "heading2": "Heading 2",
+    "heading3": "Heading 3",
+    "bulletList": "Bullet List",
+    "orderedList": "Ordered List",
+    "draw": {
+      "adult": "Sketch",
+      "kids": "Draw"
+    },
+    "drawHint": {
+      "adult": "Add sketch",
+      "kids": "Draw something!"
+    }
+  },
+  "timeRanges": {
+    "all": "All time",
+    "week": "This week",
+    "month": "This month",
+    "year": "This year"
+  },
+  "modes": {
+    "adults": "Adults",
+    "kids": "Kids"
   },
   "toast": {
     "task": {
@@ -120,9 +182,21 @@
       "nature": "Nature"
     }
   },
+  "landing": {
+    "notJustNotes": "Not just another notes app",
+    "notJustNotesDesc": "See how DAYO transforms simple journaling into a rich, insightful experience.",
+    "before": "BEFORE",
+    "withDayo": "WITH DAYO",
+    "noMoodNoPhotos": "No mood. No photos. No insights."
+  },
   "errors": {
     "generic": "Something went wrong",
     "network": "Network error. Please try again.",
     "unauthorized": "Please sign in to continue"
+  },
+  "ai": {
+    "inputPlaceholder": "Ask me anything...",
+    "thinking": "Thinking...",
+    "error": "Sorry, I couldn't process that. Please try again."
   }
 }

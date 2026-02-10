@@ -91,8 +91,12 @@
   .me-auto { margin-inline-end: auto; }
   .ms-0 { margin-inline-start: 0; }
   .me-0 { margin-inline-end: 0; }
+  .ms-0\.5 { margin-inline-start: 0.125rem; }
+  .me-0\.5 { margin-inline-end: 0.125rem; }
   .ms-1 { margin-inline-start: 0.25rem; }
   .me-1 { margin-inline-end: 0.25rem; }
+  .ms-1\.5 { margin-inline-start: 0.375rem; }
+  .me-1\.5 { margin-inline-end: 0.375rem; }
   .ms-2 { margin-inline-start: 0.5rem; }
   .me-2 { margin-inline-end: 0.5rem; }
   .ms-3 { margin-inline-start: 0.75rem; }
@@ -103,6 +107,18 @@
   .me-5 { margin-inline-end: 1.25rem; }
   .ms-6 { margin-inline-start: 1.5rem; }
   .me-6 { margin-inline-end: 1.5rem; }
+  .ms-8 { margin-inline-start: 2rem; }
+  .me-8 { margin-inline-end: 2rem; }
+  .ms-10 { margin-inline-start: 2.5rem; }
+  .me-10 { margin-inline-end: 2.5rem; }
+  .ms-12 { margin-inline-start: 3rem; }
+  .me-12 { margin-inline-end: 3rem; }
+  .-ms-1 { margin-inline-start: -0.25rem; }
+  .-me-1 { margin-inline-end: -0.25rem; }
+  .-ms-2 { margin-inline-start: -0.5rem; }
+  .-me-2 { margin-inline-end: -0.5rem; }
+  .-ms-4 { margin-inline-start: -1rem; }
+  .-me-4 { margin-inline-end: -1rem; }
 
   /* Padding inline utilities */
   .ps-0 { padding-inline-start: 0; }
@@ -119,6 +135,12 @@
   .pe-5 { padding-inline-end: 1.25rem; }
   .ps-6 { padding-inline-start: 1.5rem; }
   .pe-6 { padding-inline-end: 1.5rem; }
+  .ps-8 { padding-inline-start: 2rem; }
+  .pe-8 { padding-inline-end: 2rem; }
+  .ps-10 { padding-inline-start: 2.5rem; }
+  .pe-10 { padding-inline-end: 2.5rem; }
+  .ps-12 { padding-inline-start: 3rem; }
+  .pe-12 { padding-inline-end: 3rem; }
 
   /* Inset inline (for positioning) */
   .start-0 { inset-inline-start: 0; }
@@ -131,8 +153,30 @@
   .end-3 { inset-inline-end: 0.75rem; }
   .start-4 { inset-inline-start: 1rem; }
   .end-4 { inset-inline-end: 1rem; }
+  .start-5 { inset-inline-start: 1.25rem; }
+  .end-5 { inset-inline-end: 1.25rem; }
+  .start-6 { inset-inline-start: 1.5rem; }
+  .end-6 { inset-inline-end: 1.5rem; }
+  .start-8 { inset-inline-start: 2rem; }
+  .end-8 { inset-inline-end: 2rem; }
+  .start-10 { inset-inline-start: 2.5rem; }
+  .end-10 { inset-inline-end: 2.5rem; }
+  .start-12 { inset-inline-start: 3rem; }
+  .end-12 { inset-inline-end: 3rem; }
   .start-auto { inset-inline-start: auto; }
   .end-auto { inset-inline-end: auto; }
+  .-start-1 { inset-inline-start: -0.25rem; }
+  .-end-1 { inset-inline-end: -0.25rem; }
+  .-start-2 { inset-inline-start: -0.5rem; }
+  .-end-2 { inset-inline-end: -0.5rem; }
+  .-start-0\.5 { inset-inline-start: -0.125rem; }
+  .-end-0\.5 { inset-inline-end: -0.125rem; }
+  .-start-4 { inset-inline-start: -1rem; }
+  .-end-4 { inset-inline-end: -1rem; }
+  .start-1\/2 { inset-inline-start: 50%; }
+  .end-1\/2 { inset-inline-end: 50%; }
+  .start-full { inset-inline-start: 100%; }
+  .end-full { inset-inline-end: 100%; }
 
   /* Border inline */
   .border-s { border-inline-start-width: 1px; }
@@ -153,6 +197,33 @@
   /* Text alignment logical */
   .text-start { text-align: start; }
   .text-end { text-align: end; }
+
+  /* Float logical */
+  .float-start { float: inline-start; }
+  .float-end { float: inline-end; }
+
+  /* Clear logical */
+  .clear-start { clear: inline-start; }
+  .clear-end { clear: inline-end; }
+
+  /* Scroll margin logical */
+  .scroll-ms-0 { scroll-margin-inline-start: 0; }
+  .scroll-me-0 { scroll-margin-inline-end: 0; }
+  .scroll-ms-4 { scroll-margin-inline-start: 1rem; }
+  .scroll-me-4 { scroll-margin-inline-end: 1rem; }
+}
+
+/* RTL-aware transforms - these flip translate-x values in RTL */
+[dir="rtl"] .rtl\:translate-x-flip {
+  --tw-translate-x: calc(var(--tw-translate-x) * -1);
+}
+
+/* RTL-aware gradients */
+[dir="rtl"] .bg-gradient-to-r {
+  background-image: linear-gradient(to left, var(--tw-gradient-stops));
+}
+[dir="rtl"] .bg-gradient-to-l {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
 
 /* RTL-specific overrides */

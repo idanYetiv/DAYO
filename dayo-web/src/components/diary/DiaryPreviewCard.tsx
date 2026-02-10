@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Pen, Camera, Heart, Sparkles, ArrowUpRight, Share2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface DiaryPreviewCardProps {
   diaryText: string
@@ -36,6 +37,7 @@ export default function DiaryPreviewCard({
   isKidsMode,
   onShare,
 }: DiaryPreviewCardProps) {
+  const { t } = useTranslation()
   const [text, setText] = useState(diaryText)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -102,8 +104,8 @@ export default function DiaryPreviewCard({
                 : isKidsMode ? 'text-white/90' : 'text-violet-600'
             }`}>
               {isKidsMode
-                ? hasEntry ? "Today's Adventure" : 'Adventure Journal'
-                : hasEntry ? "Today's Diary" : 'Daily Reflection'}
+                ? hasEntry ? t('diary.title.kids') : t('diary.title.kidsAlt')
+                : hasEntry ? t('diary.title.adult') : t('diary.title.adultAlt')}
             </span>
           </div>
           <button
@@ -117,7 +119,7 @@ export default function DiaryPreviewCard({
                   ? 'text-white/60 hover:bg-white/20 hover:text-white'
                   : 'text-violet-400 hover:bg-violet-200/50 hover:text-violet-600'
             }`}
-            title="Open full diary"
+            title={t('diary.openFull')}
           >
             <ArrowUpRight className="w-5 h-5" />
           </button>
@@ -147,24 +149,24 @@ export default function DiaryPreviewCard({
           <div className="flex items-center gap-2 flex-wrap mt-3">
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dayo-gray-100 text-dayo-gray-600 text-xs font-medium">
               <Pen className="w-3 h-3" />
-              {words} {words === 1 ? 'word' : 'words'}
+              {t('diary.wordCount', { count: words })}
             </span>
             {gratitudeCount > 0 && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dayo-gray-100 text-dayo-gray-600 text-xs font-medium">
                 <Heart className="w-3 h-3" />
-                {gratitudeCount} {gratitudeCount === 1 ? 'gratitude' : 'gratitudes'}
+                {t('diary.gratitudeCount', { count: gratitudeCount })}
               </span>
             )}
             {photosCount > 0 && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dayo-gray-100 text-dayo-gray-600 text-xs font-medium">
                 <Camera className="w-3 h-3" />
-                {photosCount} {photosCount === 1 ? 'photo' : 'photos'}
+                {t('diary.photoCount', { count: photosCount })}
               </span>
             )}
             {highlightsCount > 0 && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dayo-gray-100 text-dayo-gray-600 text-xs font-medium">
                 <Sparkles className="w-3 h-3" />
-                {highlightsCount} {highlightsCount === 1 ? 'highlight' : 'highlights'}
+                {t('diary.highlightCount', { count: highlightsCount })}
               </span>
             )}
             {onShare && (
@@ -173,7 +175,7 @@ export default function DiaryPreviewCard({
                 className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dayo-purple/10 text-dayo-purple text-xs font-medium hover:bg-dayo-purple/20 transition-colors"
               >
                 <Share2 className="w-3 h-3" />
-                Share
+                {t('actions.share')}
               </button>
             )}
           </div>

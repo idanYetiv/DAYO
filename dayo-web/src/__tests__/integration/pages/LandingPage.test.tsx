@@ -1,7 +1,24 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import LandingPage from '../../../pages/LandingPage'
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'landing.notJustNotes': 'Not just another notes app',
+        'landing.notJustNotesDesc': 'See how DAYO transforms simple journaling into a rich, insightful experience.',
+        'landing.before': 'BEFORE',
+        'landing.withDayo': 'WITH DAYO',
+        'landing.noMoodNoPhotos': 'No mood. No photos. No insights.',
+      }
+      return translations[key] || key
+    },
+    i18n: { language: 'en' },
+  }),
+}))
 
 describe('LandingPage', () => {
   const renderPage = () => {

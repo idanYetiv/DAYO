@@ -3,6 +3,28 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import EditorToolbar from '../EditorToolbar'
 
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'toolbar.bold': 'Bold',
+        'toolbar.italic': 'Italic',
+        'toolbar.underline': 'Underline',
+        'toolbar.heading2': 'Heading 2',
+        'toolbar.heading3': 'Heading 3',
+        'toolbar.bulletList': 'Bullet List',
+        'toolbar.orderedList': 'Ordered List',
+        'toolbar.draw.adult': 'Sketch',
+        'toolbar.draw.kids': 'Draw',
+        'toolbar.drawHint.adult': 'Add sketch',
+        'toolbar.drawHint.kids': 'Draw something!',
+      }
+      return translations[key] || key
+    },
+  }),
+}))
+
 // Mock useProfileMode
 vi.mock('../../../hooks/useProfileMode', () => ({
   useProfileMode: () => ({ isKidsMode: false }),
