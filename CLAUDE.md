@@ -35,9 +35,12 @@ git add <files>
 git commit -m "fix: description"
 git push -u origin fix/descriptive-name
 gh pr create --title "..." --body "..."  # Create PR
-gh pr merge <number> --squash --delete-branch  # Merge via PR
+# ⚠️ STOP HERE - Share PR link and WAIT for user approval
+gh pr merge <number> --squash --delete-branch  # Only after user approves
 git checkout main && git pull  # Update local main
 ```
+
+**⚠️ NEVER merge a PR without explicit user approval. Always share the PR link and wait for confirmation before merging.**
 
 **If you push to main directly, you are breaking the user's trust.**
 
@@ -337,17 +340,53 @@ At the start of each session:
 
 ## 14. Documentation Index
 
-| Document | Priority | Purpose |
-|----------|----------|---------|
-| `CLAUDE.md` | **READ FIRST** | Session bootstrap (this file) |
-| `PLAN-KIDS-ADULTS-MODE.md` | **ACTIVE** | Kids vs Adults mode implementation plan |
-| `OPEN-TASKS.md` | Reference | Task backlog with priorities |
-| `DAYO-product-req.md` | Reference | Full product vision & requirements |
-| `PRODUCT-SUMMARY.md` | Reference | Quick product overview |
-| `SYSTEM-ARCHITECTURE.md` | Reference | Technical architecture details |
-| `README.md` | Public | Project overview |
-| `CONTRIBUTING.md` | Reference | PR workflow guide |
-| `Claude-discussions/*.md` | Archive | Historical session summaries |
+### Core Documents (Read First)
+| Document | Purpose |
+|----------|---------|
+| `CLAUDE.md` | **READ FIRST** - Session bootstrap (this file) |
+| `OPEN-TASKS.md` | Current task backlog with priorities |
+
+### Product & Requirements
+| Document | Purpose |
+|----------|---------|
+| `DAYO-product-req.md` | Full product vision & requirements |
+| `PRODUCT-SUMMARY.md` | Quick product overview |
+| `PLAN-KIDS-ADULTS-MODE.md` | Kids vs Adults mode implementation plan |
+| `FEATURE-INSTAGRAM-EXPORT.md` | Instagram export feature spec |
+
+### Technical Documentation
+| Document | Purpose |
+|----------|---------|
+| `SYSTEM-ARCHITECTURE.md` | Technical architecture details |
+| `SYSTEM-DESIGN.md` | System design documentation |
+| `dayo-web/TEST-STRATEGY.md` | Testing strategy |
+| `dayo-web/TESTING.md` | Testing documentation |
+
+### Workflow & Contributing
+| Document | Purpose |
+|----------|---------|
+| `README.md` | Public project overview |
+| `CONTRIBUTING.md` | PR workflow guide |
+| `dayo-web/README.md` | Web app specific README |
+
+### Session History (Archive)
+| Document | Purpose |
+|----------|---------|
+| `Claude-discussions/01-planning-questions.md` | Initial planning questions |
+| `Claude-discussions/02-initial-setup-summary.md` | Initial setup summary |
+| `Claude-discussions/03-session-summary-jan13.md` | Session summary Jan 13 |
+| `Claude-discussions/04-session-summary-jan17.md` | Session summary Jan 17 |
+| `Claude-discussions/05-session-summary-jan20.md` | Session summary Jan 20 |
+| `Claude-discussions/06-session-summary-jan29.md` | Session summary Jan 29 |
+
+### Archived Documents
+| Document | Purpose |
+|----------|---------|
+| `archive/DEPLOYMENT-PLAN.md` | Deployment plan (archived) |
+| `archive/DIARY-VISUAL-ENHANCEMENTS.md` | Diary visual enhancements (archived) |
+| `archive/PARALLEL-EXECUTION-GUIDE.md` | Parallel execution guide (archived) |
+| `archive/TASK-BACKLOG*.md` | Old task backlogs (archived) |
+| `archive/TEAM-SPRINT-JAN20.md` | Team sprint Jan 20 (archived) |
 
 ---
 
