@@ -21,6 +21,7 @@ import {
   Globe,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useDirection } from '../hooks/useDirection'
 import { useAuthStore } from '../store/authStore'
 import { useProfileMode, type ProfileType } from '../hooks/useProfileMode'
 import BottomNavigation from '../components/ui/BottomNavigation'
@@ -536,6 +537,8 @@ interface SettingLinkProps {
 }
 
 function SettingLink({ icon: Icon, label, description, onClick, hasBorder, isDanger, disabled, isLoading }: SettingLinkProps) {
+  const { isRTL } = useDirection()
+
   return (
     <button
       onClick={onClick}
@@ -551,7 +554,7 @@ function SettingLink({ icon: Icon, label, description, onClick, hasBorder, isDan
       >
         <Icon className="w-5 h-5" />
       </div>
-      <div className="flex-1 text-left">
+      <div className="flex-1 text-start">
         <p className={`font-medium ${isDanger ? 'text-red-500' : 'text-dayo-gray-900'}`}>
           {label}
         </p>
@@ -560,7 +563,7 @@ function SettingLink({ icon: Icon, label, description, onClick, hasBorder, isDan
       {isLoading ? (
         <Loader2 className="w-5 h-5 text-dayo-gray-400 animate-spin" />
       ) : (
-        <ChevronRight className="w-5 h-5 text-dayo-gray-400" />
+        <ChevronRight className={`w-5 h-5 text-dayo-gray-400 ${isRTL ? 'rtl-flip' : ''}`} />
       )}
     </button>
   )
@@ -574,6 +577,7 @@ interface ChangePasswordModalProps {
 }
 
 function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordModalProps) {
+  const { t } = useTranslation('settings')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
@@ -581,11 +585,11 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError(t('modals.changePassword.errors.tooShort'))
       return
     }
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('modals.changePassword.errors.mismatch'))
       return
     }
     onSubmit(password)
@@ -595,7 +599,7 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white modal-content rounded-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
-          <h2 className="text-lg font-semibold text-dayo-gray-900">Change Password</h2>
+          <h2 className="text-lg font-semibold text-dayo-gray-900">{t('modals.changePassword.title')}</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
             <X className="w-5 h-5" />
           </button>
@@ -603,7 +607,7 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
 
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">New Password</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('modals.changePassword.newPassword')}</label>
             <input
               type="password"
               value={password}
@@ -615,7 +619,7 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
           </div>
 
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Confirm Password</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('modals.changePassword.confirmPassword')}</label>
             <input
               type="password"
               value={confirmPassword}
@@ -633,7 +637,7 @@ function ChangePasswordModal({ onClose, onSubmit, isLoading }: ChangePasswordMod
             className="w-full bg-dayo-gradient text-white font-medium py-3 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-            Change Password
+            {t('modals.changePassword.submit')}
           </button>
         </form>
       </div>
