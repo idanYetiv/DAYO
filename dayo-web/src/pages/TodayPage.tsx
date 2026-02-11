@@ -294,7 +294,7 @@ export default function TodayPage() {
             <button
               onClick={() => setShowExportModal(true)}
               className="p-2 transition-colors rounded-full themed-header-icon"
-              title="Share your day"
+              title={t('actions.shareDay')}
             >
               <Share2 className="w-5 h-5" />
             </button>
