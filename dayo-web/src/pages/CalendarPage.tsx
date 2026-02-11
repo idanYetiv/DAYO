@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ArrowLeft, Plus, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
 import { useTasks } from '../hooks/useTasks'
 import { useDayEntry } from '../hooks/useDiary'
@@ -11,6 +12,7 @@ import BottomNavigation from '../components/ui/BottomNavigation'
 import ThemedHeader from '../components/ui/ThemedHeader'
 
 export default function CalendarPage() {
+  const { t } = useTranslation()
   const { user } = useAuthStore()
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [daysWithEntries, setDaysWithEntries] = useState<string[]>([])
@@ -64,7 +66,7 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
       <ThemedHeader
-        title="Calendar"
+        title={t('nav.calendar')}
         showLogo={false}
         leftContent={
           <Link to="/today" className="p-2 -ml-2 themed-header-icon rounded-lg">
@@ -87,7 +89,7 @@ export default function CalendarPage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-semibold text-gray-900">
-                {isToday ? 'Today' : format(selectedDate, 'EEEE')}
+                {isToday ? t('nav.today') : format(selectedDate, 'EEEE')}
               </h3>
               <p className="text-sm text-gray-500">
                 {format(selectedDate, 'MMMM d, yyyy')}
@@ -109,10 +111,10 @@ export default function CalendarPage() {
               {/* Tasks */}
               <div>
                 <h4 className="text-sm font-medium text-gray-700 mb-2">
-                  Tasks ({tasks.filter((t) => t.completed).length}/{tasks.length})
+                  {t('tasks.label')} ({tasks.filter((task) => task.completed).length}/{tasks.length})
                 </h4>
                 {tasks.length === 0 ? (
-                  <p className="text-sm text-gray-400 italic">No tasks</p>
+                  <p className="text-sm text-gray-400 italic">{t('tasks.noTasks')}</p>
                 ) : (
                   <ul className="space-y-1">
                     {tasks.slice(0, 5).map((task) => (
@@ -128,7 +130,7 @@ export default function CalendarPage() {
                     ))}
                     {tasks.length > 5 && (
                       <li className="text-sm text-gray-400">
-                        +{tasks.length - 5} more
+                        {t('tasks.more', { count: tasks.length - 5 })}
                       </li>
                     )}
                   </ul>
@@ -137,13 +139,13 @@ export default function CalendarPage() {
 
               {/* Diary Preview */}
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Diary</h4>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">{t('nav.diary')}</h4>
                 {dayEntry?.diary_text ? (
                   <p className="text-sm text-gray-600 line-clamp-3">
                     {dayEntry.diary_text}
                   </p>
                 ) : (
-                  <p className="text-sm text-gray-400 italic">No diary entry</p>
+                  <p className="text-sm text-gray-400 italic">{t('diary.noEntry')}</p>
                 )}
               </div>
 
@@ -154,7 +156,7 @@ export default function CalendarPage() {
                 className="flex items-center justify-center gap-2 w-full py-3 bg-dayo-orange text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
               >
                 <Plus className="w-4 h-4" />
-                {isToday ? 'View Today' : 'View This Day'}
+                {isToday ? t('calendarPage.viewToday') : t('calendarPage.viewThisDay')}
               </Link>
             </div>
           )}

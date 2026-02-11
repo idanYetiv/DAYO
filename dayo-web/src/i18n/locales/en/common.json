@@ -69,7 +69,8 @@
     "moodQuestion": {
       "adult": "How are you feeling today?",
       "kids": "How are you feeling?"
-    }
+    },
+    "noEntry": "No diary entry"
   },
   "toolbar": {
     "bold": "Bold",
@@ -206,7 +207,10 @@
     "placeholder": "What do you want to do today?",
     "loading": "Loading tasks...",
     "empty": "No tasks for today",
-    "addFirst": "Add your first task"
+    "addFirst": "Add your first task",
+    "label": "Tasks",
+    "noTasks": "No tasks",
+    "more": "+{{count}} more"
   },
   "habits": {
     "title": "Daily Habits",
@@ -222,5 +226,9 @@
   },
   "quickAccess": {
     "insights": "Insights"
+  },
+  "calendarPage": {
+    "viewToday": "View Today",
+    "viewThisDay": "View This Day"
   }
 }

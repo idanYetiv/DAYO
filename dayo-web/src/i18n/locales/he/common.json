@@ -69,7 +69,8 @@
     "moodQuestion": {
       "adult": "איך אתה מרגיש היום?",
       "kids": "איך אתה מרגיש?"
-    }
+    },
+    "noEntry": "אין רשומת יומן"
   },
   "toolbar": {
     "bold": "מודגש",
@@ -206,7 +207,10 @@
     "placeholder": "מה תרצה לעשות היום?",
     "loading": "טוען משימות...",
     "empty": "אין משימות להיום",
-    "addFirst": "הוסף את המשימה הראשונה"
+    "addFirst": "הוסף את המשימה הראשונה",
+    "label": "משימות",
+    "noTasks": "אין משימות",
+    "more": "+{{count}} נוספים"
   },
   "habits": {
     "title": "הרגלים יומיים",
@@ -222,5 +226,9 @@
   },
   "quickAccess": {
     "insights": "תובנות"
+  },
+  "calendarPage": {
+    "viewToday": "צפה בהיום",
+    "viewThisDay": "צפה ביום זה"
   }
 }
