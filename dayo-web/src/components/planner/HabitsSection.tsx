@@ -1,4 +1,5 @@
 import { Flame, MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface Habit {
   id: string
@@ -49,19 +50,20 @@ const defaultHabits: Habit[] = [
   },
 ]
 
-const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-
 export default function HabitsSection({ habits = defaultHabits, onViewAll }: HabitsSectionProps) {
+  const { t } = useTranslation()
+  const weekDays = t('habits.weekDays', { returnObjects: true }) as string[]
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-dayo-gray-900">Daily Habits</h3>
+        <h3 className="text-lg font-semibold text-dayo-gray-900">{t('habits.title')}</h3>
         {onViewAll && (
           <button
             onClick={onViewAll}
             className="text-sm text-dayo-gray-500 hover:text-dayo-purple transition-colors"
           >
-            View All
+            {t('habits.viewAll')}
           </button>
         )}
       </div>
@@ -82,7 +84,7 @@ export default function HabitsSection({ habits = defaultHabits, onViewAll }: Hab
                   <div className="flex items-center gap-1 mt-0.5">
                     <Flame className="w-3 h-3 text-dayo-orange" />
                     <span className="text-xs text-dayo-orange font-medium">
-                      {habit.streak} day streak
+                      {t('habits.dayStreak', { count: habit.streak })}
                     </span>
                   </div>
                 </div>

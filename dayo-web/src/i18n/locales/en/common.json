@@ -199,5 +199,28 @@
     "inputPlaceholder": "Ask me anything...",
     "thinking": "Thinking...",
     "error": "Sorry, I couldn't process that. Please try again."
+  },
+  "tasks": {
+    "title": "Today's Tasks",
+    "addTask": "Add Task",
+    "placeholder": "What do you want to do today?",
+    "loading": "Loading tasks...",
+    "empty": "No tasks for today",
+    "addFirst": "Add your first task"
+  },
+  "habits": {
+    "title": "Daily Habits",
+    "viewAll": "View All",
+    "dayStreak": "{{count}} day streak",
+    "weekDays": ["M", "T", "W", "T", "F", "S", "S"]
+  },
+  "stats": {
+    "tasksDone": "Tasks Done",
+    "habits": "Habits",
+    "mood": "Mood",
+    "writeDiary": "Write Diary"
+  },
+  "quickAccess": {
+    "insights": "Insights"
   }
 }
