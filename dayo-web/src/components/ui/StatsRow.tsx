@@ -1,4 +1,5 @@
 import { PenLine } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface StatsRowProps {
   tasksCompleted: number
@@ -19,6 +20,7 @@ export default function StatsRow({
   onMoodClick,
   onDiaryClick,
 }: StatsRowProps) {
+  const { t } = useTranslation()
   const taskPercentage = totalTasks > 0 ? Math.round((tasksCompleted / totalTasks) * 100) : 0
 
   return (
@@ -51,7 +53,7 @@ export default function StatsRow({
               {taskPercentage}%
             </span>
           </div>
-          <span className="text-xs text-dayo-gray-500">Tasks Done</span>
+          <span className="text-xs text-dayo-gray-500">{t('stats.tasksDone')}</span>
         </div>
       </div>
 
@@ -63,7 +65,7 @@ export default function StatsRow({
             <span className="text-dayo-gray-400 text-lg"> / </span>
             <span className="text-lg text-dayo-gray-600">{totalHabits}</span>
           </div>
-          <span className="text-xs text-dayo-gray-500">Habits</span>
+          <span className="text-xs text-dayo-gray-500">{t('stats.habits')}</span>
         </div>
       </div>
 
@@ -77,7 +79,7 @@ export default function StatsRow({
           >
             {mood || '😐'}
           </button>
-          <span className="text-xs text-dayo-gray-500 mb-2">Mood</span>
+          <span className="text-xs text-dayo-gray-500 mb-2">{t('stats.mood')}</span>
 
           {/* Write Diary Button */}
           <button
@@ -85,7 +87,7 @@ export default function StatsRow({
             className="flex items-center gap-1 text-xs font-medium text-white bg-dayo-gradient px-3 py-1.5 rounded-full hover:opacity-90 transition-opacity"
           >
             <PenLine className="w-3 h-3" />
-            Write Diary
+            {t('stats.writeDiary')}
           </button>
         </div>
       </div>

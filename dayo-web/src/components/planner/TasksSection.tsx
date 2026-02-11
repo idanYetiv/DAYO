@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus, Calendar, Trash2, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface Task {
   id: string
@@ -24,6 +25,7 @@ export default function TasksSection({
   onDeleteTask,
   isCreating,
 }: TasksSectionProps) {
+  const { t } = useTranslation()
   const [showInput, setShowInput] = useState(false)
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
@@ -38,13 +40,13 @@ export default function TasksSection({
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-dayo-gray-900">Today's Tasks</h3>
+        <h3 className="text-lg font-semibold text-dayo-gray-900">{t('tasks.title')}</h3>
         <button
           onClick={() => setShowInput(true)}
           className="flex items-center gap-1.5 bg-dayo-orange hover:bg-dayo-orange-dark text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Add Task
+          {t('tasks.addTask')}
         </button>
       </div>
 
@@ -57,7 +59,7 @@ export default function TasksSection({
                 type="text"
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
-                placeholder="What do you want to do today?"
+                placeholder={t('tasks.placeholder')}
                 className="flex-1 px-4 py-2 border border-dayo-gray-200 rounded-xl focus:ring-2 focus:ring-dayo-purple/20 focus:border-dayo-purple outline-none transition-all text-sm"
                 autoFocus
                 disabled={isCreating}
@@ -67,7 +69,7 @@ export default function TasksSection({
                 disabled={isCreating || !newTaskTitle.trim()}
                 className="bg-dayo-purple hover:bg-dayo-purple-dark text-white px-4 py-2 rounded-xl transition-colors disabled:opacity-50 text-sm font-medium"
               >
-                {isCreating ? 'Adding...' : 'Add'}
+                {isCreating ? t('actions.adding') : t('actions.add')}
               </button>
               <button
                 type="button"
@@ -77,7 +79,7 @@ export default function TasksSection({
                 }}
                 className="text-dayo-gray-400 hover:text-dayo-gray-600 px-2"
               >
-                Cancel
+                {t('actions.cancel')}
               </button>
             </div>
           </form>
@@ -86,18 +88,18 @@ export default function TasksSection({
         {/* Tasks list or empty state */}
         {isLoading ? (
           <div className="py-16 text-center">
-            <p className="text-dayo-gray-400">Loading tasks...</p>
+            <p className="text-dayo-gray-400">{t('tasks.loading')}</p>
           </div>
         ) : tasks.length === 0 ? (
           <div className="py-16 text-center">
             <Calendar className="w-12 h-12 text-dayo-gray-300 mx-auto mb-4" />
-            <p className="text-dayo-gray-500 mb-4">No tasks for today</p>
+            <p className="text-dayo-gray-500 mb-4">{t('tasks.empty')}</p>
             {!showInput && (
               <button
                 onClick={() => setShowInput(true)}
                 className="text-sm text-dayo-gray-600 border border-dayo-gray-200 hover:border-dayo-purple/30 px-4 py-2 rounded-xl transition-colors"
               >
-                Add your first task
+                {t('tasks.addFirst')}
               </button>
             )}
           </div>
