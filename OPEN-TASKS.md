@@ -22,7 +22,7 @@
 | 28 | App Icons & Branding | ✅ Done | Icon updated |
 | 29 | Privacy & Permissions | ✅ Done | Privacy manifest + policy page |
 | 30 | Code Signing & Profiles | ⚠️ Partial | Device registered, Xcode issue |
-| 31 | App Store Metadata | ❌ Open | Screenshots, description |
+| 31 | App Store Metadata | ✅ Done | See APP-STORE-METADATA.md |
 
 ### Phase 3: Testing & Submission
 
@@ -63,6 +63,8 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 | Privacy Manifest | PrivacyInfo.xcprivacy for App Store | Feb 15 |
 | Privacy Policy Page | /privacy route, settings link, landing footer | Feb 15 |
 | RevenueCat Setup | SDK, hooks, subscription page, auth integration | Feb 15 |
+| iOS UI Polish | Header overflow, goal icon, diary action buttons | Feb 15 |
+| App Store Metadata | Description, keywords, screenshots plan, review notes | Feb 15 |
 
 ---
 
@@ -75,7 +77,7 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 | 28 | **App Icons & Branding** | 1024x1024 icon, splash screen, all sizes | M | ✅ Done |
 | 29 | **Privacy & Permissions** | PrivacyInfo.xcprivacy, Info.plist, privacy policy | M | ✅ Done |
 | 30 | **Code Signing** | Certificates, provisioning profiles (Xcode update needed) | M | ⚠️ Blocked |
-| 31 | **App Store Metadata** | Screenshots, description, keywords | M | ❌ |
+| 31 | **App Store Metadata** | Screenshots, description, keywords | M | ✅ Done |
 | 32 | **TestFlight Beta** | Archive, upload, beta test | M | ❌ |
 | 33 | **App Store Submit** | Final review, submit | S | ❌ |
 
