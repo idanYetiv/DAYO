@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday } from 'date-fns'
 import { ChevronLeft, ChevronRight, Plus, Search, BookOpen, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import BottomNavigation from '../components/ui/BottomNavigation'
@@ -95,6 +96,7 @@ const moodEmojis: Record<string, string> = {
 }
 
 export default function DiaryPage() {
+  const { t } = useTranslation()
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [viewMode, setViewMode] = useState<'calendar' | 'timeline' | 'insights'>('calendar')
@@ -239,7 +241,7 @@ export default function DiaryPage() {
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
       <ThemedHeader
-        title="Diary"
+        title={t('nav.diary')}
         showLogo={false}
         rightContent={
           <div className="flex items-center gap-2">
@@ -256,7 +258,7 @@ export default function DiaryPage() {
               className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
             >
               <Plus className="w-4 h-4" />
-              New Entry
+              {t('diaryPage.newEntry')}
             </button>
           </div>
         }
@@ -273,7 +275,7 @@ export default function DiaryPage() {
                   : 'text-dayo-gray-500'
               }`}
             >
-              Calendar
+              {t('diaryPage.calendar')}
             </button>
             <button
               onClick={() => setViewMode('timeline')}
@@ -283,7 +285,7 @@ export default function DiaryPage() {
                   : 'text-dayo-gray-500'
               }`}
             >
-              Timeline
+              {t('diaryPage.timeline')}
             </button>
             <button
               onClick={() => setViewMode('insights')}
@@ -293,7 +295,7 @@ export default function DiaryPage() {
                   : 'text-dayo-gray-500'
               }`}
             >
-              Insights
+              {t('diaryPage.insights')}
             </button>
           </div>
         </div>
@@ -404,7 +406,7 @@ export default function DiaryPage() {
               )}
 
               <p className="text-xs text-dayo-gray-400 text-center mt-4">
-                Tap to select, double-tap to edit
+                {t('diaryPage.tapToSelect')}
               </p>
             </div>
 
@@ -425,38 +427,38 @@ export default function DiaryPage() {
                       </span>
                       <div className="flex-1">
                         <p className="text-dayo-gray-600 text-sm line-clamp-3">
-                          {selectedEntry.diary_text || 'No diary text'}
+                          {selectedEntry.diary_text || t('diaryPage.noDiaryText')}
                         </p>
                         {selectedEntry.photos && selectedEntry.photos.length > 0 && (
                           <p className="text-xs text-dayo-gray-400 mt-1">
-                            📷 {selectedEntry.photos.length} photo(s)
+                            📷 {t('diaryPage.photoCount', { count: selectedEntry.photos.length })}
                           </p>
                         )}
                         {selectedEntry.gratitude && selectedEntry.gratitude.length > 0 && (
                           <p className="text-xs text-dayo-gray-400 mt-1">
-                            🙏 {selectedEntry.gratitude.length} gratitude item(s)
+                            🙏 {t('diaryPage.gratitudeCount', { count: selectedEntry.gratitude.length })}
                           </p>
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-dayo-purple mt-3">Tap to edit</p>
+                    <p className="text-xs text-dayo-purple mt-3">{t('diaryPage.tapToEdit')}</p>
                   </button>
                 ) : (
                   <div className="text-center py-6">
                     <BookOpen className="w-10 h-10 text-dayo-gray-300 mx-auto mb-3" />
-                    <p className="text-dayo-gray-500 text-sm mb-3">No entry for this day</p>
+                    <p className="text-dayo-gray-500 text-sm mb-3">{t('diaryPage.noEntryForDay')}</p>
                     <button
                       onClick={() => handleWriteEntry(selectedDate)}
                       className="text-sm text-dayo-purple font-medium hover:underline"
                     >
-                      Write an entry
+                      {t('diaryPage.writeEntry')}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <div>
-                <h3 className="font-semibold text-dayo-gray-900 mb-3">Recent Entries</h3>
+                <h3 className="font-semibold text-dayo-gray-900 mb-3">{t('diaryPage.recentEntries')}</h3>
                 {recentLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <Loader2 className="w-6 h-6 text-dayo-purple animate-spin" />
@@ -478,7 +480,7 @@ export default function DiaryPage() {
                               {format(new Date(entry.date), 'EEEE, MMMM d')}
                             </p>
                             <p className="text-dayo-gray-700 text-sm line-clamp-2">
-                              {entry.diary_text || 'No diary text'}
+                              {entry.diary_text || t('diaryPage.noDiaryText')}
                             </p>
                           </div>
                         </div>
@@ -488,12 +490,12 @@ export default function DiaryPage() {
                 ) : (
                   <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-6 text-center">
                     <BookOpen className="w-10 h-10 text-dayo-gray-300 mx-auto mb-3" />
-                    <p className="text-dayo-gray-500 text-sm mb-3">No diary entries yet</p>
+                    <p className="text-dayo-gray-500 text-sm mb-3">{t('diaryPage.noEntriesYet')}</p>
                     <button
                       onClick={handleNewEntry}
                       className="text-sm text-dayo-purple font-medium hover:underline"
                     >
-                      Write your first entry
+                      {t('diaryPage.writeFirstEntry')}
                     </button>
                   </div>
                 )}
@@ -536,7 +538,7 @@ export default function DiaryPage() {
                                 {format(new Date(entry.date), 'MMMM d, yyyy')}
                               </p>
                               <p className="text-dayo-gray-700 text-sm line-clamp-3">
-                                {entry.diary_text || 'No diary text'}
+                                {entry.diary_text || t('diaryPage.noDiaryText')}
                               </p>
                               {entry.photos && entry.photos.length > 0 && (
                                 <div className="flex gap-1 mt-2">
@@ -564,7 +566,7 @@ export default function DiaryPage() {
                                 ))}
                                 {words > 0 && (
                                   <span className="text-xs text-dayo-gray-400 ml-auto">
-                                    {words} {words === 1 ? 'word' : 'words'}
+                                    {words} {words === 1 ? t('diaryPage.word') : t('diaryPage.words')}
                                   </span>
                                 )}
                               </div>
@@ -583,12 +585,12 @@ export default function DiaryPage() {
             ) : (
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-6 text-center">
                 <BookOpen className="w-10 h-10 text-dayo-gray-300 mx-auto mb-3" />
-                <p className="text-dayo-gray-500 text-sm mb-3">No diary entries yet</p>
+                <p className="text-dayo-gray-500 text-sm mb-3">{t('diaryPage.noEntriesYet')}</p>
                 <button
                   onClick={handleNewEntry}
                   className="text-sm text-dayo-purple font-medium hover:underline"
                 >
-                  Write your first entry
+                  {t('diaryPage.writeFirstEntry')}
                 </button>
               </div>
             )}
