@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import { identifyUser, logoutUser } from '../lib/revenuecat'
 
 interface AuthState {
   user: User | null
@@ -21,6 +22,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   setLoading: (loading) => set({ loading }),
   clearPasswordRecovery: () => set({ isPasswordRecovery: false }),
   signOut: async () => {
+    await logoutUser()
     await supabase.auth.signOut()
     set({ user: null, isPasswordRecovery: false })
   },
@@ -28,6 +30,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true })
     const { data: { session } } = await supabase.auth.getSession()
     set({ user: session?.user ?? null, loading: false })
+    if (session?.user) {
+      identifyUser(session.user.id)
+    }
 
     // Listen for auth changes
     supabase.auth.onAuthStateChange((event, session) => {
@@ -35,6 +40,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         set({ user: session?.user ?? null, isPasswordRecovery: true })
       } else {
         set({ user: session?.user ?? null })
+      }
+      if (session?.user) {
+        identifyUser(session.user.id)
       }
     })
   },
