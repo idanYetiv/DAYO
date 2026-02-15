@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Bell,
   Palette,
@@ -19,6 +20,7 @@ import {
   Image,
   Upload,
   Globe,
+  Shield,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDirection } from '../hooks/useDirection'
@@ -48,6 +50,7 @@ const themeColors = [
 
 export default function SettingsPage() {
   const { t, i18n } = useTranslation('settings')
+  const navigate = useNavigate()
   const { user, signOut } = useAuthStore()
   const { data: profile, isLoading } = useUserProfile()
   const updateProfile = useUpdateUserProfile()
@@ -181,18 +184,21 @@ export default function SettingsPage() {
         </button>
 
         {/* Premium Banner */}
-        <div className="bg-gradient-to-r from-dayo-purple to-dayo-pink rounded-2xl p-4 mb-6 text-white">
+        <button
+          onClick={() => navigate('/subscription')}
+          className="w-full bg-gradient-to-r from-dayo-purple to-dayo-pink rounded-2xl p-4 mb-6 text-white text-start"
+        >
           <div className="flex items-center gap-3">
             <Crown className="w-10 h-10" />
             <div className="flex-1">
               <p className="font-semibold">{t('premium.title')}</p>
               <p className="text-sm text-white/80">{t('premium.description')}</p>
             </div>
-            <button className="bg-white text-dayo-purple px-4 py-2 rounded-xl text-sm font-medium">
+            <span className="bg-white text-dayo-purple px-4 py-2 rounded-xl text-sm font-medium">
               {t('actions.upgrade', { ns: 'common' })}
-            </button>
+            </span>
           </div>
-        </div>
+        </button>
 
         {/* Loading State */}
         {isLoading && (
@@ -317,11 +323,17 @@ export default function SettingsPage() {
               </h3>
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 overflow-hidden">
                 <SettingLink
+                  icon={Shield}
+                  label="Privacy Policy"
+                  onClick={() => navigate('/privacy')}
+                />
+                <SettingLink
                   icon={Download}
                   label={t('privacyData.exportData')}
                   description={t('privacyData.exportDescription')}
                   onClick={handleExportData}
                   isLoading={exportData.isPending}
+                  hasBorder
                 />
                 <SettingLink
                   icon={Trash2}

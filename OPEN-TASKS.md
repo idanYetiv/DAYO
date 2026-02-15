@@ -1,7 +1,7 @@
 # DAYO Open Tasks
 
-**Last Updated:** February 6, 2026
-**Status:** Core app complete, Push notifications deployed, 504 tests, CI on PRs
+**Last Updated:** February 15, 2026
+**Status:** Core app complete, Push notifications deployed, 504 tests, CI on PRs, iOS readiness in progress
 
 ---
 
@@ -19,8 +19,8 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 28 | App Icons & Branding | ⏳ In Progress | User creating logo |
-| 29 | Privacy & Permissions | ❌ Open | Privacy manifest required |
+| 28 | App Icons & Branding | ✅ Done | Icon updated |
+| 29 | Privacy & Permissions | ✅ Done | Privacy manifest + policy page |
 | 30 | Code Signing & Profiles | ⚠️ Partial | Device registered, Xcode issue |
 | 31 | App Store Metadata | ❌ Open | Screenshots, description |
 
@@ -35,10 +35,10 @@
 
 ```
 Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ──▶ Submit
-              ⏳              ❌                  ❌            ❌
+              ✅              ✅                  ❌            ❌
 ```
 
-**Estimated remaining:** 4-5 major tasks
+**Estimated remaining:** 3-4 major tasks (code signing, TestFlight, metadata, submit)
 
 ---
 
@@ -59,6 +59,10 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 | AI Milestones | Word count milestones, celebrations | Feb 6 |
 | AI Daily Insights | Mood-based insights after save | Feb 6 |
 | Push Notifications | APNs, Edge Function, cron job | Feb 6 |
+| App Icon Update | Design icon copied to Xcode assets | Feb 15 |
+| Privacy Manifest | PrivacyInfo.xcprivacy for App Store | Feb 15 |
+| Privacy Policy Page | /privacy route, settings link, landing footer | Feb 15 |
+| RevenueCat Setup | SDK, hooks, subscription page, auth integration | Feb 15 |
 
 ---
 
@@ -68,12 +72,20 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 
 | # | Task | Description | Size | Status |
 |---|------|-------------|------|--------|
-| 28 | **App Icons & Branding** | 1024x1024 icon, splash screen, all sizes | M | ⏳ User creating |
-| 29 | **Privacy & Permissions** | PrivacyInfo.xcprivacy, Info.plist, privacy policy | M | ❌ |
+| 28 | **App Icons & Branding** | 1024x1024 icon, splash screen, all sizes | M | ✅ Done |
+| 29 | **Privacy & Permissions** | PrivacyInfo.xcprivacy, Info.plist, privacy policy | M | ✅ Done |
 | 30 | **Code Signing** | Certificates, provisioning profiles (Xcode update needed) | M | ⚠️ Blocked |
 | 31 | **App Store Metadata** | Screenshots, description, keywords | M | ❌ |
 | 32 | **TestFlight Beta** | Archive, upload, beta test | M | ❌ |
 | 33 | **App Store Submit** | Final review, submit | S | ❌ |
+
+### HIGH Priority - Revenue
+
+| # | Task | Description | Size | Status |
+|---|------|-------------|------|--------|
+| 38 | **Subscriptions & Payments** | RevenueCat integration, paywall, premium entitlements | L | ⏳ Infrastructure done |
+
+**Note:** RevenueCat SDK installed and wired. Needs: RevenueCat project setup, App Store Connect products, real API key, premium feature gating.
 
 ### HIGH Priority - User Experience
 
@@ -236,12 +248,15 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 
 ### Before App Store Submit
 1. ✅ Push Notifications (done)
-2. ⏳ App Icon (user creating)
-3. ❌ Privacy Manifest (Task 29)
-4. ❌ Xcode update + device test
-5. ❌ TestFlight (Task 32)
-6. ❌ App Store Metadata (Task 31)
-7. ❌ Submit (Task 33)
+2. ✅ App Icon (done)
+3. ✅ Privacy Manifest (done)
+4. ✅ Privacy Policy Page (done)
+5. ✅ RevenueCat Infrastructure (done)
+6. ❌ Xcode update + device test
+7. ❌ Code Signing (Task 30)
+8. ❌ TestFlight (Task 32)
+9. ❌ App Store Metadata (Task 31)
+10. ❌ Submit (Task 33)
 
 ### Post-Launch Phase 1
 1. Offline Support (Task 25)
@@ -262,7 +277,7 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 | Blocker | Affects | Resolution |
 |---------|---------|------------|
 | Xcode 26.2 vs iOS 26.2.1 | Device testing, TestFlight | Update Xcode |
-| App Icon design | Task 28, 31 | User creating externally |
+| App Icon design | Task 28, 31 | ✅ Resolved |
 | Push notification test | Full validation | Needs device access |
 
 ---
@@ -280,4 +295,4 @@ Current ──▶ App Icon ──▶ Privacy Manifest ──▶ TestFlight ─�
 
 ---
 
-*Last updated: February 6, 2026*
+*Last updated: February 15, 2026*

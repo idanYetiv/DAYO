@@ -25,6 +25,9 @@ import CalendarPage from './pages/CalendarPage'
 import AIAssistantPage from './pages/AIAssistantPage'
 import OnboardingPage from './pages/OnboardingPage'
 import LandingPage from './pages/LandingPage'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
+import SubscriptionPage from './pages/SubscriptionPage'
+import { initializeRevenueCat } from './lib/revenuecat'
 
 const queryClient = new QueryClient()
 
@@ -262,6 +265,8 @@ function AuthenticatedRoutes() {
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/ai" element={<AIAssistantPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/subscription" element={<SubscriptionPage />} />
 
               {/* Redirect authenticated users from public routes */}
               <Route path="/" element={<Navigate to="/today" />} />
@@ -286,6 +291,7 @@ function PublicRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/privacy" element={<PrivacyPolicyPage />} />
       {/* Redirect to login for any protected route */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
@@ -298,6 +304,7 @@ function App() {
 
   useEffect(() => {
     initialize()
+    initializeRevenueCat()
   }, [initialize])
 
   if (loading) {

@@ -128,7 +128,7 @@ export default function LandingPage() {
               <span className="font-bold text-dayo-gray-900">DAYO</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-dayo-gray-500">
-              <a href="#" className="hover:text-dayo-gray-900 transition-colors">Privacy</a>
+              <Link to="/privacy" className="hover:text-dayo-gray-900 transition-colors">Privacy</Link>
               <a href="#" className="hover:text-dayo-gray-900 transition-colors">Terms</a>
               <a href="#" className="hover:text-dayo-gray-900 transition-colors">Support</a>
               <a href="#" className="hover:text-dayo-gray-900 transition-colors">Contact</a>
