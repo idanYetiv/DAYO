@@ -596,36 +596,34 @@ export default function DiaryEntryModal({
       </main>
 
       {/* Bottom Actions */}
-      <div className="flex-shrink-0 bg-white px-4 py-4 border-t border-dayo-gray-100 safe-area-bottom">
-        <div className="max-w-lg mx-auto flex items-center gap-3 overflow-x-auto">
+      <div className="flex-shrink-0 bg-white px-4 py-3 border-t border-dayo-gray-100 safe-area-bottom">
+        <div className="max-w-lg mx-auto flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={handlePhotoSelect}
             disabled={initialPhotos.length >= maxPhotos || uploadPhoto.isPending}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dayo-gray-200 text-dayo-gray-600 hover:bg-dayo-gray-50 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-dayo-gray-200 text-dayo-gray-600 hover:bg-dayo-gray-50 transition-colors whitespace-nowrap text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {uploadPhoto.isPending ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <ImagePlus className="w-4 h-4" />
+              <ImagePlus className="w-3.5 h-3.5" />
             )}
-            <span className="text-sm font-medium">
-              {initialPhotos.length > 0 ? `Photos (${initialPhotos.length})` : 'Add photo'}
-            </span>
+            {initialPhotos.length > 0 ? `${initialPhotos.length}` : 'Photo'}
           </button>
           <button
             type="button"
             onClick={() => toggleSection('gratitude')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-colors whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-colors whitespace-nowrap text-xs font-medium ${
               activeSection === 'gratitude'
                 ? 'bg-orange-500 text-white border-orange-500'
                 : 'bg-orange-50 text-orange-500 border-orange-200 hover:bg-orange-100'
             }`}
           >
-            <Heart className="w-4 h-4" />
-            <span className="text-sm font-medium">Gratitude</span>
+            <Heart className="w-3.5 h-3.5" />
+            Gratitude
             {gratitude.some(g => g.trim()) && activeSection !== 'gratitude' && (
-              <span className="bg-orange-500 text-white text-xs px-1.5 rounded-full">
+              <span className="bg-orange-500 text-white text-[10px] px-1 rounded-full leading-tight">
                 {gratitude.filter(g => g.trim()).length}
               </span>
             )}
@@ -633,16 +631,16 @@ export default function DiaryEntryModal({
           <button
             type="button"
             onClick={() => toggleSection('highlights')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-colors whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-colors whitespace-nowrap text-xs font-medium ${
               activeSection === 'highlights'
                 ? 'bg-purple-500 text-white border-purple-500'
                 : 'bg-purple-50 text-purple-500 border-purple-200 hover:bg-purple-100'
             }`}
           >
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Highlights</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            Highlights
             {highlights.length > 0 && activeSection !== 'highlights' && (
-              <span className="bg-purple-500 text-white text-xs px-1.5 rounded-full">
+              <span className="bg-purple-500 text-white text-[10px] px-1 rounded-full leading-tight">
                 {highlights.length}
               </span>
             )}
@@ -650,16 +648,16 @@ export default function DiaryEntryModal({
           <button
             type="button"
             onClick={() => toggleSection('tags')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-colors whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-colors whitespace-nowrap text-xs font-medium ${
               activeSection === 'tags'
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-blue-50 text-blue-500 border-blue-200 hover:bg-blue-100'
             }`}
           >
-            <Tag className="w-4 h-4" />
-            <span className="text-sm font-medium">Tags</span>
+            <Tag className="w-3.5 h-3.5" />
+            Tags
             {tags.length > 0 && activeSection !== 'tags' && (
-              <span className="bg-blue-500 text-white text-xs px-1.5 rounded-full">
+              <span className="bg-blue-500 text-white text-[10px] px-1 rounded-full leading-tight">
                 {tags.length}
               </span>
             )}

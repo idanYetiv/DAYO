@@ -34,28 +34,28 @@ export default function ThemedHeader({
 
   return (
     <header className={`themed-header px-4 py-3 ${className}`}>
-      <div className="max-w-lg mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="max-w-lg mx-auto flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           {resolvedStartContent}
           {showLogo && (
             <>
               <img
                 src="/logo.png"
                 alt={t('appName')}
-                className="w-8 h-8 rounded-lg shadow-sm"
+                className="w-8 h-8 rounded-lg shadow-sm flex-shrink-0"
               />
-              <span className="themed-header-title text-xl font-bold">
+              <span className="themed-header-title text-xl font-bold truncate">
                 {title || t('appName')}
               </span>
             </>
           )}
           {!showLogo && title && (
-            <h1 className="themed-header-title text-xl font-bold">{title}</h1>
+            <h1 className="themed-header-title text-xl font-bold truncate">{title}</h1>
           )}
           {children}
         </div>
         {resolvedEndContent && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {resolvedEndContent}
           </div>
         )}
