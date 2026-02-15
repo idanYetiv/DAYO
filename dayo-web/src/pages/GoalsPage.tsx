@@ -102,9 +102,9 @@ export default function GoalsPage() {
         rightContent={
           <button
             onClick={() => setShowNewGoalModal(true)}
-            className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
+            className="flex items-center gap-1 bg-dayo-gradient text-white text-xs font-medium px-3 py-1.5 rounded-xl flex-shrink-0"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             {t('goalsPage.newGoal')}
           </button>
         }
@@ -265,7 +265,7 @@ function GoalCard({
       <div className="p-4 cursor-pointer" onClick={onToggleExpand}>
         <div className="flex items-start gap-3">
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+            className="w-11 h-11 rounded-xl flex items-center justify-center text-[1.75rem] leading-none"
             style={{ backgroundColor: `${goal.color}15` }}
           >
             {goal.icon}

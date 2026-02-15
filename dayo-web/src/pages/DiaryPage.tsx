@@ -255,9 +255,9 @@ export default function DiaryPage() {
             </button>
             <button
               onClick={handleNewEntry}
-              className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
+              className="flex items-center gap-1 bg-dayo-gradient text-white text-xs font-medium px-3 py-1.5 rounded-xl flex-shrink-0"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
               {t('diaryPage.newEntry')}
             </button>
           </div>
