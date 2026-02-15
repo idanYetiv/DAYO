@@ -292,7 +292,7 @@ function GoalCard({
             {/* Progress Bar */}
             <div className="mt-3">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="text-dayo-gray-500">Progress</span>
+                <span className="text-dayo-gray-500">{t('goalsPage.progress')}</span>
                 <span className="font-medium" style={{ color: goal.color }}>
                   {progress}%
                 </span>
@@ -316,7 +316,7 @@ function GoalCard({
               {goal.due_date && (
                 <span className="text-xs text-dayo-gray-400 flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  Due {new Date(goal.due_date).toLocaleDateString()}
+                  {t('goalsPage.due')} {new Date(goal.due_date).toLocaleDateString()}
                 </span>
               )}
             </div>
@@ -328,12 +328,12 @@ function GoalCard({
       {isExpanded && (
         <div className="px-4 pb-4 pt-2 border-t border-dayo-gray-100">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-medium text-dayo-gray-500">MILESTONES</p>
+            <p className="text-xs font-medium text-dayo-gray-500">{t('goalsPage.milestones')}</p>
             <button
               onClick={() => setShowAddMilestone(showAddMilestone ? null : goal.id)}
               className="text-xs text-dayo-purple font-medium"
             >
-              + Add
+              {t('goalsPage.addMilestone')}
             </button>
           </div>
 
@@ -344,7 +344,7 @@ function GoalCard({
                 type="text"
                 value={newMilestoneTitle}
                 onChange={(e) => setNewMilestoneTitle(e.target.value)}
-                placeholder="New milestone..."
+                placeholder={t('goalsPage.newMilestonePlaceholder')}
                 className="flex-1 text-sm border border-dayo-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-dayo-purple/20"
                 onKeyDown={(e) => e.key === 'Enter' && onAddMilestone(goal.id)}
                 autoFocus
@@ -353,7 +353,7 @@ function GoalCard({
                 onClick={() => onAddMilestone(goal.id)}
                 className="bg-dayo-purple text-white px-3 py-2 rounded-lg text-sm"
               >
-                Add
+                {t('actions.add')}
               </button>
             </div>
           )}
@@ -361,7 +361,7 @@ function GoalCard({
           {/* Milestones List */}
           <div className="space-y-2">
             {goal.milestones.length === 0 ? (
-              <p className="text-xs text-dayo-gray-400 py-2">No milestones yet</p>
+              <p className="text-xs text-dayo-gray-400 py-2">{t('goalsPage.noMilestones')}</p>
             ) : (
               goal.milestones.map((milestone) => (
                 <div
@@ -420,6 +420,7 @@ interface NewGoalModalProps {
 }
 
 function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
+  const { t } = useTranslation()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState<'yearly' | 'monthly' | 'weekly'>('monthly')
@@ -440,7 +441,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
       due_date: dueDate || undefined,
     })
 
-    toast.success('Goal created!')
+    toast.success(t('goalsPage.toast.goalCreated'))
     onClose()
   }
 
@@ -448,7 +449,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
     <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-4 border-b border-dayo-gray-100">
-          <h2 className="text-lg font-semibold text-dayo-gray-900">New Goal</h2>
+          <h2 className="text-lg font-semibold text-dayo-gray-900">{t('goalsPage.modal.title')}</h2>
           <button onClick={onClose} className="text-dayo-gray-400 hover:text-dayo-gray-600">
             <X className="w-5 h-5" />
           </button>
@@ -457,12 +458,12 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           {/* Title */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Title *</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.titleLabel')}</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g., Read 24 books"
+              placeholder={t('goalsPage.modal.titlePlaceholder')}
               className="w-full mt-1 border border-dayo-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-dayo-purple/20"
               required
             />
@@ -470,19 +471,19 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
 
           {/* Description */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Description</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.descriptionLabel')}</label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g., Read 2 books per month"
+              placeholder={t('goalsPage.modal.descriptionPlaceholder')}
               className="w-full mt-1 border border-dayo-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-dayo-purple/20"
             />
           </div>
 
           {/* Category */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Category *</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.categoryLabel')}</label>
             <div className="flex gap-2 mt-2">
               {(['yearly', 'monthly', 'weekly'] as const).map((cat) => (
                 <button
@@ -495,7 +496,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
                       : 'bg-dayo-gray-100 text-dayo-gray-600'
                   }`}
                 >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  {t(`goalsPage.${cat}`)}
                 </button>
               ))}
             </div>
@@ -503,7 +504,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
 
           {/* Icon */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Icon</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.iconLabel')}</label>
             <div className="flex flex-wrap gap-2 mt-2">
               {defaultIcons.map((i) => (
                 <button
@@ -524,7 +525,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
 
           {/* Color */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Color</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.colorLabel')}</label>
             <div className="flex gap-2 mt-2">
               {defaultColors.map((c) => (
                 <button
@@ -542,7 +543,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
 
           {/* Due Date */}
           <div>
-            <label className="text-sm font-medium text-dayo-gray-700">Due Date</label>
+            <label className="text-sm font-medium text-dayo-gray-700">{t('goalsPage.modal.dueDateLabel')}</label>
             <input
               type="date"
               value={dueDate}
@@ -558,7 +559,7 @@ function NewGoalModal({ onClose, onSubmit, isLoading }: NewGoalModalProps) {
             className="w-full bg-dayo-gradient text-white font-medium py-3 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-            Create Goal
+            {t('goalsPage.modal.createButton')}
           </button>
         </form>
       </div>
