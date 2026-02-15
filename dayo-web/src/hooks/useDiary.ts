@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef, useCallback } from 'react'
 import { supabase, type DiaryHighlight } from '../lib/supabase'
 import type { Database } from '../lib/supabase'
+import { sanitizeHtml } from '../lib/sanitize'
 
 type DayEntry = Database['public']['Tables']['days']['Row']
 type DayEntryUpdate = Database['public']['Tables']['days']['Update']
@@ -66,7 +67,7 @@ export function useUpsertDayEntry() {
       if (existing) {
         // Update existing entry
         const updates: DayEntryUpdate = {}
-        if (diaryText !== undefined) updates.diary_text = diaryText
+        if (diaryText !== undefined) updates.diary_text = sanitizeHtml(diaryText)
         if (mood !== undefined) updates.mood = mood
         if (templateId !== undefined) updates.template_id = templateId
 
@@ -86,7 +87,7 @@ export function useUpsertDayEntry() {
           .insert({
             user_id: user.id,
             date,
-            diary_text: diaryText,
+            diary_text: sanitizeHtml(diaryText),
             mood,
             template_id: templateId,
           })
