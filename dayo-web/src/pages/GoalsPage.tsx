@@ -1,20 +1,16 @@
 import { useState } from 'react'
 import { Plus, Target, ChevronRight, Trophy, Calendar, MoreHorizontal, Loader2, X, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import BottomNavigation from '../components/ui/BottomNavigation'
 import ThemedHeader from '../components/ui/ThemedHeader'
 import { useGoals, useCreateGoal, useDeleteGoal, useToggleMilestone, useCreateMilestone, useDeleteMilestone, calculateGoalProgress, type GoalWithMilestones } from '../hooks/useGoals'
 import { toast } from 'sonner'
 
-const categoryLabels = {
-  yearly: 'Yearly Goals',
-  monthly: 'Monthly Goals',
-  weekly: 'Weekly Goals',
-}
-
 const defaultColors = ['#8B5CF6', '#10B981', '#F97316', '#3B82F6', '#EC4899', '#F59E0B']
 const defaultIcons = ['🎯', '📚', '💪', '💰', '🚀', '❤️', '🏆', '✨', '🎨', '🧘']
 
 export default function GoalsPage() {
+  const { t } = useTranslation()
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'yearly' | 'monthly' | 'weekly'>('all')
   const [expandedGoal, setExpandedGoal] = useState<string | null>(null)
   const [showNewGoalModal, setShowNewGoalModal] = useState(false)
@@ -46,24 +42,24 @@ export default function GoalsPage() {
       { id: milestoneId, completed: !currentCompleted },
       {
         onSuccess: () => {
-          toast.success(!currentCompleted ? 'Milestone completed!' : 'Milestone unchecked')
+          toast.success(!currentCompleted ? t('goalsPage.toast.milestoneCompleted') : t('goalsPage.toast.milestoneUnchecked'))
         },
         onError: () => {
-          toast.error('Failed to update milestone')
+          toast.error(t('goalsPage.toast.milestoneFailed'))
         }
       }
     )
   }
 
   const handleDeleteGoal = (goalId: string, goalTitle: string) => {
-    if (confirm(`Delete "${goalTitle}"? This will also delete all milestones.`)) {
+    if (confirm(t('goalsPage.deleteConfirm', { title: goalTitle }))) {
       deleteGoal.mutate(goalId, {
         onSuccess: () => {
-          toast.success('Goal deleted')
+          toast.success(t('goalsPage.toast.goalDeleted'))
           setExpandedGoal(null)
         },
         onError: () => {
-          toast.error('Failed to delete goal')
+          toast.error(t('goalsPage.toast.goalDeleteFailed'))
         }
       })
     }
@@ -76,12 +72,12 @@ export default function GoalsPage() {
       { goal_id: goalId, title: newMilestoneTitle.trim() },
       {
         onSuccess: () => {
-          toast.success('Milestone added')
+          toast.success(t('goalsPage.toast.milestoneAdded'))
           setNewMilestoneTitle('')
           setShowAddMilestone(null)
         },
         onError: () => {
-          toast.error('Failed to add milestone')
+          toast.error(t('goalsPage.toast.milestoneAddFailed'))
         }
       }
     )
@@ -90,10 +86,10 @@ export default function GoalsPage() {
   const handleDeleteMilestone = (milestoneId: string) => {
     deleteMilestone.mutate(milestoneId, {
       onSuccess: () => {
-        toast.success('Milestone deleted')
+        toast.success(t('goalsPage.toast.milestoneDeleted'))
       },
       onError: () => {
-        toast.error('Failed to delete milestone')
+        toast.error(t('goalsPage.toast.milestoneDeleteFailed'))
       }
     })
   }
@@ -101,7 +97,7 @@ export default function GoalsPage() {
   return (
     <div className="min-h-screen bg-dayo-gray-50 pb-24">
       <ThemedHeader
-        title="Goals"
+        title={t('nav.goals')}
         showLogo={false}
         rightContent={
           <button
@@ -109,7 +105,7 @@ export default function GoalsPage() {
             className="flex items-center gap-1.5 bg-dayo-gradient text-white text-sm font-medium px-4 py-2 rounded-xl"
           >
             <Plus className="w-4 h-4" />
-            New Goal
+            {t('goalsPage.newGoal')}
           </button>
         }
       />
@@ -119,15 +115,15 @@ export default function GoalsPage() {
           <div className="grid grid-cols-3 gap-3">
             <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-dayo-purple">{stats.total}</p>
-              <p className="text-xs themed-text-secondary">Total</p>
+              <p className="text-xs themed-text-secondary">{t('goalsPage.total')}</p>
             </div>
             <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-emerald-500">{stats.completed}</p>
-              <p className="text-xs themed-text-secondary">Completed</p>
+              <p className="text-xs themed-text-secondary">{t('goalsPage.completed')}</p>
             </div>
             <div className="stats-card rounded-xl p-3 text-center">
               <p className="text-2xl font-bold text-dayo-orange">{stats.inProgress}</p>
-              <p className="text-xs themed-text-secondary">In Progress</p>
+              <p className="text-xs themed-text-secondary">{t('goalsPage.inProgress')}</p>
             </div>
           </div>
         </div>
@@ -136,17 +132,17 @@ export default function GoalsPage() {
       <main className="max-w-lg mx-auto px-4 py-6">
         {/* Category Filter */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {['all', 'yearly', 'monthly', 'weekly'].map((category) => (
+          {(['all', 'yearly', 'monthly', 'weekly'] as const).map((category) => (
             <button
               key={category}
-              onClick={() => setSelectedCategory(category as typeof selectedCategory)}
+              onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                 selectedCategory === category
                   ? 'bg-dayo-purple text-white'
                   : 'bg-white text-dayo-gray-600 border border-dayo-gray-200'
               }`}
             >
-              {category === 'all' ? 'All Goals' : categoryLabels[category as keyof typeof categoryLabels]}
+              {category === 'all' ? t('goalsPage.allGoals') : t(`goalsPage.${category}Goals`)}
             </button>
           ))}
         </div>
@@ -161,7 +157,7 @@ export default function GoalsPage() {
         {/* Error State */}
         {error && (
           <div className="bg-red-50 rounded-2xl p-4 text-center">
-            <p className="text-red-600">Failed to load goals</p>
+            <p className="text-red-600">{t('goalsPage.failedToLoad')}</p>
           </div>
         )}
 
@@ -171,12 +167,12 @@ export default function GoalsPage() {
             {(!goals || goals.length === 0) ? (
               <div className="bg-white rounded-2xl shadow-sm border border-dayo-gray-100 p-8 text-center">
                 <Target className="w-12 h-12 text-dayo-gray-300 mx-auto mb-4" />
-                <p className="text-dayo-gray-500 mb-4">No goals yet</p>
+                <p className="text-dayo-gray-500 mb-4">{t('goalsPage.noGoals')}</p>
                 <button
                   onClick={() => setShowNewGoalModal(true)}
                   className="text-sm text-dayo-purple font-medium"
                 >
-                  Create your first goal
+                  {t('goalsPage.createFirst')}
                 </button>
               </div>
             ) : (
@@ -206,11 +202,11 @@ export default function GoalsPage() {
             <div className="flex items-center gap-3">
               <Trophy className="w-10 h-10" />
               <div>
-                <p className="font-semibold">Keep going!</p>
+                <p className="font-semibold">{t('goalsPage.keepGoing')}</p>
                 <p className="text-sm text-white/80">
                   {stats.completed > 0
-                    ? `You've completed ${stats.completed} goal${stats.completed > 1 ? 's' : ''}!`
-                    : 'Complete milestones to track your progress'}
+                    ? t('goalsPage.completedCount', { count: stats.completed })
+                    : t('goalsPage.trackProgress')}
                 </p>
               </div>
               <ChevronRight className="w-5 h-5 ml-auto" />
@@ -261,6 +257,7 @@ function GoalCard({
   setNewMilestoneTitle,
   onAddMilestone,
 }: GoalCardProps) {
+  const { t } = useTranslation()
   const progress = calculateGoalProgress(goal)
 
   return (
