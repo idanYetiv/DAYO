@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, MemoryRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { isNativePlatform } from './lib/platform'
@@ -11,23 +11,27 @@ import { useUserProfile } from './hooks/useUserProfile'
 import { useDirection } from './hooks/useDirection'
 import { visualThemes, type VisualThemeId } from './data/visualThemes'
 import ThemeDecorations from './components/ui/ThemeDecorations'
-import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
-import ForgotPasswordPage from './pages/ForgotPasswordPage'
-import ResetPasswordPage from './pages/ResetPasswordPage'
-import DashboardPage from './pages/DashboardPage'
-import TodayPage from './pages/TodayPage'
-import DiaryPage from './pages/DiaryPage'
-import GoalsPage from './pages/GoalsPage'
-import HabitsPage from './pages/HabitsPage'
-import SettingsPage from './pages/SettingsPage'
-import CalendarPage from './pages/CalendarPage'
-import AIAssistantPage from './pages/AIAssistantPage'
-import OnboardingPage from './pages/OnboardingPage'
-import LandingPage from './pages/LandingPage'
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
-import SubscriptionPage from './pages/SubscriptionPage'
 import { initializeRevenueCat } from './lib/revenuecat'
+
+// Eagerly loaded pages (critical path)
+import LoginPage from './pages/LoginPage'
+import TodayPage from './pages/TodayPage'
+
+// Lazy loaded pages
+const SignupPage = lazy(() => import('./pages/SignupPage'))
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const DiaryPage = lazy(() => import('./pages/DiaryPage'))
+const GoalsPage = lazy(() => import('./pages/GoalsPage'))
+const HabitsPage = lazy(() => import('./pages/HabitsPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+const CalendarPage = lazy(() => import('./pages/CalendarPage'))
+const AIAssistantPage = lazy(() => import('./pages/AIAssistantPage'))
+const OnboardingPage = lazy(() => import('./pages/OnboardingPage'))
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'))
+const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'))
 
 const queryClient = new QueryClient()
 
@@ -238,6 +242,14 @@ function PasswordRecoveryRedirect({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function PageLoader() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <img src="/logo.png" alt="DAYO" className="w-8 h-8 rounded-lg animate-pulse" />
+    </div>
+  )
+}
+
 function AuthenticatedRoutes() {
   return (
     <PasswordRecoveryRedirect>
@@ -249,6 +261,7 @@ function AuthenticatedRoutes() {
                 <KidsModeClassApplier>
                   <OnboardingGuard>
                     <ThemeDecorations />
+            <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Onboarding */}
               <Route path="/onboarding" element={<OnboardingPage />} />
@@ -273,6 +286,7 @@ function AuthenticatedRoutes() {
               <Route path="/login" element={<Navigate to="/today" />} />
               <Route path="/signup" element={<Navigate to="/today" />} />
             </Routes>
+            </Suspense>
                   </OnboardingGuard>
                 </KidsModeClassApplier>
               </BackgroundApplier>
@@ -286,6 +300,7 @@ function AuthenticatedRoutes() {
 
 function PublicRoutes() {
   return (
+    <Suspense fallback={<PageLoader />}>
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -295,6 +310,7 @@ function PublicRoutes() {
       {/* Redirect to login for any protected route */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
+    </Suspense>
   )
 }
 
