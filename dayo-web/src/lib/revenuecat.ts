@@ -1,12 +1,11 @@
 import { isNativePlatform } from './platform'
 
-// Placeholder API key — replace with your actual RevenueCat API key
-const REVENUECAT_API_KEY = 'appl_XXXXXXXX'
+const REVENUECAT_API_KEY = import.meta.env.VITE_REVENUECAT_API_KEY ?? ''
 
 let initialized = false
 
 export async function initializeRevenueCat(): Promise<void> {
-  if (!isNativePlatform() || initialized) return
+  if (!isNativePlatform() || initialized || !REVENUECAT_API_KEY) return
 
   try {
     const { Purchases } = await import('@revenuecat/purchases-capacitor')
