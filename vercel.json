@@ -3,5 +3,8 @@
   "buildCommand": "cd dayo-web && npm install && npm run build",
   "outputDirectory": "dayo-web/dist",
   "installCommand": "cd dayo-web && npm install",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
