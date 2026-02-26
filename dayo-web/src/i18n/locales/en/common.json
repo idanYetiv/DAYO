@@ -216,7 +216,52 @@
     "title": "Daily Habits",
     "viewAll": "View All",
     "dayStreak": "{{count}} day streak",
-    "weekDays": ["M", "T", "W", "T", "F", "S", "S"]
+    "weekDays": ["M", "T", "W", "T", "F", "S", "S"],
+    "pageTitle": "Habits",
+    "newHabit": "New Habit",
+    "today": "Today",
+    "totalStreak": "Total Streak",
+    "thisWeek": "This Week",
+    "allHabits": "All Habits",
+    "noHabitsYet": "No habits yet",
+    "createFirst": "Create your first habit",
+    "failedToLoad": "Failed to load habits",
+    "streak": "{{count}} day streak",
+    "best": "Best: {{count}}",
+    "weeklyProgress": "{{completed}}/{{target}} this week",
+    "achievement": {
+      "great": "Great progress!",
+      "keep": "Keep going!",
+      "build": "Build momentum!",
+      "summary": "You've completed {{rate}}% of habits this week"
+    },
+    "modal": {
+      "title": "New Habit",
+      "nameLabel": "Habit Name *",
+      "namePlaceholder": "e.g., Morning Meditation",
+      "iconLabel": "Icon",
+      "colorLabel": "Color",
+      "frequencyLabel": "Frequency",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "targetLabel": "Target per week: {{count}}x",
+      "targetMin": "1x",
+      "targetMax": "7x",
+      "bestTimeLabel": "Best time",
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "anytime": "Anytime",
+      "createButton": "Create Habit"
+    },
+    "toast": {
+      "completed": "Habit completed!",
+      "updateFailed": "Failed to update habit",
+      "deleted": "Habit deleted",
+      "deleteFailed": "Failed to delete habit",
+      "created": "Habit created!",
+      "deleteConfirm": "Delete \"{{title}}\"? This will remove all completion history."
+    }
   },
   "stats": {
     "tasksDone": "Tasks Done",
