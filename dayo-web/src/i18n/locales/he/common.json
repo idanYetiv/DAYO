@@ -216,7 +216,52 @@
     "title": "הרגלים יומיים",
     "viewAll": "הצג הכל",
     "dayStreak": "רצף של {{count}} ימים",
-    "weekDays": ["א", "ב", "ג", "ד", "ה", "ו", "ש"]
+    "weekDays": ["א", "ב", "ג", "ד", "ה", "ו", "ש"],
+    "pageTitle": "הרגלים",
+    "newHabit": "הרגל חדש",
+    "today": "היום",
+    "totalStreak": "רצף כולל",
+    "thisWeek": "השבוע",
+    "allHabits": "כל ההרגלים",
+    "noHabitsYet": "אין הרגלים עדיין",
+    "createFirst": "צור את ההרגל הראשון שלך",
+    "failedToLoad": "נכשל בטעינת ההרגלים",
+    "streak": "רצף של {{count}} ימים",
+    "best": "שיא: {{count}}",
+    "weeklyProgress": "{{completed}}/{{target}} השבוע",
+    "achievement": {
+      "great": "התקדמות מעולה!",
+      "keep": "המשך כך!",
+      "build": "בנה מומנטום!",
+      "summary": "השלמת {{rate}}% מההרגלים השבוע"
+    },
+    "modal": {
+      "title": "הרגל חדש",
+      "nameLabel": "שם ההרגל *",
+      "namePlaceholder": "לדוגמה: מדיטציה בוקר",
+      "iconLabel": "אייקון",
+      "colorLabel": "צבע",
+      "frequencyLabel": "תדירות",
+      "daily": "יומי",
+      "weekly": "שבועי",
+      "targetLabel": "יעד שבועי: {{count}} פעמים",
+      "targetMin": "1x",
+      "targetMax": "7x",
+      "bestTimeLabel": "זמן מועדף",
+      "morning": "בוקר",
+      "afternoon": "צהריים",
+      "evening": "ערב",
+      "anytime": "כל זמן",
+      "createButton": "צור הרגל"
+    },
+    "toast": {
+      "completed": "ההרגל הושלם!",
+      "updateFailed": "נכשל בעדכון ההרגל",
+      "deleted": "ההרגל נמחק",
+      "deleteFailed": "נכשל במחיקת ההרגל",
+      "created": "ההרגל נוצר!",
+      "deleteConfirm": "למחוק את \"{{title}}\"? כל היסטוריית ההשלמות תימחק."
+    }
   },
   "stats": {
     "tasksDone": "משימות שהושלמו",
