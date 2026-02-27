@@ -28,7 +28,7 @@ Ensures DAYO features are delivered reliably from development to production. Man
 ### Deployment Commands
 ```bash
 # Local development
-cd ~/DAYO/dayo-web
+cd ~/projects/DAYO/dayo-web
 npm run dev
 
 # Type check before deploy

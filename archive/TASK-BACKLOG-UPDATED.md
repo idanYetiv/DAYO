@@ -2,7 +2,7 @@
 
 **Last Updated:** January 3, 2026 - 9:20 PM
 **Project:** DAYO Web App POC
-**Base Path:** `/Users/idanyativ/DAYO/dayo-web`
+**Base Path:** `/Users/idanyativ/projects/DAYO/dayo-web`
 
 ---
 
@@ -94,7 +94,7 @@
 - [ ] TypeScript types correct
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useTasks.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useTasks.ts`
 
 **Dependencies:** Task 1 ✅
 **Blocks:** Task 5
@@ -139,7 +139,7 @@
 - [ ] TypeScript types correct
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useDiary.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useDiary.ts`
 
 **Dependencies:** Task 1 ✅
 **Blocks:** Task 5
@@ -177,7 +177,7 @@
 - [ ] TypeScript types correct
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useUserStats.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useUserStats.ts`
 
 **Dependencies:** Task 1 ✅
 **Blocks:** Task 6
@@ -214,7 +214,7 @@
 - [ ] Real-time updates work
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/TodayPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/TodayPage.tsx`
 
 **Dependencies:** Task 2, Task 3
 **Blocks:** None
@@ -247,7 +247,7 @@
 - [ ] Loading states work
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/DashboardPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/DashboardPage.tsx`
 
 **Dependencies:** Task 4
 **Blocks:** None
@@ -309,13 +309,13 @@
 - [ ] Testing guide documented
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/vitest.config.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/test/setup.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/lib/__tests__/utils.test.ts`
-- `/Users/idanyativ/DAYO/dayo-web/TESTING.md`
+- `/Users/idanyativ/projects/DAYO/dayo-web/vitest.config.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/test/setup.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/lib/__tests__/utils.test.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/TESTING.md`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/package.json`
+- `/Users/idanyativ/projects/DAYO/dayo-web/package.json`
 
 **Dependencies:** None
 **Blocks:** Task 20, Task 22
@@ -369,11 +369,11 @@
 - [ ] Test loading states
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/__tests__/LoginPage.test.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/__tests__/SignupPage.test.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/__tests__/TodayPage.test.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/__tests__/DashboardPage.test.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/test/mocks/supabase.ts` (mock helpers)
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/__tests__/LoginPage.test.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/__tests__/SignupPage.test.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/__tests__/TodayPage.test.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/__tests__/DashboardPage.test.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/test/mocks/supabase.ts` (mock helpers)
 
 **Dependencies:** Task 19
 **Blocks:** None
@@ -439,14 +439,14 @@
 - [ ] Tests run in CI-ready mode
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/playwright.config.ts`
-- `/Users/idanyativ/DAYO/dayo-web/e2e/auth.spec.ts`
-- `/Users/idanyativ/DAYO/dayo-web/e2e/tasks.spec.ts`
-- `/Users/idanyativ/DAYO/dayo-web/e2e/diary.spec.ts`
-- `/Users/idanyativ/DAYO/dayo-web/e2e/helpers/auth.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/playwright.config.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/e2e/auth.spec.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/e2e/tasks.spec.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/e2e/diary.spec.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/e2e/helpers/auth.ts`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/package.json`
+- `/Users/idanyativ/projects/DAYO/dayo-web/package.json`
 
 **Dependencies:** Task 19, Task 5 (for meaningful tests)
 **Blocks:** None
@@ -480,10 +480,10 @@
 - [ ] Tests are isolated (clean up after)
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/__tests__/useTasks.test.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/__tests__/useDiary.test.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/__tests__/useUserStats.test.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/test/dbHelpers.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/__tests__/useTasks.test.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/__tests__/useDiary.test.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/__tests__/useUserStats.test.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/test/dbHelpers.ts`
 
 **Dependencies:** Task 2, Task 3, Task 4, Task 19
 **Blocks:** None
@@ -522,12 +522,12 @@
 - [ ] Coverage report generated
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/e2e/system/fullFlow.spec.ts`
-- `/Users/idanyativ/DAYO/dayo-web/.github/workflows/test.yml`
+- `/Users/idanyativ/projects/DAYO/dayo-web/e2e/system/fullFlow.spec.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/.github/workflows/test.yml`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/vitest.config.ts`
-- `/Users/idanyativ/DAYO/dayo-web/README.md`
+- `/Users/idanyativ/projects/DAYO/dayo-web/vitest.config.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/README.md`
 
 **Dependencies:** Task 19, Task 20, Task 21
 **Blocks:** None
@@ -549,52 +549,52 @@ See original TASK-BACKLOG.md for details.
 
 **Tab 1:**
 ```
-"Do Task 2 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 2 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 2:**
 ```
-"Do Task 3 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 3 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 3:**
 ```
-"Do Task 4 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 4 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 4:**
 ```
-"Do Task 19 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 19 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 ### **After First Round Completes (~20-25 min):**
 
 **Tab 1:**
 ```
-"Do Task 5 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 5 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 2:**
 ```
-"Do Task 20 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 20 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 3:**
 ```
-"Do Task 6 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 6 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 **Tab 4:**
 ```
-"Do Task 21 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 21 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 ### **Final Round (~30 min later):**
 
 **Any 2 tabs:**
 ```
-"Do Task 22 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
-"Do Task 23 from /Users/idanyativ/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 22 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
+"Do Task 23 from /Users/idanyativ/projects/DAYO/TASK-BACKLOG-UPDATED.md"
 ```
 
 ---

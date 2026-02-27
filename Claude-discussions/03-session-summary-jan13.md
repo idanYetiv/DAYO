@@ -119,7 +119,7 @@ From `TASK-BACKLOG.md`:
 ## File Structure
 
 ```
-~/DAYO/
+~/projects/DAYO/
 ├── DAYO-product-req.md          # Full product spec
 ├── TASK-BACKLOG.md              # 18 detailed tasks
 ├── DEPLOYMENT-PLAN.md           # MVP roadmap
@@ -183,7 +183,7 @@ From `TASK-BACKLOG.md`:
 
 ### Option A: Quick Start (local dev)
 ```bash
-cd ~/DAYO/dayo-web
+cd ~/projects/DAYO/dayo-web
 npm install
 npm run dev
 # App runs at http://localhost:5173 with mock data

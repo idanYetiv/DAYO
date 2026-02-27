@@ -2,7 +2,7 @@
 
 **Last Updated:** January 3, 2026
 **Project:** DAYO Web App POC
-**Base Path:** `/Users/idanyativ/DAYO/dayo-web`
+**Base Path:** `/Users/idanyativ/projects/DAYO/dayo-web`
 
 ---
 
@@ -61,7 +61,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 - [ ] Can sign up and log in successfully
 
 **Files Modified:**
-- Create: `/Users/idanyativ/DAYO/dayo-web/.env`
+- Create: `/Users/idanyativ/projects/DAYO/dayo-web/.env`
 
 **Dependencies:** None
 **Blocks:** All Phase 2 tasks
@@ -125,7 +125,7 @@ export function useTasks(date: string) {
 - [ ] TypeScript types correct
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useTasks.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useTasks.ts`
 
 **Dependencies:** Task 1
 **Blocks:** Task 5
@@ -182,7 +182,7 @@ export function useDayEntry(date: string) {
 - [ ] TypeScript types correct
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useDiary.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useDiary.ts`
 
 **Dependencies:** Task 1
 **Blocks:** Task 5
@@ -212,7 +212,7 @@ Create hooks for user statistics and streaks.
 - [ ] Auto-update on activity
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useUserStats.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useUserStats.ts`
 
 **Dependencies:** Task 1
 **Blocks:** Task 6
@@ -247,7 +247,7 @@ Replace local state in TodayPage with real database calls.
 - [ ] Page refreshes maintain state
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/TodayPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/TodayPage.tsx`
 
 **Dependencies:** Task 2, Task 3
 **Blocks:** None
@@ -279,7 +279,7 @@ Show real statistics on the dashboard.
 - [ ] Loading states work
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/DashboardPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/DashboardPage.tsx`
 
 **Dependencies:** Task 4
 **Blocks:** None
@@ -329,7 +329,7 @@ interface CalendarProps {
 - [ ] Responsive design
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/components/planner/Calendar.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/planner/Calendar.tsx`
 
 **Dependencies:** None
 **Blocks:** Task 8
@@ -359,12 +359,12 @@ Create a page showing calendar + selected day's content.
 - [ ] Responsive layout
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/CalendarPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/CalendarPage.tsx`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/App.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/TodayPage.tsx` (add nav link)
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/DashboardPage.tsx` (add nav link)
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/App.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/TodayPage.tsx` (add nav link)
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/DashboardPage.tsx` (add nav link)
 
 **Dependencies:** Task 7
 **Blocks:** None
@@ -401,10 +401,10 @@ Create service for OpenAI API integration.
 - [ ] Responses formatted nicely
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/lib/openai.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/lib/openai.ts`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/.env.example` (add OpenAI key placeholder)
+- `/Users/idanyativ/projects/DAYO/dayo-web/.env.example` (add OpenAI key placeholder)
 
 **Dependencies:** None
 **Blocks:** Task 10
@@ -438,13 +438,13 @@ Create chat interface for AI assistant.
 - [ ] Beautiful chat UI
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ai/ChatMessage.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ai/ChatInput.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ai/ChatWindow.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/AIAssistantPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ai/ChatMessage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ai/ChatInput.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ai/ChatWindow.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/AIAssistantPage.tsx`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/App.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/App.tsx`
 
 **Dependencies:** Task 9
 **Blocks:** None
@@ -480,7 +480,7 @@ Implement automatic streak tracking.
 - [ ] Database updates correctly
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/lib/streakCalculator.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/lib/streakCalculator.ts`
 
 **Dependencies:** Task 1, Task 4
 **Blocks:** None
@@ -515,12 +515,12 @@ Add toast notification system for user feedback.
 - [ ] Different types (success, error, info)
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/lib/toast.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/lib/toast.ts`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/App.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useTasks.ts` (add toast calls)
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useDiary.ts` (add toast calls)
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/App.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useTasks.ts` (add toast calls)
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useDiary.ts` (add toast calls)
 
 **Dependencies:** None
 **Blocks:** None
@@ -553,9 +553,9 @@ Replace "Loading..." text with skeleton components.
 - [ ] Shimmer animation
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ui/Skeleton.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ui/TaskSkeleton.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ui/DiarySkeleton.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ui/Skeleton.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ui/TaskSkeleton.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ui/DiarySkeleton.tsx`
 
 **Files to Modify:**
 - All page components
@@ -592,11 +592,11 @@ Allow users to upload photos to diary entries.
 - [ ] Image compression (optional)
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/usePhotoUpload.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/diary/PhotoGallery.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/usePhotoUpload.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/diary/PhotoGallery.tsx`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/TodayPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/TodayPage.tsx`
 - Database schema (add SQL migration)
 
 **Dependencies:** Task 1
@@ -630,8 +630,8 @@ Add keyboard shortcuts for power users.
 - [ ] Doesn't conflict with browser shortcuts
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/src/hooks/useKeyboardShortcuts.ts`
-- `/Users/idanyativ/DAYO/dayo-web/src/components/ui/ShortcutsModal.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/hooks/useKeyboardShortcuts.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/components/ui/ShortcutsModal.tsx`
 
 **Dependencies:** None
 **Blocks:** None
@@ -665,8 +665,8 @@ Polish with delightful animations.
 - [ ] Accessible (respects prefers-reduced-motion)
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/TodayPage.tsx`
-- `/Users/idanyativ/DAYO/dayo-web/src/pages/DashboardPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/TodayPage.tsx`
+- `/Users/idanyativ/projects/DAYO/dayo-web/src/pages/DashboardPage.tsx`
 - Other components as needed
 
 **Dependencies:** None
@@ -699,10 +699,10 @@ Create script to seed database with demo data for testing.
 - [ ] Helps with testing
 
 **Files to Create:**
-- `/Users/idanyativ/DAYO/dayo-web/scripts/seedDatabase.ts`
+- `/Users/idanyativ/projects/DAYO/dayo-web/scripts/seedDatabase.ts`
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/package.json` (add script)
+- `/Users/idanyativ/projects/DAYO/dayo-web/package.json` (add script)
 
 **Dependencies:** Task 1
 **Blocks:** None
@@ -735,7 +735,7 @@ Update README with latest features and screenshots.
 - [ ] Clear and helpful
 
 **Files to Modify:**
-- `/Users/idanyativ/DAYO/dayo-web/README.md`
+- `/Users/idanyativ/projects/DAYO/dayo-web/README.md`
 
 **Dependencies:** Most features complete
 **Blocks:** None

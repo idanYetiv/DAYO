@@ -4,7 +4,7 @@
 
 ### Quick Start
 
-1. **Open the backlog**: `/Users/idanyativ/DAYO/TASK-BACKLOG.md`
+1. **Open the backlog**: `/Users/idanyativ/projects/DAYO/TASK-BACKLOG.md`
 2. **Start with Task 1** (BLOCKER - must do first)
 3. **Open multiple Claude tabs** and assign tasks from the backlog
 4. **Each tab picks a task** that has no blockers
@@ -163,14 +163,14 @@ Tab 5: Task 17 (Seed data)
 
 ### Session 1 (Tab 1 - Task 1)
 ```bash
-cd /Users/idanyativ/DAYO/dayo-web
+cd /Users/idanyativ/projects/DAYO/dayo-web
 # Create .env file with Supabase credentials
 # Test: npm run dev
 ```
 
 ### Session 2+ (All tabs)
 ```bash
-cd /Users/idanyativ/DAYO/dayo-web
+cd /Users/idanyativ/projects/DAYO/dayo-web
 # Pick your task from backlog
 # Read task description
 # Create/modify files as specified

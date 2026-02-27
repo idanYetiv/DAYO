@@ -62,7 +62,7 @@ Location: `SYSTEM-ARCHITECTURE.md`
 
 ## File Structure Reference
 ```
-~/DAYO/
+~/projects/DAYO/
 ├── DAYO-product-req.md      # Product vision
 ├── OPEN-TASKS.md            # Task tracking
 ├── SYSTEM-ARCHITECTURE.md   # Technical docs

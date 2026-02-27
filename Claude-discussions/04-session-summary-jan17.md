@@ -162,7 +162,7 @@ VITE_SUPABASE_URL=https://srhxwubcfcuvgmrqyabf.supabase.co
 VITE_SUPABASE_ANON_KEY=sb_publishable_...
 
 # To run:
-cd ~/DAYO/dayo-web
+cd ~/projects/DAYO/dayo-web
 npm run dev
 # App at http://localhost:5173
 ```
@@ -172,7 +172,7 @@ npm run dev
 ## File Structure
 
 ```
-~/DAYO/
+~/projects/DAYO/
 ├── DAYO-product-req.md          # Full product spec
 ├── TASK-BACKLOG-backup.md       # Original 18 detailed tasks
 ├── DEPLOYMENT-PLAN.md           # MVP roadmap

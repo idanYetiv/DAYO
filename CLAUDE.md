@@ -8,7 +8,7 @@
 
 ```bash
 # Set git config for personal GitHub account
-cd ~/DAYO
+cd ~/projects/DAYO
 git config user.name "idanYetiv"
 git config user.email "idanyativ@gmail.com"
 ```
@@ -100,7 +100,7 @@ A life companion app combining:
 ## 5. Project Structure
 
 ```
-~/DAYO/
+~/projects/DAYO/
 ├── CLAUDE.md                 # This file - session guide (READ FIRST)
 ├── OPEN-TASKS.md             # Current task backlog
 ├── PLAN-KIDS-ADULTS-MODE.md  # Kids/Adults mode plan (IMPLEMENTED)
@@ -242,7 +242,7 @@ New Kids/Adults features need tests:
 
 ```bash
 # Development
-cd ~/DAYO/dayo-web
+cd ~/projects/DAYO/dayo-web
 npm run dev              # Start dev server (localhost:5173)
 
 # Type check
@@ -252,7 +252,7 @@ npx tsc --noEmit
 npm run build
 
 # Deploy to production
-cd ~/DAYO/dayo-web
+cd ~/projects/DAYO/dayo-web
 vercel --prod --yes
 
 # iOS (requires Xcode installed)
